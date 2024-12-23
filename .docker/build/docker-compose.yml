@@ -1,0 +1,104 @@
+services:
+
+  # WEB SERVER
+  nginx:
+    container_name: ${APP_NAME}-nginx
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: always
+    environment:
+      - PATH_PUBLIC=${VOLUME_CONTAINER_PATH_PUBLIC}
+    ports:
+      - ${SERVER_PORT}
+    volumes:
+      - $PWD/${VOLUME_HOST_PATH_PHP_SOURCE}:${VOLUME_CONTAINER_PATH_PHP_SOURCE}
+    networks:
+      - network
+
+  # PHP INTERPRETER
+  php:
+    container_name: ${APP_NAME}-php
+    user: ${USER_ID}:${GROUP_ID}
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+      args:
+        - GROUP_ID=${GROUP_ID}
+        - USER_ID=${USER_ID}
+        - TIMEZONE=${TIMEZONE}
+        - WORK_DIR=${VOLUME_CONTAINER_PATH_PHP_SOURCE}
+        - GIT_NAME=${GIT_NAME}
+        - GIT_EMAIL={GIT_EMAIL}
+    restart: always
+    env_file:
+      - ./env/php.env
+    secrets:
+      - ssh-keys
+    volumes:
+      - $PWD/${VOLUME_HOST_PATH_PHP_SOURCE}:${VOLUME_CONTAINER_PATH_PHP_SOURCE}
+    networks:
+      - network
+    depends_on:
+      - nginx
+
+  # DATA BASE
+  mysql:
+    container_name: ${APP_NAME}-mysql
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+      args:
+        - GROUP_ID=${GROUP_ID}
+        - USER_ID=${USER_ID}
+    restart: always
+    env_file:
+      - ./env/mysql.env
+    ports:
+      - ${MYSQL_PORT}
+    volumes:
+      - mysql-data:${VOLUME_CONTAINER_PATH_MYSQL}
+    networks:
+      - network
+    depends_on:
+      - nginx
+
+  # COMPOSER
+  composer:
+    container_name: ${APP_NAME}-composer
+    build:
+      context: ./composer
+      dockerfile: Dockerfile
+    networks:
+      - network
+    depends_on:
+      - nginx
+
+  # MAIL
+  mail_catcher:
+    container_name: ${APP_NAME}-mail_catcher
+    build:
+      context: ./mail_catcher
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - ${MAIL_SMTP_PORT}
+      - ${MAIL_WEB_INTERFACE_PORT}
+    networks:
+      - network
+
+# SECRETS
+secrets:
+  ssh-keys:
+    file: ~/.ssh/id_ed25519
+
+# REDES
+networks:
+  network:
+    name: network
+
+#VOLUMES
+volumes:
+  # DATA BASE VOLUME
+  mysql-data:
+    name: ${APP_NAME}-mysql-data
