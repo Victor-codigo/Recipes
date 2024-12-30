@@ -2,8 +2,10 @@
 
 namespace App\Tests;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Bundle\DoctrineBundle\Registry;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -20,10 +22,18 @@ class RegistrationControllerTest extends WebTestCase
         // Ensure we have a clean database
         $container = static::getContainer();
 
-        /** @var EntityManager $em */
-        $em = $container->get('doctrine')->getManager();
+        /** @var Registry $doctrineRegistry */
+        $doctrineRegistry = $container->get('doctrine');
+        /** @var EntityManagerInterface $em */
+        $em = $doctrineRegistry->getManager();
+        // @phpstan-ignore assign.propertyType
         $this->userRepository = $container->get(UserRepository::class);
 
+        /**
+         * @var User $user
+         *
+         * @phpstan-ignore method.notFound, foreach.nonIterable
+         */
         foreach ($this->userRepository->findAll() as $user) {
             $em->remove($user);
         }
@@ -51,8 +61,9 @@ class RegistrationControllerTest extends WebTestCase
 
         // Ensure the verification email was sent
         // Use either assertQueuedEmailCount() || assertEmailCount() depending on your mailer setup
-        // self::assertQueuedEmailCount(1);
-        self::assertEmailCount(1);
+        self::assertQueuedEmailCount(1);
+        $messages = $this->getMailerMessages();
+        // self::assertEmailCount(1);
 
         self::assertCount(1, $messages = $this->getMailerMessages());
         self::assertEmailAddressContains($messages[0], 'from', 'admin@shoppinglist.es');
@@ -71,10 +82,17 @@ class RegistrationControllerTest extends WebTestCase
 
         preg_match('#(http://localhost/verify/email.+)">#', $messageBody, $resetLink);
 
+        if (!isset($resetLink[1])) {
+            self::fail('No verification link found in email');
+        }
+
         // "Click" the link and see if the user is verified
         $this->client->request('GET', $resetLink[1]);
         $this->client->followRedirect();
 
-        self::assertTrue(static::getContainer()->get(UserRepository::class)->findAll()[0]->isVerified());
+        /** @var UserRepository $userRepository */
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        self::assertTrue($userRepository->findAll()[0]->isVerified());
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -15,6 +16,7 @@ class LoginControllerTest extends WebTestCase
     {
         $this->client = static::createClient();
         $container = static::getContainer();
+        /** @var EntityManagerInterface $em */
         $em = $container->get('doctrine.orm.entity_manager');
         $userRepository = $em->getRepository(User::class);
 
