@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -15,9 +17,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private int $id;
+    #[ORM\Column(type: 'string', length: 36)]
+    private string $id = '';
 
     #[ORM\Column(length: 180)]
     private string $email;
@@ -37,7 +38,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private bool $isVerified = false;
 
-    public function getId(): ?int
+    /**
+     * @var Collection<int, Recipe>
+     */
+    #[ORM\OneToMany(targetEntity: Recipe::class, mappedBy: 'user', cascade: ['remove', 'persist'])]
+    private Collection $recipes;
+
+    public function getId(): string
     {
         return $this->id;
     }
@@ -122,5 +129,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    /**
+     * @param list<string> $roles
+     */
+    public function __construct(string $id, string $email, string $password, array $roles, bool $isVerified)
+    {
+        $this->id = $id;
+        $this->email = $email;
+        $this->password = $password;
+        $this->roles = $roles;
+        $this->isVerified = $isVerified;
+        $this->recipes = new ArrayCollection();
     }
 }
