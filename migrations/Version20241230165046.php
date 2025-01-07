@@ -21,9 +21,11 @@ final class Version20241230165046 extends AbstractMigration
                 email VARCHAR(180) NOT NULL,
                 roles JSON NOT NULL,
                 password VARCHAR(255) NOT NULL,
+                name VARCHAR(255) NOT NULL,
                 is_verified TINYINT(1) NOT NULL,
 
                 UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL (email),
+                UNIQUE INDEX UNIQ_IDENTIFIER_NAME (name),
 
                 PRIMARY KEY(id)
             )
