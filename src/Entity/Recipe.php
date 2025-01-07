@@ -75,7 +75,7 @@ class Recipe
         string $name,
         ?string $category,
         ?string $description,
-        \DateTimeInterface $preparationTime,
+        ?\DateTimeInterface $preparationTime,
         array $ingredients,
         array $steps,
         ?string $image,
