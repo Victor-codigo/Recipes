@@ -35,6 +35,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private string $password;
 
+    #[ORM\Column(length: 255)]
+    private string $name;
+
     #[ORM\Column]
     private bool $isVerified = false;
 
@@ -47,6 +50,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -119,6 +129,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function isVerified(): bool
     {
         return $this->isVerified;
@@ -139,16 +161,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->recipes;
     }
 
-    /**
-     * @param list<string> $roles
-     */
-    public function __construct(string $id, string $email, string $password, array $roles, bool $isVerified)
+    public function __construct()
     {
-        $this->id = $id;
-        $this->email = $email;
-        $this->password = $password;
-        $this->roles = $roles;
-        $this->isVerified = $isVerified;
         $this->recipes = new ArrayCollection();
     }
 }
