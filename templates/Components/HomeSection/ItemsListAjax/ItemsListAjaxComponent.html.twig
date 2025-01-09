@@ -1,0 +1,44 @@
+<div data-controller="{{ data.componentName }}"
+     data-action="PaginatorContentLoaderJsComponent:connected->{{ data.componentName }}#handleMessageConnected
+                  ModalComponent:beforeShowed->{{ data.componentName }}#handleMessageBeforeShowed"
+     data-url-path-items-images="{{ data.urlPathItemsImages }}"
+     data-url-no-items-image="{{ data.urlNoItemsImage }}"
+     data-item-image-title="{{ lang.itemImageTitle }}"
+     data-list-empty-text="{{ lang.listEmptyText }}"
+     data-list-empty-image="{{ data.urlListEmptyImage }}"
+     data-group-id="{{ data.groupId }}"
+     data-section="{{ this.getSection }}"
+     class="p-3  p-sm-4  pt-0"
+     data-modal-component-content>
+
+
+    {{ component('TitleComponent', { data: titleDto } ) }}
+    {{ component('PaginatorContentLoaderJsComponent', { data: data.paginatorContentLoaderJsDto } ) }}
+
+    <hr class="border border-second border-1 opacity-50  mt-5">
+
+    <div class="d-flex  justify-content-end">
+
+        {% block buttons %}
+
+        <button type="button"
+                class="btn  btn-transparent  me-4"
+                data-js-back-button>
+
+            {% include "common/arrow-back-icon.svg" %}
+
+            <span class="align-middle">
+                {{ lang.buttonBackLabel }}
+            </span>
+        </button>
+
+        <button type="button"
+                class="btn  btn-primary  flex-grow-1"
+                data-js-create-item-button>
+
+            {{ lang.buttonCreateItemLabel }}
+        </button>
+
+        {% endblock buttons %}
+    </div>
+</div>
