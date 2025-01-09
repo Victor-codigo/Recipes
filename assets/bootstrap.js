@@ -1,5 +1,17 @@
-import { startStimulusApp } from '@symfony/stimulus-bundle';
+import { startStimulusApp } from '@symfony/stimulus-bridge';
 
-const app = startStimulusApp();
-// register any custom, 3rd party controllers here
-// app.register('some_controller_name', SomeImportedController);
+export const app = startStimulusApp(require.context(
+    '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
+    true,
+    /\.[jt]sx?$/
+));
+
+// HOME LIST
+import HomeSectionComponent from 'App/Twig/Components/HomeSection/Home/HomeSection_controller';
+import HomeListComponent from 'App/Twig/Components/HomeSection/HomeList/List/HomeList_controller';
+import HomeListItemComponent from 'App/Twig/Components/HomeSection/HomeList/ListItem/HomeListItem_controller';
+
+// HOME LIST
+app.register('HomeSectionComponent', HomeSectionComponent);
+app.register('HomeListComponent', HomeListComponent);
+app.register('HomeListItemComponent', HomeListItemComponent);
