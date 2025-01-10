@@ -253,4 +253,31 @@ class Recipe
 
         return $this;
     }
+
+    /**
+     * @throws \LogicException
+     */
+    public function toJson(): string
+    {
+        $json = json_encode([
+            'id' => $this->getId(),
+            'userId' => $this->getUserId(),
+            'groupId' => $this->getGroupId(),
+            'name' => $this->getName(),
+            'category' => $this->getCategory(),
+            'description' => $this->getDescription(),
+            'preparationTime' => $this->getPreparationTime(),
+            'ingredients' => $this->getIngredients(),
+            'steps' => $this->getSteps(),
+            'image' => $this->getImage(),
+            'rating' => $this->getRating(),
+            'createdOn' => $this->getCreatedOn(),
+        ]);
+
+        if (false === $json) {
+            throw new \LogicException('It was not possible to create a json from Recipe entity');
+        }
+
+        return $json;
+    }
 }
