@@ -165,4 +165,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->recipes = new ArrayCollection();
     }
+
+    /**
+     * @throws \LogicException
+     */
+    public function toJson(): string
+    {
+        $json = json_encode([
+            'id' => $this->getId(),
+            'email' => $this->getEmail(),
+            'roles' => $this->getRoles(),
+            'password' => $this->getPassword(),
+            'name' => $this->getName(),
+            'isVerified' => $this->isVerified(),
+        ]);
+
+        if (false === $json) {
+            throw new \LogicException('It was not possible to create a json from User entity');
+        }
+
+        return $json;
+    }
 }
