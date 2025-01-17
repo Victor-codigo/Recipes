@@ -14,7 +14,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 )]
 class AlertComponent extends TwigComponent
 {
-    public AlertComponentDto&TwigComponentDtoInterface $data;
+    public readonly AlertComponentDto&TwigComponentDtoInterface $data;
 
     public string $cssType;
 
@@ -23,7 +23,7 @@ class AlertComponent extends TwigComponent
         return 'AlertComponent';
     }
 
-    public function mount(AlertComponentDto $data): void
+    public function mount(AlertComponentDto&TwigComponentDtoInterface $data): void
     {
         $this->data = $data;
         $this->setAlertType($this->data->type);

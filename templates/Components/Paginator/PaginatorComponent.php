@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Twig\Components\Paginator;
+namespace App\Templates\Components\Paginator;
 
-use App\Twig\Components\TwigComponent;
-use App\Twig\Components\TwigComponentDtoInterface;
+use App\Templates\Components\TwigComponent;
+use App\Templates\Components\TwigComponentDtoInterface;
+use App\Twig\Components\Paginator\PaginatorComponentDto;
+use App\Twig\Components\Paginator\PaginatorComponentLangDto;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent(
@@ -18,7 +20,7 @@ class PaginatorComponent extends TwigComponent
     public const URL_PLACEHOLDER = '{pageNum}';
 
     public PaginatorComponentLangDto $lang;
-    public PaginatorComponentDto|TwigComponentDtoInterface $data;
+    public PaginatorComponentDto&TwigComponentDtoInterface $data;
 
     public readonly array $pageList;
     public readonly string $pagePreviousUrl;
@@ -29,7 +31,7 @@ class PaginatorComponent extends TwigComponent
         return 'PaginatorComponent';
     }
 
-    public function mount(PaginatorComponentDto $data): void
+    public function mount(PaginatorComponentDto&TwigComponentDtoInterface $data): void
     {
         $this->data = $data;
 

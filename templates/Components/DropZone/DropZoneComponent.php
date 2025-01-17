@@ -22,7 +22,7 @@ class DropZoneComponent extends TwigComponent
         return 'DropZoneComponent';
     }
 
-    public function mount(DropZoneComponentDto $data): void
+    public function mount(DropZoneComponentDto&TwigComponentDtoInterface $data): void
     {
         $this->data = $data;
     }

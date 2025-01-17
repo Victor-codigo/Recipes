@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Templates\Components\HomeSection\SearchBar;
 
-use App\Form\SearchBar\SEARCHBAR_FORM_FIELDS;
-use App\Twig\Components\TwigComponent;
-use App\Twig\Components\TwigComponentDtoInterface;
+use App\Form\SEARCHBAR_FORM_FIELDS;
+use App\Templates\Components\TwigComponent;
+use App\Templates\Components\TwigComponentDtoInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent(
@@ -16,7 +16,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 class SearchBarComponent extends TwigComponent
 {
     public SearchBarComponentLangDto $lang;
-    public SearchBarComponentDto|TwigComponentDtoInterface $data;
+    public SearchBarComponentDto&TwigComponentDtoInterface $data;
 
     public readonly string $formName;
     public readonly string $searchTokenCsrfFieldName;
@@ -31,7 +31,7 @@ class SearchBarComponent extends TwigComponent
         return 'SearchBarComponent';
     }
 
-    public function mount(SearchBarComponentDto $data): void
+    public function mount(SearchBarComponentDto&TwigComponentDtoInterface $data): void
     {
         $this->data = $data;
         $this->formName = SEARCHBAR_FORM_FIELDS::FORM;
@@ -62,12 +62,12 @@ class SearchBarComponent extends TwigComponent
                 NAME_FILTERS::EQUALS->value => $this->translate('name_filters.equals'),
             ])
             ->sectionFilters([
-                SECTION_FILTERS::ORDER->value => $this->translate('section_filters.order'),
-                SECTION_FILTERS::LIST_ORDERS->value => $this->translate('section_filters.list_orders'),
-                SECTION_FILTERS::PRODUCT->value => $this->translate('section_filters.product'),
-                SECTION_FILTERS::SHOP->value => $this->translate('section_filters.shop'),
-                SECTION_FILTERS::GROUP->value => $this->translate('section_filters.group'),
-                SECTION_FILTERS::GROUP_USERS->value => $this->translate('section_filters.group_users'),
+                // SECTION_FILTERS::ORDER->value => $this->translate('section_filters.order'),
+                // SECTION_FILTERS::LIST_ORDERS->value => $this->translate('section_filters.list_orders'),
+                // SECTION_FILTERS::PRODUCT->value => $this->translate('section_filters.product'),
+                // SECTION_FILTERS::SHOP->value => $this->translate('section_filters.shop'),
+                // SECTION_FILTERS::GROUP->value => $this->translate('section_filters.group'),
+                // SECTION_FILTERS::GROUP_USERS->value => $this->translate('section_filters.group_users'),
             ])
             ->build();
     }
