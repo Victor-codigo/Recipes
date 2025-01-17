@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
-import * as apiEndpoints from 'App/modules/ApiEndpoints';
-import * as url from 'App/modules/Url';
-import * as autocomplete from 'App/modules/AutoComplete';
+import * as apiEndpoints from 'App/Modules/ApiEndpoints';
+import * as url from 'App/Modules/Url';
+import * as autocomplete from 'App/Modules/AutoComplete';
 
 
 const SEARCHBAR_AUTOCOMPLETE_MAX_RESULTS = 50;

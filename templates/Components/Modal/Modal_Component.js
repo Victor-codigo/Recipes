@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
-import BootstrapModal from 'App/modules/ModalManager/BootstrapModal';
-import ModalManager from 'App/modules/ModalManager/ModalManager';
+import BootstrapModal from 'App/Modules/ModalManager/BootstrapModal';
+import ModalManager from 'App/Modules/ModalManager/ModalManager';
 
 /**
  * @fires ModalComponent:beforeShowed

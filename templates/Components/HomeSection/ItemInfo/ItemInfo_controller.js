@@ -1,6 +1,6 @@
 import { Controller } from '@hotwired/stimulus';
 import * as config from 'App/Config';
-import * as locale from 'App/modules/Locale';
+import * as locale from 'App/Modules/Locale';
 
 export default class extends Controller {
     /**
