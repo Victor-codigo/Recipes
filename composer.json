@@ -2,6 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "minimum-stability": "stable",
+    "description": "Manager for recipes",
     "prefer-stable": true,
     "require": {
         "php": ">=8.4",
@@ -47,7 +48,8 @@
         "symfony/yaml": "6.4.*",
         "symfonycasts/verify-email-bundle": "^1.17",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "victor-codigo/doctrine-paginator-adapter": "*"
     },
     "config": {
         "allow-plugins": {
@@ -104,7 +106,7 @@
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "11.5",
         "symfony/browser-kit": "6.4.*",
         "symfony/css-selector": "6.4.*",
         "symfony/debug-bundle": "6.4.*",
