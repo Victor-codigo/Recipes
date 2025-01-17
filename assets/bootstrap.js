@@ -23,6 +23,11 @@ import HomeSectionComponent from 'App/Twig/Components/HomeSection/Home/HomeSecti
 import HomeListComponent from 'App/Twig/Components/HomeSection/HomeList/List/HomeList_controller';
 import HomeListItemComponent from 'App/Twig/Components/HomeSection/HomeList/ListItem/HomeListItem_controller';
 
+// RECIPE HOME COMPONENT
+import RecipeSectionComponent from 'App/Twig/Components/Recipe/RecipeHome/Home/RecipeHomeSection_controller.js';
+import RecipeListItemComponent from 'App/Twig/Components/Recipe/RecipeHome/ListItem/RecipeListItem_controller.js';
+import RecipeCreateComponent from 'App/Twig/Components/Recipe/RecipeCreate/RecipeCreate_controller.js';
+
 
 // ALERT COMPONENT
 app.register('AlertValidationComponent', AlertValidationComponent);
@@ -40,3 +45,8 @@ app.register('ListComponent', ListComponent);
 app.register('HomeSectionComponent', HomeSectionComponent);
 app.register('HomeListComponent', HomeListComponent);
 app.register('HomeListItemComponent', HomeListItemComponent);
+
+// RECIPE HOME COMPONENT
+app.register('RecipeSectionComponent', RecipeSectionComponent);
+app.register('RecipeListItemComponent', RecipeListItemComponent);
+app.register('RecipeCreateComponent', RecipeCreateComponent);
