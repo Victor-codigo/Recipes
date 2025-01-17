@@ -62,10 +62,17 @@ Encore
         'App/Twig': path.resolve(__dirname, 'templates'),
         'App/Dependencies': path.resolve(__dirname, 'node_modules'),
         'App': path.resolve(__dirname, 'assets'),
+        'App/Modules': path.resolve(__dirname, 'assets/modules'),
+    })
+
+    .copyFiles({
+        from: './assets/images',
+        to: 'images/[path][name].[ext]',
+        // pattern: /\.(png|jpg|jpeg)$/
     })
 
     // enables Sass/SCSS support
-    //.enableSassLoader()
+    .enableSassLoader()
 
     // uncomment if you use TypeScript
     //.enableTypeScriptLoader()
