@@ -1,0 +1,23 @@
+toggle_button:
+  label: "Filtrar por:"
+
+inputSectionFilter:
+  label: Tipo
+
+inputTextFilter:
+  label: Texto
+
+inputTextBoxFilter:
+  label: Palabra clave
+
+inputSearch:
+  placeholder: Introduce una palabra por la que buscar
+
+button:
+  label: Buscar
+
+name_filters:
+  startsWith: Empieza por
+  endsWith: Acaba por
+  contains: Contiene
+  equals: Igual a
