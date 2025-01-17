@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Templates\Components\HomeSection\ItemRemove;
 
-use App\Twig\Components\TwigComponentDtoInterface;
+use App\Templates\Components\TwigComponentDtoInterface;
 
 class ItemRemoveComponentDto implements TwigComponentDtoInterface
 {

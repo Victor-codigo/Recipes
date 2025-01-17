@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Templates\Components\HomeSection\ItemInfo;
 
-use App\Twig\Components\TwigComponentDtoInterface;
+use App\Templates\Components\TwigComponentDtoInterface;
 
 class ItemInfoComponentDto implements TwigComponentDtoInterface
 {

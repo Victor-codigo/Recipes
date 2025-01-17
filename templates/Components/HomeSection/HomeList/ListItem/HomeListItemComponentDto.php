@@ -6,16 +6,16 @@ namespace App\Templates\Components\HomeSection\HomeList\ListItem;
 
 use App\Templates\Components\TwigComponentDtoInterface;
 
-class HomeListItemComponentDto implements TwigComponentDtoInterface
+readonly class HomeListItemComponentDto implements TwigComponentDtoInterface
 {
     public function __construct(
-        public readonly string $componentName,
-        public readonly string $id,
-        public readonly string $name,
-        public readonly string $modifyFormModalIdAttribute,
-        public readonly string $deleteFormModalIdAttribute,
+        public string $componentName,
+        public string $id,
+        public string $name,
+        public string $modifyFormModalIdAttribute,
+        public string $deleteFormModalIdAttribute,
 
-        public readonly string $translationDomainName,
+        public string $translationDomainName,
     ) {
     }
 }

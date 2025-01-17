@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Templates\Components\HomeSection\ItemRemove;
 
-use App\Twig\Components\AlertValidation\AlertValidationComponentDto;
-use App\Twig\Components\Controls\Title\TITLE_TYPE;
-use App\Twig\Components\Controls\Title\TitleComponentDto;
-use App\Twig\Components\TwigComponent;
-use App\Twig\Components\TwigComponentDtoInterface;
+use App\Templates\Components\AlertValidation\AlertValidationComponentDto;
+use App\Templates\Components\Title\TITLE_TYPE;
+use App\Templates\Components\Title\TitleComponentDto;
+use App\Templates\Components\TwigComponent;
+use App\Templates\Components\TwigComponentDtoInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent(
@@ -28,7 +28,7 @@ abstract class ItemRemoveComponent extends TwigComponent
     abstract public static function getComponentName(): string;
 
     public ItemRemoveComponentLangDto $lang;
-    public ItemRemoveComponentDto|TwigComponentDtoInterface $data;
+    public ItemRemoveComponentDto&TwigComponentDtoInterface $data;
     public TitleComponentDto $titleDto;
 
     public readonly string $componentName;
