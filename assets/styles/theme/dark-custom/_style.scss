@@ -1,0 +1,58 @@
+$navigationBarColor: #0c57ed;
+@import '/node_modules/bootstrap/scss/_functions';
+@import '/node_modules/bootstrap/scss/variables';
+
+$gray-850: #2e343a;
+
+$primary-dark: $blue-300;
+$danger-dark: $red-400;
+$success-dark: $green-400;
+
+$border-shadow-color: $gray-400;
+$border-shadow-color-dark: var(--bs-border-color);
+
+// Then add them to your custom theme-colors map, together with any additional colors you might need
+$theme-colors: (
+    primary: $primary,
+    secondary: $secondary,
+    success: $success,
+    info: $info,
+    warning: $warning,
+    danger: $danger,
+    light: $light,
+    dark: $dark,
+    // add any additional color below
+    primary-dark: $primary-dark,
+    danger-dark: $danger-dark,
+    success-dark: $success-dark
+);
+
+$body-bg-dark: $gray-800;
+$body-color-dark: white;
+
+$home-page-header-color-1: #0061f2;
+$home-page-header-color-2: rgba(105, 0, 199, 0.8);
+
+// scss-docs-start form-validation-colors-dark
+$form-valid-color-dark: $green-300 ;
+$form-valid-border-color-dark: $green-300 ;
+$form-invalid-color-dark: $red-300 ;
+$form-invalid-border-color-dark: $red-300 ;
+// scss-docs-end form-validation-colors-dark
+
+.btn-home-user-menu {
+    --bs-btn-font-weight: #{$btn-font-weight};
+    --bs-btn-color: var(--bs-white);
+    --bs-btn-bg: $home-page-header-color-2;
+    --bs-btn-border-color: $home-page-header-color-2;
+    --bs-btn-hover-color: var(--bs-white);
+    --bs-btn-hover-bg: $home-page-header-color-2;
+    --bs-btn-hover-border-color: #{shade-color($home-page-header-color-2, 10%)};
+    --bs-btn-focus-shadow-rgb: $home-page-header-color-2;
+    --bs-btn-active-color: var(--bs-btn-hover-color);
+    --bs-btn-active-bg: #{shade-color($home-page-header-color-2, 0%)};
+    --bs-btn-active-border-color: #{shade-color($home-page-header-color-1, 0%)};
+}
+
+
+@import '/node_modules/bootstrap/scss/variables-dark';
