@@ -1,8 +1,8 @@
-import Chain from "App/modules/ModalManager/Chain";
-import Modal from "App/modules/ModalManager/Modal";
-import ModalInterface from "App/modules/ModalManager/ModalInterface";
-import ModalMessage from "App/modules/ModalManager/ModalMessage";
-import ModalChainOpened from "App/modules/ModalManager/ModalChainOpened";
+import Chain from "App/Modules/ModalManager/Chain";
+import Modal from "App/Modules/ModalManager/Modal";
+import ModalInterface from "App/Modules/ModalManager/ModalInterface";
+import ModalMessage from "App/Modules/ModalManager/ModalMessage";
+import ModalChainOpened from "App/Modules/ModalManager/ModalChainOpened";
 
 export default class ModalManager {
     /**

@@ -1,6 +1,6 @@
 import * as bootstrap from 'bootstrap';
-import ModalInterface from 'App/modules/ModalManager/ModalInterface';
-import Modal from 'App/modules/ModalManager/Modal';
+import ModalInterface from 'App/Modules/ModalManager/ModalInterface';
+import Modal from 'App/Modules/ModalManager/Modal';
 
 export default class BootstrapModal extends ModalInterface {
     /**

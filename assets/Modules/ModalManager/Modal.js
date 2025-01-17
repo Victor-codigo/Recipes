@@ -1,4 +1,4 @@
-import Chain from 'App/modules/ModalManager/Chain';
+import Chain from 'App/Modules/ModalManager/Chain';
 
 export default class Modal {
     /**

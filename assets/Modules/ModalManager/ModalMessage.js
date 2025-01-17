@@ -1,4 +1,4 @@
-import Modal from "App/modules/ModalManager/Modal";
+import Modal from "App/Modules/ModalManager/Modal";
 
 export default class ModalMessage {
     /**
