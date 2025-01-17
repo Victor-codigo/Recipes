@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Twig\Components\Paginator;
 
-use App\Twig\Components\TwigComponentDtoInterface;
+use App\Templates\Components\TwigComponentDtoInterface;
 
 class PaginatorComponentDto implements TwigComponentDtoInterface
 {
