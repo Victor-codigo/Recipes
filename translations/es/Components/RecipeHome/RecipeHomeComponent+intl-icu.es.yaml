@@ -1,0 +1,9 @@
+title: Lista de recetas
+
+home_section_add:
+  label: Añadir receta
+  title: Añade una receta a la lista
+
+home_section_remove_multiple:
+  label: Elimina las recetas seleccionadas
+  title: Elimina las recetas seleccionadas de la lista
