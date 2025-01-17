@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Templates\Components\HomeSection\SearchBar;
 
-use App\Twig\Components\TwigComponentDtoInterface;
+use App\Templates\Components\TwigComponentDtoInterface;
 
 class SearchBarComponentDto implements TwigComponentDtoInterface
 {

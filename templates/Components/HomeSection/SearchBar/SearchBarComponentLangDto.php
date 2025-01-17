@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Templates\Components\HomeSection\SearchBar;
 
-use Common\Domain\DtoBuilder\DtoBuilder;
+use App\Common\DtoBuilder\DtoBuilder;
 
 class SearchBarComponentLangDto
 {
