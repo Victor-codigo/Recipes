@@ -1,0 +1,17 @@
+recipe_remove_button:
+  label: Remove
+  title: Remove the recipe
+  alt: Button to remove the recipe
+
+recipe_modify_button:
+  label: Modify
+  title: Modify the recipe
+  alt: Button to modify the recipe
+
+recipe_info_button:
+  title: Information of the recipe
+  alt: Button to open recipe information
+
+recipe_image:
+  title: Recipe image
+  alt: Recipe image
