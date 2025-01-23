@@ -6,8 +6,6 @@ namespace App\Templates\Components\Paginator;
 
 use App\Templates\Components\TwigComponent;
 use App\Templates\Components\TwigComponentDtoInterface;
-use App\Twig\Components\Paginator\PaginatorComponentDto;
-use App\Twig\Components\Paginator\PaginatorComponentLangDto;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent(
@@ -19,7 +17,6 @@ class PaginatorComponent extends TwigComponent
     private const PAGE_RANGE = 2;
     public const URL_PLACEHOLDER = '{pageNum}';
 
-    public PaginatorComponentLangDto $lang;
     public PaginatorComponentDto&TwigComponentDtoInterface $data;
 
     public readonly array $pageList;
@@ -35,18 +32,9 @@ class PaginatorComponent extends TwigComponent
     {
         $this->data = $data;
 
-        $this->loadTranslation();
         $this->pagePreviousUrl = $this->getPageUrl($this->data->pageCurrent - 1, $this->data->pageUrl);
         $this->pageNextUrl = $this->getPageUrl($this->data->pageCurrent + 1, $this->data->pageUrl);
         $this->pageList = $this->getPages($this->data->pageCurrent, $this->data->pagesTotal, $this->data->pageUrl);
-    }
-
-    private function loadTranslation(): void
-    {
-        $this->lang = new PaginatorComponentLangDto(
-            $this->translate('page.previous'),
-            $this->translate('page.next')
-        );
     }
 
     private function getPages(int $pageCurrent, int $pagesTotal, string $pageUrl): array

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Twig\Components\Paginator;
+namespace App\Templates\Components\Paginator;
 
 use App\Templates\Components\TwigComponentDtoInterface;
 
