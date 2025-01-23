@@ -7,26 +7,30 @@ export const app = startStimulusApp(require.context(
 ));
 
 // ALERT COMPONENT
-import AlertValidationComponent from 'App/Twig/Components/Alert/AlertComponent_controller.js';
+import AlertValidationComponent from 'App/Templates/Components/Alert/AlertComponent_controller.js';
 
 // MODAL COMPONENT
-import ModalComponent from 'App/Twig/Components/Modal/Modal_Component.js';
+import ModalComponent from 'App/Templates/Components/Modal/Modal_Component.js';
+
+// DROP ZONE COMPONENT
+import DropZoneComponent from 'App/Templates/Components/DropZone/DropZone_Component.js';
 
 // PAGINATION COMPONENT
-import PaginatorComponent from 'App/Twig/Components/Paginator/Paginator_Component.js';
+import PaginatorComponent from 'App/Templates/Components/Paginator/Paginator_Component.js';
 
 // LIST COMPONENT
-import ListComponent from 'App/Twig/Components/List/List_controller.js';
+import ListComponent from 'App/Templates/Components/List/List_controller.js';
 
 // HOME LIST COMPONENT
-import HomeSectionComponent from 'App/Twig/Components/HomeSection/Home/HomeSection_controller';
-import HomeListComponent from 'App/Twig/Components/HomeSection/HomeList/List/HomeList_controller';
-import HomeListItemComponent from 'App/Twig/Components/HomeSection/HomeList/ListItem/HomeListItem_controller';
+import HomeSectionComponent from 'App/Templates/Components/HomeSection/Home/HomeSection_controller';
+import HomeListComponent from 'App/Templates/Components/HomeSection/HomeList/List/HomeList_controller';
+import HomeListItemComponent from 'App/Templates/Components/HomeSection/HomeList/ListItem/HomeListItem_controller';
 
 // RECIPE HOME COMPONENT
-import RecipeSectionComponent from 'App/Twig/Components/Recipe/RecipeHome/Home/RecipeHomeSection_controller.js';
-import RecipeListItemComponent from 'App/Twig/Components/Recipe/RecipeHome/ListItem/RecipeListItem_controller.js';
-import RecipeCreateComponent from 'App/Twig/Components/Recipe/RecipeCreate/RecipeCreate_controller.js';
+import RecipeSectionComponent from 'App/Templates/Components/Recipe/RecipeHome/Home/RecipeHomeSection_controller.js';
+import RecipeListItemComponent from 'App/Templates/Components/Recipe/RecipeHome/ListItem/RecipeListItem_controller.js';
+import RecipeCreateComponent from 'App/Templates/Components/Recipe/RecipeCreate/RecipeCreate_controller.js';
+import RecipeItemAddComponent from 'App/Templates/Components/Recipe/RecipeItemAdd/RecipeItemAdd_controller.js';
 
 
 // ALERT COMPONENT
@@ -34,6 +38,9 @@ app.register('AlertValidationComponent', AlertValidationComponent);
 
 // MODAL COMPONENT
 app.register('ModalComponent', ModalComponent);
+
+// DROP ZONE COMPONENT
+app.register('DropZoneComponent', DropZoneComponent);
 
 // PAGINATION COMPONENT
 app.register('PaginatorComponent', PaginatorComponent);
@@ -50,3 +57,4 @@ app.register('HomeListItemComponent', HomeListItemComponent);
 app.register('RecipeSectionComponent', RecipeSectionComponent);
 app.register('RecipeListItemComponent', RecipeListItemComponent);
 app.register('RecipeCreateComponent', RecipeCreateComponent);
+app.register('RecipeItemAddComponent', RecipeItemAddComponent);

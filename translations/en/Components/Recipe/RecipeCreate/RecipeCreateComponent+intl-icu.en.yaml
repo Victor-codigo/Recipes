@@ -1,0 +1,89 @@
+form:
+  title: Create a recipe
+  validation:
+    ok: Recipe created
+    error:
+
+field:
+  name:
+    label: Name
+    placeholder: Add a recipe name
+    msg:
+      error: Name can contain letters, numbers, white spaces and "_"
+
+  description:
+    label: Description
+    placeholder: Add a description for the recipe
+
+  ingredients:
+    label: Ingredients
+    item:
+      label: Ingredient
+      placeholder: Add an ingredient
+      msg:
+        error: Ingredient cannot be empty
+    button:
+      add:
+        label: Add ingredient
+      remove:
+        title: Remove the ingredient
+    msg:
+      error: Recipe must contain at least one ingredient
+
+  steps:
+    label: Steps
+    item:
+      label: Step
+      placeholder: Add an step
+      msg:
+        error: Step cannot be empty
+    button:
+      add:
+        label: Add step
+      remove:
+        title: Remove the step
+    msg:
+      error: Recipe must contain at least one step
+
+  image:
+    label: Image
+    placeholder: Drag or add an image for the recipe
+    msg:
+      error: |
+        The maximum size of the image must be 2 MB.
+        File types jpg, jpeg, png.
+        Image dimensions:
+          Heigh: min 200 pixels, max 400 pixels.
+          Width min 200 pixels, max 400 pixels.
+
+  preparation_time:
+    label: Preparation time
+
+  category:
+    label: Category
+    type:
+      no_category: No category
+      breakfast: Breakfast
+      brunch: Brunch
+      lunch: Lunch
+      dinner: Dinner
+      dessert: Dessert
+      sandwich: Sandwich
+      appetiser: Appetiser
+      soup: Soup
+      salad: Salad
+      snack: Snack
+      burger: Burger
+      pizza: Pizza
+      cake: Cake
+      seafood: Seafood
+      rice: Rice
+      pasta: Pasta
+      ice_cream: Ice_cream
+      meat: Meat
+
+buttons:
+  close:
+    label: Close
+  recipe_create:
+    label: Create

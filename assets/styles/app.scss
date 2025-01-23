@@ -43,7 +43,10 @@
 @import '/templates/Components/List/ListComponent';
 
 // Shop list item
-@import '/templates/Components/Recipe/RecipeHome/ListItem/ShopListItemComponent';
+// @import '/templates/Components/Recipe/RecipeHome/ListItem/ShopListItemComponent';
+
+// Recipe itemAddComponent
+@import '/templates/Components/Recipe/RecipeItemAdd/RecipeItemAddComponent';
 
 // ShopModifyComponent
 // @import '/src/Twig/Components/Shop/ShopModify/ShopModifyComponent';
@@ -51,6 +54,12 @@
 
 // SearchBar Component
 @import '/templates/Components/HomeSection/SearchBar/SearchBarComponent';
+
+// TextAreaFallback
+@import '/assets/Modules/TextArea/TextAreaFallback';
+
+// RecipeCreateComponent
+@import '/templates/Components/Recipe/RecipeCreate/RecipeCreateComponent';
 
 
 // Error page

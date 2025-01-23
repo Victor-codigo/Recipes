@@ -1,0 +1,89 @@
+form:
+  title: Crea una receta
+  validation:
+    ok: Receta creada
+    error:
+
+field:
+  name:
+    label: Nombre
+    placeholder: Añade un Nombre para la receta
+    msg:
+      error: El nombre puede contener letras, números, espacios en blanco y "_"
+
+  description:
+    label: Descripción
+    placeholder: Añade una descripción para la receta
+
+  ingredients:
+    label: Ingredientes
+    item:
+      label: ingrediente
+      placeholder: Añade un ingrediente
+      msg:
+        error: El ingrediente no puede estar vacío
+    button:
+      add:
+        label: Añade un ingrediente
+      remove:
+        title: Elimina el ingrediente
+    msg:
+      error: La recita debe contener al menos un ingrediente
+
+  steps:
+    label: Pasos
+    item:
+      label: Paso
+      placeholder: Añade un paso
+      msg:
+        error: El paso no puede estar vacío
+    button:
+      add:
+        label: Añade un paso
+      remove:
+        title: Elimina el paso
+    msg:
+      error: La receta debe contener al menos un paso
+
+  image:
+    label: Imagen
+    placeholder: Arrastra o añade una imagen para la receta
+    msg:
+      error: |
+        El tamaño máximo de la imagen debe ser de 2 MB.
+        Los tipos de archivo permitidos son jpg, jpeg, png.
+        Las dimensiones de la imagen son:
+          Altura: mínimo 200 píxeles, máximo 400 píxeles.
+          Ancho mínimo 200 píxeles, máximo 400 píxeles.
+
+  preparation_time:
+    label: Tiempo de preparación
+
+  category:
+    label: Categoria
+    type:
+      no_category: Sin categoría
+      breakfast: Desayuno
+      brunch: Almuerzo
+      lunch: Comida
+      dinner: Cena
+      dessert: Postre
+      sandwich: Sandwich
+      appetiser: Aperitivo
+      soup: Sopa
+      salad: Ensalada
+      snack: Snack
+      burger: Hamburguesa
+      pizza: Pizza
+      cake: Tarta
+      seafood: Marisco
+      rice: Arroz
+      pasta: Pasta
+      ice_cream: Helado
+      meat: Carne
+
+buttons:
+  close:
+    label: Cerrar
+  recipe_create:
+    label: Crear
