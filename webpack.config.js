@@ -1,5 +1,6 @@
 const Encore = require('@symfony/webpack-encore');
 const path = require('path');
+const Dotenv = require('dotenv-webpack');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -59,7 +60,7 @@ Encore
     })
 
     .addAliases({
-        'App/Twig': path.resolve(__dirname, 'templates'),
+        'App/Templates/Components': path.resolve(__dirname, 'templates/Components'),
         'App/Dependencies': path.resolve(__dirname, 'node_modules'),
         'App': path.resolve(__dirname, 'assets'),
         'App/Modules': path.resolve(__dirname, 'assets/modules'),
@@ -70,6 +71,16 @@ Encore
         to: 'images/[path][name].[ext]',
         // pattern: /\.(png|jpg|jpeg)$/
     })
+
+    .addPlugin(new Dotenv({
+        path: './.env'
+    }))
+
+    .addPlugin(new Dotenv({
+        path: Encore.isProduction()
+            ? './.env.prod'
+            : './.env.dev'
+    }))
 
     // enables Sass/SCSS support
     .enableSassLoader()
