@@ -20,8 +20,8 @@ services:
             - "../src/Entity/"
             - "../src/Kernel.php"
 
-    App\Templates\:
-        resource: "../templates/"
+    App\Templates\Components\:
+        resource: "../templates/Components/"
 
     VictorCodigo\DoctrinePaginatorAdapter\:
         resource: "../vendor/victor-codigo/doctrine-paginator-adapter/src/"
