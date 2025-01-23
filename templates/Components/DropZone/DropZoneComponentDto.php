@@ -10,7 +10,6 @@ class DropZoneComponentDto implements TwigComponentDtoInterface
 {
     public function __construct(
         public readonly ?string $componentId = null,
-        public readonly ?string $formName = null,
         public readonly ?string $labelField = null,
         public readonly ?string $nameField = null,
         public readonly ?string $placeholderField = null,

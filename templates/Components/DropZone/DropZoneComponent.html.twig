@@ -14,7 +14,7 @@
 
                <input type="file"
                       id="dropzone_form_file"
-                      name="{{ data.formName }}[{{ data.nameField }}]"
+                      name="{{ data.nameField }}"
                       placeholder="{{ data.placeholderField }}"
                       data-controller=""
                       class="dropzone-input"
@@ -25,7 +25,7 @@
                     data-symfony--ux-dropzone--dropzone-target="placeholder"
                     style="display: block;">
 
-                    {{ include('Components/Controls/DropZone/img/icon.svg') }}
+                    {{ include('Components/DropZone/img/icon.svg') }}
                     {{ data.placeholderField }}
                </div>
 

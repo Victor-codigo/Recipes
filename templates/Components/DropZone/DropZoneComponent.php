@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Twig\Components\Controls\DropZone;
+namespace App\Templates\Components\DropZone;
 
-use App\Templates\Components\DropZone\DropZoneComponentDto;
 use App\Templates\Components\TwigComponent;
 use App\Templates\Components\TwigComponentDtoInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
