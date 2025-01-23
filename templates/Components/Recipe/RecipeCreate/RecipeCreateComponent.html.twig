@@ -72,24 +72,23 @@
 	</div>
 
 	<div class="mb-3">
-		<label for="category"
-			   class="form-label">
+		<label class="form-label">
 			{{ 'field.category.label'|trans }}
-		</label>
-		<select class="form-select"
-				name="category"
-				id="category"
-				required>
+
+			<select class="form-select"
+					name="{{ formFields.CATEGORY.value }}"
+					required>
 
 			{% for recipeType in RECIPE_TYPES.cases() %}
 
-				<option value="{{ recipeType.value }}">
-					{{ "field.category.type.#{ recipeType.value }"|lower|trans }}
-				</option>
+			<option value="{{ recipeType.value }}">
+				{{ "field.category.type.#{ recipeType.value }"|lower|trans }}
+			</option>
 
 			{% endfor %}
 
 		</select>
+	</label>
 	</div>
 
 	<div class="mb-3">
