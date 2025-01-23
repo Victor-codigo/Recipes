@@ -270,6 +270,9 @@
             "config/packages/uid.yaml"
         ]
     },
+    "symfony/ux-dropzone": {
+        "version": "v2.22.1"
+    },
     "symfony/ux-turbo": {
         "version": "2.22",
         "recipe": {
