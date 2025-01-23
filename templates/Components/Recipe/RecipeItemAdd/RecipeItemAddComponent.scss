@@ -1,0 +1,14 @@
+[data-controller="RecipeItemAddComponent"] {
+    .recipe-item-container {
+        max-height: 300px;
+        overflow: scroll;
+    }
+
+    .is-invalid {
+        color: $danger;
+    }
+
+    .invalid-feedback {
+        @extend .invalid-feedback;
+    }
+}
