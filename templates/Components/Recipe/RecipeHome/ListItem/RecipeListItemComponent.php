@@ -14,7 +14,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 )]
 final class RecipeListItemComponent extends HomeListItemComponent
 {
-    public readonly string $productDataJson;
+    public readonly string $recipeDataJson;
 
     public static function getComponentName(): string
     {
@@ -25,7 +25,7 @@ final class RecipeListItemComponent extends HomeListItemComponent
     {
         $this->data = $data;
         $this->loadTranslation();
-        // $this->productDataJson = $this->parseItemDataToJson($data);
+        // $this->recipeDataJson = $this->parseItemDataToJson($data);
     }
 
     protected function loadTranslation(): void
@@ -47,25 +47,25 @@ final class RecipeListItemComponent extends HomeListItemComponent
 
     // private function parseItemDataToJson(RecipeListItemComponentDto $recipeData): string
     // {
-    //     /** @var ProductRecipePriceDataResponse[] $productRecipesPricesDataByProductId */
-    //     $productRecipesPricesDataByProductId = array_combine(
+    //     /** @var RecipeRecipePriceDataResponse[] $recipeRecipesPricesDataByRecipeId */
+    //     $recipeRecipesPricesDataByRecipeId = array_combine(
     //         array_map(
-    //             fn (ProductRecipePriceDataResponse $productRecipePrice) => $productRecipePrice->productId,
-    //             $recipeData->productsRecipesPrice
+    //             fn (RecipeRecipePriceDataResponse $recipeRecipePrice) => $recipeRecipePrice->recipeId,
+    //             $recipeData->recipesRecipesPrice
     //         ),
-    //         $recipeData->productsRecipesPrice
+    //         $recipeData->recipesRecipesPrice
     //     );
 
-    //     $productRecipesData = array_map(
-    //         fn (ProductDataResponse $productData) => [
-    //             'id' => $productData->id,
-    //             'name' => $productData->name,
-    //             'description' => $productData->description,
-    //             'image' => $productData->image,
-    //             'price' => $productRecipesPricesDataByProductId[$productData->id]->price,
-    //             'unit' => $productRecipesPricesDataByProductId[$productData->id]->unitMeasure,
+    //     $recipeRecipesData = array_map(
+    //         fn (RecipeDataResponse $recipeData) => [
+    //             'id' => $recipeData->id,
+    //             'name' => $recipeData->name,
+    //             'description' => $recipeData->description,
+    //             'image' => $recipeData->image,
+    //             'price' => $recipeRecipesPricesDataByRecipeId[$recipeData->id]->price,
+    //             'unit' => $recipeRecipesPricesDataByRecipeId[$recipeData->id]->unitMeasure,
     //         ],
-    //         $recipeData->products
+    //         $recipeData->recipes
     //     );
 
     //     $recipeDataToParse = [
@@ -76,7 +76,7 @@ final class RecipeListItemComponent extends HomeListItemComponent
     //         'image' => $recipeData->image,
     //         'noImage' => $recipeData->noImage,
     //         'createdOn' => $recipeData->createdOn->format('Y-m-d'),
-    //         'itemsPrices' => $productRecipesData,
+    //         'itemsPrices' => $recipeRecipesData,
     //     ];
 
     //     return json_encode($recipeDataToParse, JSON_THROW_ON_ERROR);
