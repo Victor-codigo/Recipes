@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Templates\Components\HomeSection\HomeList\List;
 
 use App\Templates\Components\Modal\ModalComponentDto;
+use App\Templates\Components\Paginator\PaginatorComponentDto;
 use App\Templates\Components\TwigComponentDtoInterface;
-use App\Twig\Components\Paginator\PaginatorComponentDto;
 
 class HomeListComponentDto implements TwigComponentDtoInterface
 {

@@ -9,7 +9,7 @@ export default class extends Controller {
     interactive;
 
     connect() {
-        this.checkbox = this.element.querySelector('[data-js-checkbox]');
+        this.checkbox = this.element.querySelector('[data-js-checkbox-list-item]');
 
         let homeSelection = this.element.closest('[data-controller="HomeSectionComponent"]');
         this.interactive = homeSelection === null || typeof homeSelection.dataset.interactive === 'undefined' ? false : true;
