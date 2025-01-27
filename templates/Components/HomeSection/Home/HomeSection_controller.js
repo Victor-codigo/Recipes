@@ -10,7 +10,7 @@ export default class extends Controller {
 
     connect() {
         this.itemsIdSelected = [];
-        this.listItemsCheckboxes = this.element.querySelectorAll('[data-js-checkbox]');
+        this.listItemsCheckboxes = this.element.querySelectorAll('[data-js-checkbox-list-item]');
         this.removeMultiButtonTag = this.element.querySelector('[data-js-form-remove-many-items-button]');
         this.element.addEventListener('change', this.#itemsIdSelectedToggle.bind(this));
 
@@ -40,7 +40,11 @@ export default class extends Controller {
     }
 
     #itemsIdSelectedToggle(event) {
-        if (event.target.tagName !== 'input' && event.target.type !== 'checkbox') return;
+        if (event.target.tagName !== 'input'
+            || event.target.type !== 'checkbox'
+            || !event.target.hasAttribute('data-js-checkbox-list-item')) {
+            return;
+        }
 
         const listItem = event.target.closest('[data-js-list-item]');
         const listItemData = JSON.parse(listItem.dataset.itemData);
