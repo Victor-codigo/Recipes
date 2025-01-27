@@ -59,6 +59,10 @@ field:
   preparation_time:
     label: Preparation time
 
+  public:
+    label: "Public"
+    description: The recipe is visible for everybody
+
   category:
     label: Category
     type:
