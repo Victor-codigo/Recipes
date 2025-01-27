@@ -1,3 +1,5 @@
+{% trans_default_domain 'RecipeHomeListItemComponent' %}
+
 <li class="list-recipe-item  list-recipe-item-action  d-flex  flex-row  p-0  mt-1  mb-1  border  border-1  border-light-subtle  recipe-list-item"
     data-controller="RecipeListItemComponent"
     data-item-data="{{ recipeDataJson }}"
@@ -7,23 +9,23 @@
 
         <input class="form-check-input m-2  align-self-center"
                type="checkbox"
-               data-js-checkbox>
+               data-js-checkbox-list-item>
 
-        {% if data.noImage %}
+        {% if data.image is null %}
 
         <div class="flex-grow-0  flex-shrink-0  border-0  recipe-list-item__image  p-0"
-             title="{{ lang.imageItemTitle }}"
+             title="{{ 'recipe_image.title'|trans }}"
              data-js-item-image>
 
-            {% include "common/recipe/recipe-no-image.svg" %}
+            {% include "recipe/recipe-no-image.svg" %}
         </div>
 
         {% else %}
 
         <img class="flex-grow-0  flex-shrink-0  flex-shrink-0  flex-shrink-1  border-0  recipe-list-item__image  p-0"
              src="{{ data.image }}"
-             alt="{{ lang.imageItemAlt }}"
-             title="{{ lang.imageItemTitle }}"
+             alt="{{ 'recipe_image.alt'|trans}}"
+             title="{{ 'recipe_image.title'|trans }}"
              data-js-item-image>
 
         {% endif %}
@@ -36,8 +38,8 @@
     <button type="button"
             class="btn  px-3  py-2  rounded-0  border  border-0  border-start  border-end-0  border-light-subtle  btn-outline-primary  button-primary-color-dark  recipe-list-item__button"
             value="{{ data.id }}"
-            alt="{{ lang.infoItemButtonAlt }}"
-            title="{{ lang.infoItemButtonTitle }}"
+            alt="{{ 'recipe_info_button.alt'|trans }}"
+            title="{{ 'recipe_info_button.title'|trans }}"
             data-bs-toggle="modal"
             data-bs-target="#{{ data.infoFormModalIdAttribute }}"
             data-action="RecipeListItemComponent#sendMessageHomeListItemInfoToParent">
@@ -59,8 +61,8 @@
                 <button type="button"
                         class="d-flex  flex-row  btn  px-3  py-3  rounded-0  border  border-0  border-light-subtle  btn-outline-primary  recipe-list-item__button  recipe-list-item__button--menu"
                         value="{{ data.id }}"
-                        alt="{{ lang.modifyItemButtonAlt }}"
-                        title="{{ lang.modifyItemButtonTitle }}"
+                        alt="{{ 'recipe_modify_button.alt'|trans }}"
+                        title="{{ 'recipe_modify_button.title'|trans }}"
                         data-bs-toggle="modal"
                         data-bs-target="#{{ data.modifyFormModalIdAttribute }}"
                         data-action="RecipeListItemComponent#sendMessageHomeListItemModifyToParent">
@@ -72,7 +74,7 @@
                     </div>
                     <div class="ms-2">
 
-                        {{ lang.modifyItemButtonLabel }}
+                        {{ 'recipe_modify_button.label'|trans }}
 
                     </div>
                 </button>
@@ -83,8 +85,8 @@
                         data-js-remove-button
                         class="d-flex  flex-row  btn  px-3  py-3  rounded-0  border  border-0  border-light-subtle  btn-outline-danger  recipe-list-item__button  recipe-list-item__button--menu"
                         value="{{ data.id }}"
-                        alt="{{ lang.removeItemButtonAlt }}"
-                        title="{{ lang.removeItemButtonTitle }}"
+                        alt="{{ 'recipe_remove_button.alt'|trans}}"
+                        title="{{ 'recipe_remove_button.title'|trans }}"
                         data-bs-toggle="modal"
                         data-bs-target="#{{ data.deleteFormModalIdAttribute }}"
                         data-action="RecipeListItemComponent#sendMessageHomeListItemRemoveEvent">
@@ -96,7 +98,7 @@
                     </div>
                     <div class="ms-2">
 
-                        {{ lang.removeItemButtonLabel }}
+                        {{ 'recipe_remove_button.label'|trans }}
 
                     </div>
                 </button>

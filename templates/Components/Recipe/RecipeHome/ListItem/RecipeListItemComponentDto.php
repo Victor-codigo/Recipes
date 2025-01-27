@@ -20,6 +20,7 @@ readonly class RecipeListItemComponentDto extends HomeListItemComponentDto
         public string $modifyFormModalIdAttribute,
         public string $deleteFormModalIdAttribute,
         public string $infoFormModalIdAttribute,
+        public string $translationDomainName,
     ) {
     }
 }

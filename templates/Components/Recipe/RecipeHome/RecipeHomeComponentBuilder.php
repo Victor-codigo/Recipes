@@ -15,6 +15,8 @@ use App\Templates\Components\HomeSection\Home\RemoveMultiFormDto;
 use App\Templates\Components\HomeSection\SearchBar\SECTION_FILTERS;
 use App\Templates\Components\HomeSection\SearchBar\SearchBarComponentDto;
 use App\Templates\Components\Modal\ModalComponentDto;
+use App\Templates\Components\Recipe\RecipeCreate\RecipeCreateComponent;
+use App\Templates\Components\Recipe\RecipeCreate\RecipeCreateComponentDto;
 use App\Templates\Components\Recipe\RecipeHome\Home\RecipeHomeSectionComponentDto;
 use App\Templates\Components\Recipe\RecipeHome\ListItem\RecipeListItemComponent;
 use App\Templates\Components\Recipe\RecipeHome\ListItem\RecipeListItemComponentDto;
@@ -187,7 +189,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
         );
         $this->homeSectionComponentDto->listItems(
             RecipeListItemComponent::getComponentName(),
-            $this->createRecipeListItemComponentDto($this->recipes, $this->recipesUsers),
+            $this->createRecipeListItemComponentDto($this->recipes, $this->recipesUsers)->toArray(),
             Config::RECIPE_IMAGE_NO_IMAGE_PUBLIC_PATH
         );
         $this->homeSectionComponentDto->display(
@@ -201,25 +203,31 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
 
     private function createRecipeCreateComponentDto(string $recipeCreateFormCsrfToken, string $recipeCreateFormActionUrl): ModalComponentDto
     {
-        // $homeSectionCreateComponentDto = new RecipeCreateComponentDto(
-        //     [],
-        //     '',
-        //     '',
-        //     '',
-        //     $recipeCreateFormCsrfToken,
-        //     false,
-        //     mb_strtolower($recipeCreateFormActionUrl)
-        // );
+        $homeSectionCreateComponentDto = new RecipeCreateComponentDto()
+            ->validation(false, [])
+            ->form(
+                $recipeCreateFormCsrfToken,
+                mb_strtolower($recipeCreateFormActionUrl)
+            )
+            ->formFields(
+                '',
+                null,
+                [],
+                [],
+                null,
+                null,
+                null,
+                false
+            );
 
-        // return new ModalComponentDto(
-        //     self::RECIPE_CREATE_MODAL_ID,
-        //     '',
-        //     false,
-        //     RecipeCreateComponent::getComponentName(),
-        //     $homeSectionCreateComponentDto,
-        //     []
-        // );
-        return $this->createFakeModalComponentDto();
+        return new ModalComponentDto(
+            self::RECIPE_CREATE_MODAL_ID,
+            '',
+            false,
+            RecipeCreateComponent::getComponentName(),
+            $homeSectionCreateComponentDto,
+            []
+        );
     }
 
     private function createRecipeRemoveMultiComponentDto(string $recipeRemoveMultiFormCsrfToken, string $recipeRemoveFormActionUrl): ModalComponentDto
@@ -304,7 +312,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
 
     private function createRecipeInfoModalDto(): ModalComponentDto
     {
-        // $productInfoComponentDto = new RecipeInfoComponentDto(
+        // $recipeInfoComponentDto = new RecipeInfoComponentDto(
         //     RecipeInfoComponent::getComponentName()
         // );
 
@@ -313,7 +321,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
         //     '',
         //     false,
         //     RecipeInfoComponent::getComponentName(),
-        //     $productInfoComponentDto,
+        //     $recipeInfoComponentDto,
         //     []
         // );
 
@@ -336,37 +344,37 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
      * @param Collection<Recipe> $recipes
      * @param Collection<User>   $users
      *
+     * @return Collection<Recipe>
+     *
      * @throws \LogicException
      */
-    private function createRecipeListItemComponentDto(Collection $recipes, Collection $users): array
+    private function createRecipeListItemComponentDto(Collection $recipes, Collection $users): Collection
     {
-        return array_map(
-            static function (Recipe $recipeEntity) use ($users): RecipeListItemComponentDto {
-                /** @var User|null $recipeUser */
-                $recipeUser = $users->findFirst(
-                    fn (User $user): bool => $user->getId() === $recipeEntity->getUserId()
-                );
+        return $recipes->map(static function (Recipe $recipeEntity) use ($users): RecipeListItemComponentDto {
+            /** @var User|null $recipeUser */
+            $recipeUser = $users->findFirst(
+                fn (int $index, User $user): bool => $user->getId() === $recipeEntity->getUserId()
+            );
 
-                if (null === $recipeUser) {
-                    throw new \LogicException('Recipe must have a user owner');
-                }
+            if (null === $recipeUser) {
+                throw new \LogicException('Recipe must have a user owner');
+            }
 
-                return new RecipeListItemComponentDto(
-                    RecipeListItemComponent::getComponentName(),
-                    $recipeEntity->getId(),
-                    $recipeUser->getName(),
-                    $recipeEntity->getName(),
-                    $recipeEntity->getCategory(),
-                    $recipeEntity->getImage() ?? Config::RECIPE_IMAGE_NO_IMAGE_PUBLIC_PATH,
-                    $recipeEntity->getRating(),
-                    $recipeEntity->toJson(),
-                    self::RECIPE_MODIFY_MODAL_ID,
-                    self::RECIPE_DELETE_MODAL_ID,
-                    self::RECIPE_INFO_MODAL_ID,
-                );
-            },
-            $recipes->toArray()
-        );
+            return new RecipeListItemComponentDto(
+                RecipeListItemComponent::getComponentName(),
+                $recipeEntity->getId(),
+                $recipeUser->getName(),
+                $recipeEntity->getName(),
+                $recipeEntity->getCategory(),
+                $recipeEntity->getImage(),
+                $recipeEntity->getRating(),
+                $recipeEntity->toJson(),
+                self::RECIPE_MODIFY_MODAL_ID,
+                self::RECIPE_DELETE_MODAL_ID,
+                self::RECIPE_INFO_MODAL_ID,
+                RecipeListItemComponent::getComponentName()
+            );
+        });
     }
 
     private function createRecipeHomeSectionComponentDto(ModalComponentDto $recipeInfoModalDto): RecipeHomeSectionComponentDto
