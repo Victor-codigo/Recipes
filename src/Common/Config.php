@@ -9,4 +9,6 @@ class Config
     public const string RECIPE_IMAGE_NO_IMAGE_PUBLIC_PATH = 'images/recipes/recipe-no-image.svg';
 
     public const int PAGINATION_PAGE_MAX_ITEMS = 100;
+
+    public const string FORM_TOKEN_FIELD_NAME = 'token';
 }
