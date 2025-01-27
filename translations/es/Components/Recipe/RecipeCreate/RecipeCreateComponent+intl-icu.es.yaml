@@ -59,6 +59,10 @@ field:
   preparation_time:
     label: Tiempo de preparación
 
+  public:
+    label: Pública
+    description: La receta es visible por todo el mundo
+
   category:
     label: Categoria
     type:
