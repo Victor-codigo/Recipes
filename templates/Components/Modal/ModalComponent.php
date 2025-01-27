@@ -10,7 +10,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent(
     name: 'ModalComponent',
-    template: 'Components/Modal/ModalComponent.php'
+    template: 'Components/Modal/ModalComponent.html.twig'
 )]
 class ModalComponent extends TwigComponent
 {

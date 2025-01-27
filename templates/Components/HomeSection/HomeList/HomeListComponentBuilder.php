@@ -7,7 +7,7 @@ namespace App\Templates\Components\HomeSection\HomeList;
 use App\Common\DtoBuilder\DtoBuilder;
 use App\Templates\Components\HomeSection\HomeList\List\HomeListComponentDto;
 use App\Templates\Components\Modal\ModalComponentDto;
-use App\Twig\Components\Paginator\PaginatorComponentDto;
+use App\Templates\Components\Paginator\PaginatorComponentDto;
 
 class HomeListComponentBuilder
 {
