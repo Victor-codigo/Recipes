@@ -74,7 +74,7 @@ class RecipeCreateComponent extends TwigComponent
             )
             ->items(
                 TYPE_INPUT::INPUT,
-                RECIPE_CREATE_FORM_FIELDS::INGREDIENTS->value,
+                RECIPE_CREATE_FORM_FIELDS::getNameWithForm(RECIPE_CREATE_FORM_FIELDS::INGREDIENTS, true),
                 $this->translate('field.ingredients.item.label'),
                 $this->translate('field.ingredients.item.placeholder'),
                 $this->translate('field.ingredients.item.msg.error')
@@ -95,7 +95,7 @@ class RecipeCreateComponent extends TwigComponent
             )
             ->items(
                 TYPE_INPUT::TEXTAREA,
-                RECIPE_CREATE_FORM_FIELDS::STEPS->value,
+                RECIPE_CREATE_FORM_FIELDS::getNameWithForm(RECIPE_CREATE_FORM_FIELDS::STEPS, true),
                 $this->translate('field.steps.item.label'),
                 $this->translate('field.steps.item.placeholder'),
                 $this->translate('field.steps.item.msg.error')

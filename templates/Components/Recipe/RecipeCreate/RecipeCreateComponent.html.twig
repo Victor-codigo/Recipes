@@ -15,7 +15,7 @@
 	  data-modal-component-content>
 
 	<input type="hidden"
-		   name="{{ formFields.CSRF_TOKEN.value }}"
+		   name="{{ formFields.getNameWithForm(formFields.CSRF_TOKEN) }}"
 		   value="{{ data.csrfToken }}" />
 
 	{{ component('TitleComponent', { data: titleDto } ) }}
@@ -38,7 +38,7 @@
 			   id="name"
 			   maxlength="255"
 			   pattern="[A-Za-zÀ-ÿ0-9_\s]+"
-			   name="{{ formFields.NAME.value }}"
+			   name="{{ formFields.getNameWithForm(formFields.NAME) }}"
 			   placeholder="{{ 'field.name.placeholder'|trans }}"
 			   value="{{ data.name }}"
 			   required/>
@@ -53,7 +53,7 @@
 			{{ 'field.description.label'|trans }}
 		</label>
 		<textarea class="form-control  textarea-fallback"
-				  name="{{ formFields.DESCRIPTION.value }}"
+				  name="{{ formFields.getNameWithForm(formFields.DESCRIPTION) }}"
 				  id="description"
 				  maxlength="500"
 				  placeholder="{{ 'field.description.placeholder'|trans }}">{{ data.description }}</textarea>
@@ -67,28 +67,46 @@
 		<input type="time"
 			   class="form-control"
 			   id="preparation_time"
-			   name="{{ formFields.PREPARATION_TIME.value }}"
+			   name="{{ formFields.getNameWithForm(formFields.PREPARATION_TIME) }}"
 			   value="{{ data.preparationTime }}"/>
 	</div>
 
 	<div class="mb-3">
-		<label class="form-label">
+		<label class="form-label"
+			   for="category">
 			{{ 'field.category.label'|trans }}
+		</label>
 
-			<select class="form-select"
-					name="{{ formFields.CATEGORY.value }}"
-					required>
+		<select class="form-select"
+				name="{{ formFields.getNameWithForm(formFields.CATEGORY) }}"
+				id="category"
+				required>
 
 			{% for recipeType in RECIPE_TYPES.cases() %}
 
-			<option value="{{ recipeType.value }}">
-				{{ "field.category.type.#{ recipeType.value }"|lower|trans }}
-			</option>
+				<option value="{{ recipeType.value }}">
+					{{ "field.category.type.#{ recipeType.value }"|lower|trans }}
+				</option>
 
 			{% endfor %}
 
 		</select>
-	</label>
+	</div>
+
+	<div class="form-chack  mb-3">
+		<input type="checkbox"
+			   class="form-check-input"
+			   id="recipe_public"
+			   name="{{ formFields.getNameWithForm(formFields.PUBLIC) }}"
+			   value="{{ data.public }}"
+			   aria-label=""/>
+
+		<label for="recipe_public"
+			   class="form-label">
+			{{ 'field.public.label'|trans }}
+			<br>
+			<span class="fs-5  text-secondary">{{ 'field.public.description'|trans }}</span>
+		</label>
 	</div>
 
 	<div class="mb-3">
@@ -120,7 +138,7 @@
 
 		<input type="submit"
 			   class="btn  btn-primary  flex-grow-1"
-			   name="{{ formFields.SUBMIT.value }}"
+			   name="{{ formFields.getNameWithForm(formFields.SUBMIT) }}"
 			   value="{{ 'buttons.recipe_create.label'|trans }}" />
 
 		{% endblock buttons %}

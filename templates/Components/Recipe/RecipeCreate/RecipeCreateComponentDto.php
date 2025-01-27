@@ -21,6 +21,7 @@ readonly class RecipeCreateComponentDto implements TwigComponentDtoInterface
     public ?string $image;
     public ?\DateTimeImmutable $preparationTime;
     public ?string $category;
+    public bool $public;
 
     public function form(?string $csrfToken, string $recipeCreateFormActionUrl): self
     {
@@ -46,6 +47,7 @@ readonly class RecipeCreateComponentDto implements TwigComponentDtoInterface
         ?string $image,
         ?\DateTimeImmutable $preparationTime,
         ?string $category,
+        bool $public,
     ): self {
         $this->name = $name;
         $this->description = $description;
@@ -54,6 +56,7 @@ readonly class RecipeCreateComponentDto implements TwigComponentDtoInterface
         $this->image = $image;
         $this->preparationTime = $preparationTime;
         $this->category = $category;
+        $this->public = $public;
 
         return $this;
     }
