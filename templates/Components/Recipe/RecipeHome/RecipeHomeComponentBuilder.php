@@ -204,7 +204,6 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
     private function createRecipeCreateComponentDto(string $recipeCreateFormCsrfToken, string $recipeCreateFormActionUrl): ModalComponentDto
     {
         $homeSectionCreateComponentDto = new RecipeCreateComponentDto()
-            ->validation(false, [])
             ->form(
                 $recipeCreateFormCsrfToken,
                 mb_strtolower($recipeCreateFormActionUrl)
