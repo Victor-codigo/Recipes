@@ -45,4 +45,8 @@
             <directory>tests/Unit</directory>
         </testsuite>
     </testsuites>
+
+    <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    </extensions>
 </phpunit>
