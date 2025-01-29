@@ -2,18 +2,24 @@ form:
   title: Crea una receta
   validation:
     ok: Receta creada
-    error:
 
 field:
   name:
     label: Nombre
     placeholder: Añade un Nombre para la receta
     msg:
-      error: El nombre puede contener letras, números, espacios en blanco y "_"
+      error:
+        not_blank: El nombre es obligatorio para la receta
+        min: El número mínimo de caracteres es { nameLettersMin }
+        max: El número máximo de caracteres es { nameCharactersMax }
+        charset: el nombre debe estar compuesto de letras, números, espacios en blanco y "_"
 
   description:
     label: Descripción
     placeholder: Añade una descripción para la receta
+    msg:
+      error:
+        max: El número máximo de caracteres es { descriptionCharactersMax }
 
   ingredients:
     label: Ingredientes
@@ -28,7 +34,10 @@ field:
       remove:
         title: Elimina el ingrediente
     msg:
-      error: La recita debe contener al menos un ingrediente
+      error:
+        not_blank: La receta debe contener al menos un ingrediente
+        ingredinetsMin: La receta debe contener al menos un ingrediente
+        max: El número máximo de caracteres es { ingredientsCharactersMax }
 
   steps:
     label: Pasos
@@ -43,21 +52,27 @@ field:
       remove:
         title: Elimina el paso
     msg:
-      error: La receta debe contener al menos un paso
+      error:
+        not_blank: La receta debe contener al menos un paso
+        stepsMin: La receta debe contener al menos un paso
+        max: El número máximo de caracteres es { stepsCharactersMax }
 
   image:
     label: Imagen
     placeholder: Arrastra o añade una imagen para la receta
     msg:
-      error: |
-        El tamaño máximo de la imagen debe ser de 2 MB.
-        Los tipos de archivo permitidos son jpg, jpeg, png.
-        Las dimensiones de la imagen son:
-          Altura: mínimo 200 píxeles, máximo 400 píxeles.
-          Ancho mínimo 200 píxeles, máximo 400 píxeles.
+      error:
+        maxSizeMessage: El tamaño máximo de la imagen es de { imageSizeMax } pixels
+        minWidthMessage: El ancho mínimo de la imagen es de { imageWidthMin } pixels
+        maxWidthMessage: El ancho máximo de la imagen es de { imageWidthMax } pixels
+        minHeightMessage: El alto mínimo de la imagen es de { imageHeightMin } pixels
+        maxHeightMessage: El alto máximo de la imagen es de { imageHeightMax } pixels
+        mimeTypesMessage: "Los tipos de archivo permitidos son: { imageMineTypesAllowed }"
 
   preparation_time:
     label: Tiempo de preparación
+    msg:
+      error: El tiempo de preparacion no es correcto
 
   public:
     label: Pública
@@ -85,6 +100,8 @@ field:
       pasta: Pasta
       ice_cream: Helado
       meat: Carne
+    msg:
+      error: La categoria seleccionada es incorrecta
 
 buttons:
   close:

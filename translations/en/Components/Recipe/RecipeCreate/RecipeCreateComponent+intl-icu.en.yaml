@@ -1,19 +1,26 @@
 form:
   title: Create a recipe
   validation:
-    ok: Recipe created
-    error:
+    msg:
+      ok: Recipe created
 
 field:
   name:
     label: Name
     placeholder: Add a recipe name
     msg:
-      error: Name can contain letters, numbers, white spaces and "_"
+      error:
+        not_blank: Name is required for a recipe
+        min: The minimum number of characters is { nameLettersMin }
+        max: The maximum number of characters is { nameCharactersMax }
+        charset: Name can contain letters, numbers, white spaces and "_"
 
   description:
     label: Description
     placeholder: Add a description for the recipe
+    msg:
+      error:
+        max: The maximum number characters is { descriptionCharactersMax }
 
   ingredients:
     label: Ingredients
@@ -28,7 +35,10 @@ field:
       remove:
         title: Remove the ingredient
     msg:
-      error: Recipe must contain at least one ingredient
+      error:
+        not_blank: Recipe must contain at least one ingredient
+        ingredientsMin: Recipe must contain at least one ingredient
+        max: The maximum number of characters is { ingredientsCharactersMax }
 
   steps:
     label: Steps
@@ -43,21 +53,27 @@ field:
       remove:
         title: Remove the step
     msg:
-      error: Recipe must contain at least one step
+      error:
+        not_blank: Recipe must contain at least one step
+        stepsMin: Recipe must contain at least one step
+        max: The maximum number of characters is { stepsCharactersMax }
 
   image:
     label: Image
     placeholder: Drag or add an image for the recipe
     msg:
-      error: |
-        The maximum size of the image must be 2 MB.
-        File types jpg, jpeg, png.
-        Image dimensions:
-          Heigh: min 200 pixels, max 400 pixels.
-          Width min 200 pixels, max 400 pixels.
+      error:
+        maxSizeMessage: The maximum size of the image must be { imageSizeMax }.
+        minWidthMessage: The minimum width for the image is { imageWidthMin } pixels
+        maxWidthMessage: The maximum width for the image is { imageWidthMax } pixels
+        minHeightMessage: The minimum height for the image is { imageHeightMin } pixels
+        maxHeightMessage: The maximum height for the image is { imageHeightMax } pixels
+        mimeTypesMessage: "File types allowed are: { imageMineTypesAllowed }"
 
   preparation_time:
     label: Preparation time
+    msg:
+      error: Preparation time is wrong
 
   public:
     label: "Public"
@@ -85,6 +101,8 @@ field:
       pasta: Pasta
       ice_cream: Ice_cream
       meat: Meat
+    msg:
+      error: The selected category is wrong
 
 buttons:
   close:
