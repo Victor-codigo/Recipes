@@ -104,7 +104,9 @@
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^8.2",
+        "doctrine/data-fixtures": "^1.8",
         "friendsofphp/php-cs-fixer": "^3.65",
+        "hautelook/alice-bundle": "^2.14",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-doctrine": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
