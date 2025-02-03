@@ -74,11 +74,15 @@ abstract class RepositoryBase extends ServiceEntityRepository
     }
 
     /**
-     * @param Collection<array-key, TEntityClass> $entities
+     * @param Collection<array-key, TEntityClass>|TEntityClass $entities
      */
-    protected function saveEntities(Collection $entities): void
+    protected function saveEntities(object $entities): void
     {
-        $entities->map(fn (mixed $entity) => $this->entityManager->persist($entity));
+        if ($entities instanceof Collection) {
+            $entities->map(fn (mixed $entity) => $this->entityManager->persist($entity));
+        } else {
+            $this->entityManager->persist($entities);
+        }
 
         $this->entityManager->flush();
     }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Repository;
 
 use App\Repository\Exception\DBNotFoundException;
-use App\Tests\Traits\DoctrineTrait;
+use App\Tests\Traits\TestingDoctrineTrait;
 use App\Tests\Unit\Repository\Fixtures\EntityClassForTesting;
 use App\Tests\Unit\Repository\Fixtures\RepositoryForTesting;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,7 +20,7 @@ use VictorCodigo\DoctrinePaginatorAdapter\PaginatorInterface;
 
 class RepositoryBaseTest extends KernelTestCase
 {
-    use DoctrineTrait;
+    use TestingDoctrineTrait;
 
     private RepositoryForTesting $object;
     private ManagerRegistry&MockObject $managerRegistry;
@@ -205,6 +205,23 @@ class RepositoryBaseTest extends KernelTestCase
             ->method('flush');
 
         $this->object->saveEntitiesProxy($entities);
+    }
+
+    #[Test]
+    public function itShouldSaveAEntities(): void
+    {
+        $entity = new EntityClassForTesting();
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('persist')
+            ->with($entity);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->object->saveEntitiesProxy($entity);
     }
 
     #[Test]
