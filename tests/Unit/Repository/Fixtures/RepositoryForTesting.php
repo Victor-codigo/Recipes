@@ -13,9 +13,9 @@ use Doctrine\Common\Collections\Collection;
 class RepositoryForTesting extends RepositoryBase
 {
     /**
-     * @param Collection<array-key, EntityClassForTesting> $entities
+     * @param Collection<array-key, EntityClassForTesting>|EntityClassForTesting $entities
      */
-    public function saveEntitiesProxy(Collection $entities): void
+    public function saveEntitiesProxy(object $entities): void
     {
         parent::saveEntities($entities);
     }
