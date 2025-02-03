@@ -10,7 +10,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\MockObject\MockObject;
 
-trait DoctrineTrait
+trait TestingDoctrineTrait
 {
     private function getDoctrineEntityManager(?string $name = null): EntityManagerInterface
     {
