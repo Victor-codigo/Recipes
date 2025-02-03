@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Common\RECIPE_TYPE;
 use App\Repository\RecipeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -247,14 +248,21 @@ class Recipe
         return $this;
     }
 
-    public function getCategory(): ?string
+    public function getCategory(): RECIPE_TYPE
     {
-        return $this->category;
+        if (null === $this->category) {
+            return RECIPE_TYPE::NO_CATEGORY;
+        }
+
+        return RECIPE_TYPE::from($this->category);
     }
 
-    public function setCategory(?string $category): static
+    public function setCategory(RECIPE_TYPE $category): static
     {
-        $this->category = $category;
+        $this->category = null;
+        if (RECIPE_TYPE::NO_CATEGORY !== $category) {
+            $this->category = $category->value;
+        }
 
         return $this;
     }
@@ -321,7 +329,7 @@ class Recipe
             'userId' => $this->getUserId(),
             'groupId' => $this->getGroupId(),
             'name' => $this->getName(),
-            'category' => $this->getCategory(),
+            'category' => $this->getCategory()->value,
             'description' => $this->getDescription(),
             'preparationTime' => $this->getPreparationTime(),
             'ingredients' => $this->getIngredients(),
