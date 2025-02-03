@@ -1,5 +1,5 @@
 when@dev: &dev
     hautelook_alice:
-        fixtures_path: tests/Fixtures
+        fixtures_path: tests/Fixtures/Database
 
 when@test: *dev
