@@ -2,22 +2,30 @@
 
 namespace App\Repository;
 
+use App\Entity\Recipe;
 use App\Entity\User;
+use App\Repository\Exception\DBNotFoundException;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Query;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use VictorCodigo\DoctrinePaginatorAdapter\PaginatorInterface;
 
 /**
- * @extends RepositoryBase<User>
- *
  * @implements PasswordUpgraderInterface<User>
+ *
+ * @template-extends RepositoryBase<User>
  */
 class UserRepository extends RepositoryBase implements PasswordUpgraderInterface
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @param PaginatorInterface<array-key, Recipe> $paginator
+     */
+    public function __construct(ManagerRegistry $managerRegistry, PaginatorInterface $paginator)
     {
-        parent::__construct($registry, User::class);
+        parent::__construct($managerRegistry, $paginator, User::class);
     }
 
     /**
@@ -32,32 +40,34 @@ class UserRepository extends RepositoryBase implements PasswordUpgraderInterface
         }
 
         $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 
-    //    /**
-    //     * @return User[] Returns an array of User objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @param Collection<int, string> $usersId
+     *
+     * @return PaginatorInterface<int, User>
+     *
+     * @throws DBNotFoundException
+     */
+    public function findUsersByIdOrFail(Collection $usersId, int $page, int $pageItems): PaginatorInterface
+    {
+        $userEntity = User::class;
+        $sql = <<<DQL
+            SELECT user
+            FROM {$userEntity} user
+            WHERE user.id IN (:usersId)
+        DQL;
 
-    //    public function findOneBySomeField($value): ?User
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        /** @var Query<int, User> */
+        $query = $this->entityManager
+            ->createQuery($sql)
+            ->setParameter('usersId', $usersId->getValues());
+
+        /** @var PaginatorInterface<int, User> */
+        $usersPaginator = $this->createPaginator($query, $page, $pageItems);
+
+        return $usersPaginator;
+    }
 }
