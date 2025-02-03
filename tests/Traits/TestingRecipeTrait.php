@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Traits;
 
+use App\Common\RECIPE_TYPE;
 use App\Entity\Recipe;
 use App\Entity\User;
+use App\Form\Recipe\RecipeCreate\RecipeCreateFormDataValidation;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -85,6 +87,23 @@ trait TestingRecipeTrait
         ]);
 
         return $fixtures;
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     */
+    protected function getRecipesFixtures(): Collection
+    {
+        /** @var array<string, Collection<int, Recipe>> */
+        $fixtures = $this->getAliceBundleFixturesGroupedByType([
+            self::RECIPES_FIXTURES_PATH,
+            self::DATETIME_FIXTURES_PATH,
+            self::USERS_FIXTURES_PATH,
+        ], [
+            Recipe::class,
+        ]);
+
+        return $fixtures[Recipe::class];
     }
 
     /**
@@ -179,5 +198,29 @@ trait TestingRecipeTrait
                 false,
             ),
         ]);
+    }
+
+    protected function createRecipeFormDataValidation(): RecipeCreateFormDataValidation
+    {
+        return new RecipeCreateFormDataValidation(
+            'Recipe name',
+            'Recipe description',
+            [
+                '2 potatoes',
+                '1 cucumber',
+                '1 onion',
+                '1 carrot',
+            ],
+            [
+                '1. Prepare the potatoes: Cut the potatoes into bite-sized cubes.',
+                '2. Add the cucumbers, onion, and carrot to a large pot.',
+                '3. Cook the vegetables according to package instructions.',
+                '4. Add the potatoes to the cooked vegetables and cook for 30 minutes.',
+            ],
+            null,
+            new \DateTimeImmutable('2025-02-01 12:00:00'),
+            RECIPE_TYPE::BREAKFAST,
+            false
+        );
     }
 }
