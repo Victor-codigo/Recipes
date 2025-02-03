@@ -1,0 +1,40 @@
+App\Entity\User:
+  user_1:
+    id: "a9fee148-7b07-4c3e-8f8c-3cf8225a9bf6"
+    email: "user_1@email.com"
+    name: "user_1 name"
+    roles: ["ROLE_USER"]
+    password: '\$2y\$13\$/Bu6Y2ggoPUQNi1gCIqZyeapz0wWXTQEFsTRHggTR72u31Af6X2Du' # 123456
+    setVerified: true
+
+  user_2:
+    id: "f927d658-14b6-4efd-82ff-660a629c68c5"
+    email: "user_2@email.com"
+    name: "user_2 name"
+    roles: ["ROLE_USER"]
+    password: \$2y\$13\$/Bu6Y2ggoPUQNi1gCIqZyeapz0wWXTQEFsTRHggTR72u31Af6X2Du' # 123456
+    setVerified: true
+
+  user_3:
+    id: "c9fa4d5a-cb94-4eff-9117-c2281845615d"
+    email: "user_3@email.com"
+    name: "user_3 name"
+    roles: ["ROLE_USER"]
+    password: '\$2y\$13\$/Bu6Y2ggoPUQNi1gCIqZyeapz0wWXTQEFsTRHggTR72u31Af6X2Du' # 123456
+    setVerified: true
+
+  user_4:
+    id: "304a7f2e-79cc-4b50-9521-f365760e4a4c"
+    email: "user_4@email.com"
+    name: "user_4 name"
+    roles: ["ROLE_USER"]
+    password: '\$2y\$13\$/Bu6Y2ggoPUQNi1gCIqZyeapz0wWXTQEFsTRHggTR72u31Af6X2Du' # 123456
+    setVerified: true
+
+  user_not_verified:
+    id: "b09d3b78-f7b8-4ffd-9132-ae33b553a8d1"
+    email: "user_not_verified@email.com"
+    name: "user_not_verified name"
+    roles: ["ROLE_USER"]
+    password: '\$2y\$13\$/Bu6Y2ggoPUQNi1gCIqZyeapz0wWXTQEFsTRHggTR72u31Af6X2Du' # 123456
+    setVerified: false

@@ -1,0 +1,123 @@
+App\Entity\Recipe:
+  recipe_1:
+    __construct:
+      id: "a5b729af-30a5-4a9d-aa62-2ead180cc204"
+      user: "@user_1"
+      groupId: null
+      name: "recipe_1 name"
+      category: "BREAKFAST"
+      preparationTime: "@preparationTime_1"
+      description: "recipe_1 description"
+      ingredients: |
+        [
+          "recipe 1 ingredient 1",
+          "recipe 1 ingredient 2",
+          "recipe 1 ingredient 3"
+        ]
+      steps: |
+        [
+          "recipe 1 step 1",
+          "recipe 1 step 2",
+          "recipe 1 step 3"
+        ]
+      image: null
+      rating: 9
+      public: false
+
+  recipe_2:
+    __construct:
+      id: "416bbe7c-51ab-4a55-b981-f58aa6412410"
+      user: "@user_2"
+      groupId: null
+      name: "recipe_2 name"
+      category: "LUNCH"
+      preparationTime: "@preparationTime_2"
+      description: "recipe_2 description"
+      ingredients: |
+        [
+          "recipe 2 ingredient 1",
+          "recipe 2 ingredient 2",
+          "recipe 2 ingredient 3"
+        ]
+      steps: |
+        [
+          "recipe 2 step 1",
+          "recipe 2 step 2",
+          "recipe 2 step 3"
+        ]
+      image: null
+      rating: 4
+      public: false
+
+  recipe_3:
+    __construct:
+      id: "5c12cfe1-a9fd-46bf-a420-73c87d7a12df"
+      user: "@user_2"
+      groupId: null
+      name: "recipe_3 name"
+      category: "DINNER"
+      preparationTime: "@preparationTime_3"
+      description: "recipe_3 description"
+      ingredients: |
+        [
+          "recipe 3 ingredient 1",
+          "recipe 3 ingredient 2",
+          "recipe 3 ingredient 3"
+        ]
+      steps: |
+        [
+          "recipe 3 step 1",
+          "recipe 3 step 2",
+          "recipe 3 step 3"
+        ]
+      image: null
+      rating: 7
+      public: false
+  recipe_4:
+    __construct:
+      id: "65543f88-cfcc-4bb8-a3a7-aa6169bcaea8"
+      user: "@user_1"
+      groupId: "8ff7041c-85b8-4f42-b4ce-4935f7fb5d73"
+      name: "recipe_4 name"
+      category: "DINNER"
+      preparationTime: "@preparationTime_4"
+      description: "recipe_4 description"
+      ingredients: |
+        [
+          "recipe 4 ingredient 1",
+          "recipe 4 ingredient 2",
+          "recipe 4 ingredient 3"
+        ]
+      steps: |
+        [
+          "recipe 4 step 1",
+          "recipe 4 step 2",
+          "recipe 4 step 3"
+        ]
+      image: null
+      rating: 5
+      public: false
+  recipe_5:
+    __construct:
+      id: "78f9e889-bc87-4f64-b901-d7dfee8309c5"
+      user: "@user_1"
+      groupId: "8ff7041c-85b8-4f42-b4ce-4935f7fb5d73"
+      name: "recipe_5 name"
+      category: "DINNER"
+      preparationTime: "@preparationTime_5"
+      description: "recipe_5 description"
+      ingredients: |
+        [
+          "recipe 5 ingredient 1",
+          "recipe 5 ingredient 2",
+          "recipe 5 ingredient 3"
+        ]
+      steps: |
+        [
+          "recipe 5 step 1",
+          "recipe 5 step 2",
+          "recipe 5 step 3"
+        ]
+      image: null
+      rating: 5
+      public: false
