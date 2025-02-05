@@ -20,14 +20,6 @@
 
 	{{ component('TitleComponent', { data: titleDto } ) }}
 
-	{% block validation %}
-
-	{% if alertValidationDto %}
-	{{ component('AlertValidationComponent', { data: lang.alertValidationDto }) }}
-	{% endif %}
-
-	{% endblock validation %}
-
 	<div class="mb-3">
 		<label for="name"
 			   class="form-label">
@@ -43,7 +35,7 @@
 			   value="{{ data.name }}"
 			   required/>
 		<div class="invalid-feedback">
-			{{ 'field.name.msg.error'|trans }}
+			{{ 'field.name.msg.error.charset'|trans }}
 		</div>
 	</div>
 
@@ -144,5 +136,4 @@
 		{% endblock buttons %}
 
 	</div>
-
 </form>

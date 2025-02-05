@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Templates\Components\Recipe\RecipeCreate;
 
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
-use App\Templates\Components\AlertValidation\AlertValidationComponentDto;
 use App\Templates\Components\DropZone\DropZoneComponent;
 use App\Templates\Components\DropZone\DropZoneComponentDto;
 use App\Templates\Components\Recipe\RecipeItemAdd\RecipeItemAddComponentDto;
@@ -29,7 +28,6 @@ class RecipeCreateComponent extends TwigComponent
 
     public readonly TitleComponentDto $titleDto;
     public readonly DropZoneComponentDto $imageDto;
-    public readonly ?AlertValidationComponentDto $alertValidationDto;
     public readonly RecipeItemAddComponentDto $ingredientsItemAddDto;
     public readonly RecipeItemAddComponentDto $stepsItemAddDto;
 
@@ -44,7 +42,6 @@ class RecipeCreateComponent extends TwigComponent
 
         $this->titleDto = $this->createTitleComponentDto();
         $this->imageDto = $this->createImageDropZone();
-        $this->alertValidationDto = $this->createAlertValidationComponentDto();
         $this->ingredientsItemAddDto = $this->createIngredientsItemAddDto();
         $this->stepsItemAddDto = $this->createStepsItemAddDto();
     }
@@ -104,46 +101,5 @@ class RecipeCreateComponent extends TwigComponent
                 $this->translate('field.steps.button.add.label'),
                 $this->translate('field.steps.button.remove.title')
             );
-    }
-
-    /**
-     * @return string[]
-     */
-    public function loadErrorsTranslation(array $errors): array
-    {
-        $errorsLang = [];
-        foreach ($errors as $field => $error) {
-            $errorsLang[] = match ($field) {
-                // RECIPE_CREATE_FORM_ERRORS::NAME->value => $this->translate('validation.error.name'),
-                // RECIPE_CREATE_FORM_ERRORS::ADDRESS->value => $this->translate('validation.error.address'),
-                // RECIPE_CREATE_FORM_ERRORS::RECIPE_NAME_REPEATED->value => $this->translate('validation.error.recipe_name_repeated'),
-                // RECIPE_CREATE_FORM_ERRORS::IMAGE->value => $this->translate('validation.error.image'),
-                // RECIPE_CREATE_FORM_ERRORS::DESCRIPTION->value,
-                // RECIPE_CREATE_FORM_ERRORS::GROUP_ERROR->value,
-                // RECIPE_CREATE_FORM_ERRORS::GROUP_ID->value => $this->translate('validation.error.internal_server'),
-                default => $this->translate('validation.error.internal_server'),
-            };
-        }
-
-        return $errorsLang;
-    }
-
-    public function loadValidationOkTranslation(): string
-    {
-        return $this->translate('form.validation.ok');
-    }
-
-    private function createAlertValidationComponentDto(): ?AlertValidationComponentDto
-    {
-        $errorsLang = $this->loadErrorsTranslation($this->data->errors);
-
-        if (empty($errorsLang)) {
-            return null;
-        }
-
-        return new AlertValidationComponentDto(
-            array_unique([$this->loadValidationOkTranslation()]),
-            array_unique($errorsLang)
-        );
     }
 }

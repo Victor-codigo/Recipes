@@ -8,9 +8,6 @@ use App\Templates\Components\TwigComponentDtoInterface;
 
 readonly class RecipeCreateComponentDto implements TwigComponentDtoInterface
 {
-    public bool $validForm;
-    public array $errors;
-
     public ?string $csrfToken;
     public string $recipeCreateFormActionUrl;
 
@@ -27,14 +24,6 @@ readonly class RecipeCreateComponentDto implements TwigComponentDtoInterface
     {
         $this->csrfToken = $csrfToken;
         $this->recipeCreateFormActionUrl = $recipeCreateFormActionUrl;
-
-        return $this;
-    }
-
-    public function validation(bool $validForm, array $errors): self
-    {
-        $this->validForm = $validForm;
-        $this->errors = $errors;
 
         return $this;
     }
