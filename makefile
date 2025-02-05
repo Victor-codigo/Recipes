@@ -31,6 +31,9 @@ setup-dev: ## Sets the application up for development
 	@echo "$(TITLE)Installing node dependencies$(END)"
 	npm install
 
+	@echo "$(TITLE)Compiling js$(END)"
+	npm run dev
+
 	@echo "$(TITLE)Application ready for development.$(END)"
 
 # setup-deploy: ## Sets the application up for production deploy
