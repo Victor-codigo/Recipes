@@ -36,7 +36,7 @@ final class RecipeListItemComponent extends HomeListItemComponent
             'id' => $recipeData->id,
             'name' => $recipeData->name,
             'userOwnerName' => $recipeData->userOwnerName,
-            'category' => $recipeData->category,
+            'category' => $recipeData->category->value,
             'image' => $recipeData->image,
             'rating' => $recipeData->rating,
         ];
