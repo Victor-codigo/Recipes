@@ -6,7 +6,6 @@ namespace App\Form;
 
 use App\Common\Config;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -24,7 +23,6 @@ abstract class FormBase extends AbstractType
     public function __construct(
         protected TranslatorInterface $translator,
         private CsrfTokenManagerInterface $csrfTokenManager,
-        private RequestStack $request,
     ) {
     }
 
