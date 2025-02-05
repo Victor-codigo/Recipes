@@ -22,6 +22,9 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -51,7 +54,7 @@ class RecipeHomeController extends AbstractController
      * @throws DBNotFoundException
      * @throws UserSessionNotFoundException
      */
-    public function __invoke(int $page, int $pageItems): Response
+    public function __invoke(int $page, int $pageItems, SessionInterface $session): Response
     {
         $userSession = $this->getUserSession();
         $recipes = $this->getRecipesFromDb($userSession->getId(), $page, $pageItems);
@@ -59,7 +62,11 @@ class RecipeHomeController extends AbstractController
         /** @var FormInterface<RecipeCreateFormType> */
         $recipesCreateForm = $this->formFactory->createNamed(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class);
 
-        return $this->createView($recipesCreateForm, $recipes, $recipesUsers);
+        if (!$session instanceof Session) {
+            throw UserSessionNotFoundException::fromMessage('User session not found');
+        }
+
+        return $this->createView($recipesCreateForm, $recipes, $recipesUsers, $session->getFlashBag());
     }
 
     /**
@@ -114,15 +121,19 @@ class RecipeHomeController extends AbstractController
      * @param FormInterface<RecipeCreateFormType> $form
      * @param Collection<int, Recipe>             $recipes
      * @param Collection<int, User>               $recipesUsers
+     * @param string[]                            $messagesOk
+     * @param string[]                            $messagesError
      */
-    private function createRecipeHomeSectionComponentDto(FormInterface $form, Collection $recipes, Collection $recipesUsers): RecipeHomeSectionComponentDto
+    private function createRecipeHomeSectionComponentDto(FormInterface $form, Collection $recipes, Collection $recipesUsers, array $messagesOk, array $messagesError): RecipeHomeSectionComponentDto
     {
         /** @var RecipeCreateFormType */
         $formType = $form->getConfig()->getType()->getInnerType();
+        $validForm = !empty($messagesOk) || !empty($messagesError);
 
-        return (new RecipeHomeComponentBuilder())
+        return new RecipeHomeComponentBuilder()
             ->title('Page title', 'title path')
-            ->errors([], [])
+            ->validation($validForm)
+            ->errors($messagesOk, $messagesError)
             ->listItems($recipes, $recipesUsers)
             ->pagination(1, 20, 1)
             ->searchBar(
@@ -137,7 +148,6 @@ class RecipeHomeController extends AbstractController
             ->recipeModifyFormModal('', '')
             ->recipeRemoveFormModal('', '')
             ->recipeRemoveMultiFormModal('', '')
-            ->validation(false)
             ->build();
     }
 
@@ -146,9 +156,17 @@ class RecipeHomeController extends AbstractController
      * @param Collection<int, Recipe>             $recipes
      * @param Collection<int, User>               $recipesUsers
      */
-    private function createView(FormInterface $form, Collection $recipes, Collection $recipesUsers): Response
+    private function createView(FormInterface $form, Collection $recipes, Collection $recipesUsers, FlashBagInterface $flashBagMessages): Response
     {
-        $recipeHomeSectionComponentDto = $this->createRecipeHomeSectionComponentDto($form, $recipes, $recipesUsers);
+        $recipeHomeSectionComponentDto = $this->createRecipeHomeSectionComponentDto(
+            $form,
+            $recipes,
+            $recipesUsers,
+            // @phpstan-ignore argument.type
+            $flashBagMessages->get('ok'),
+            // @phpstan-ignore argument.type
+            $flashBagMessages->get('error')
+        );
 
         return $this->render('Recipe/Home/index.html.twig', [
             'recipeHomeSectionComponentDto' => $recipeHomeSectionComponentDto,
