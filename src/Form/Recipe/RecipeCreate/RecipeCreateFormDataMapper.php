@@ -41,16 +41,15 @@ class RecipeCreateFormDataMapper
             $imageFile = new File($recipe->getImage(), false);
         }
 
-        $recipeCreateFormDataValidation = new RecipeCreateFormDataValidation(
-            $recipe->getName(),
-            $recipe->getDescription(),
-            $recipe->getIngredients(),
-            $recipe->getSteps(),
-            $imageFile,
-            $recipe->getPreparationTime(),
-            $recipe->getCategory(),
-            $recipe->getPublic(),
-        );
+        $recipeCreateFormDataValidation = new RecipeCreateFormDataValidation();
+        $recipeCreateFormDataValidation->name = $recipe->getName();
+        $recipeCreateFormDataValidation->description = $recipe->getDescription();
+        $recipeCreateFormDataValidation->ingredients = $recipe->getIngredients();
+        $recipeCreateFormDataValidation->steps = $recipe->getSteps();
+        $recipeCreateFormDataValidation->image = $imageFile;
+        $recipeCreateFormDataValidation->preparation_time = $recipe->getPreparationTime();
+        $recipeCreateFormDataValidation->category = $recipe->getCategory();
+        $recipeCreateFormDataValidation->public = $recipe->getPublic();
 
         return $recipeCreateFormDataValidation;
     }

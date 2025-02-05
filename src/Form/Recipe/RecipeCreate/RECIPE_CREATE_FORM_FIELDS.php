@@ -4,16 +4,30 @@ declare(strict_types=1);
 
 namespace App\Form\Recipe\RecipeCreate;
 
+use App\Common\Config;
+
 enum RECIPE_CREATE_FORM_FIELDS: string
 {
     case FORM_NAME = 'recipe_create_form';
-    case CSRF_TOKEN = 'recipe_create_form[token]';
-    case NAME = 'recipe_create_form[name]';
-    case DESCRIPTION = 'recipe_create_form[description]';
-    case STEPS = 'recipe_create_form[steps][]';
-    case INGREDIENTS = 'recipe_create_form[ingredients][]';
-    case IMAGE = 'recipe_create_form[image]';
-    case PREPARATION_TIME = 'recipe_create_form[preparation_time]';
-    case CATEGORY = 'recipe_create_form[category]';
-    case SUBMIT = 'recipe_create_form[submit]';
+    case CSRF_TOKEN = Config::FORM_TOKEN_FIELD_NAME;
+    case NAME = 'name';
+    case DESCRIPTION = 'description';
+    case STEPS = 'steps';
+    case INGREDIENTS = 'ingredients';
+    case IMAGE = 'image';
+    case PREPARATION_TIME = 'preparation_time';
+    case CATEGORY = 'category';
+    case PUBLIC = 'public';
+    case SUBMIT = 'submit';
+
+    public static function getNameWithForm(RECIPE_CREATE_FORM_FIELDS $formField, bool $isArray = false): string
+    {
+        $fieldWithForm = self::FORM_NAME->value."[$formField->value]";
+
+        if ($isArray) {
+            $fieldWithForm .= '[]';
+        }
+
+        return $fieldWithForm;
+    }
 }
