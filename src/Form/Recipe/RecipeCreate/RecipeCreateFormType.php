@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Form\Recipe\RecipeCreate;
 
 use App\Common\RECIPE_TYPE;
-use App\Form\FormBase;
+use App\Form\Factory\Form\FormTypeTranslatedInterface;
+use App\Form\FormTypeBase;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -13,18 +14,20 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\Dropzone\Form\DropzoneType;
 
 /**
- * @template-extends FormBase<RecipeCreateFormDataValidation>
+ * @extends FormTypeBase<RecipeCreateFormType>
+ *
+ * @implements FormTypeTranslatedInterface<RecipeCreateFormType>
  */
-class RecipeCreateFormType extends FormBase
+class RecipeCreateFormType extends FormTypeBase implements FormTypeTranslatedInterface
 {
+    public const string TRANSLATION_DOMAIN = 'RecipeCreateComponent';
     protected const string CSRF_TOKEN_ID = 'RecipeCreateForm';
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -52,32 +55,10 @@ class RecipeCreateFormType extends FormBase
     }
 
     /**
-     * @return Collection<string, string>
+     * @return Collection<int, string>
      */
-    public function getTranslationParams(): Collection
+    public function getFormSuccessMessages(): Collection
     {
-        return new ArrayCollection([
-            'nameLettersMin' => '255',
-            'nameCharactersMax' => '2',
-            'descriptionCharactersMax' => '500',
-            'ingredientsCharactersMax' => '255',
-            'stepsCharactersMax' => '500',
-            'imageSizeMax' => '2 MB',
-            'imageWidthMin' => '200',
-            'imageWidthMax' => '400',
-            'imageHeightMin' => '200',
-            'imageHeightMax' => '400',
-            'imageMineTypesAllowed' => 'jpg, jpeg, png',
-        ]);
-    }
-
-    /**
-     * @return Collection<int, FormError>
-     */
-    public function getMessagesOk(): Collection
-    {
-        return new ArrayCollection([
-            new FormError('form.validation.msg.ok'),
-        ]);
+        return new ArrayCollection(RecipeCreateFormDataValidation::FORM_SUCCESS_MESSAGES);
     }
 }
