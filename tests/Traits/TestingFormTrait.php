@@ -5,10 +5,14 @@ declare(strict_types=1);
 namespace App\Tests\Traits;
 
 use App\Form\Factory\Form\FormTranslated;
+use App\Tests\Unit\Form\Fixture\FormTypeForTesting;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
 
 trait TestingFormTrait
 {
@@ -72,5 +76,21 @@ trait TestingFormTrait
 
             return $error;
         });
+    }
+
+    /**
+     * @param FormConfigInterface<object>&MockObject $formConfig
+     */
+    private function createStubForGetInnerType(FormConfigInterface&MockObject $formConfig, ResolvedFormTypeInterface&MockObject $resolvedFormType, FormTypeForTesting $formType): void
+    {
+        $formConfig
+            ->expects($this->any())
+            ->method('getType')
+            ->willReturn($resolvedFormType);
+
+        $resolvedFormType
+            ->expects($this->any())
+            ->method('getInnerType')
+            ->willReturn($formType);
     }
 }

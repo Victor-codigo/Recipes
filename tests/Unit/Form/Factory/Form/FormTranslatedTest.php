@@ -6,12 +6,17 @@ namespace App\Tests\Unit\Form\Factory\Form;
 
 use App\Form\Factory\Form\FormTranslated;
 use App\Tests\Traits\TestingFormTrait;
+use App\Tests\Unit\Form\Fixture\FormTypeForTesting;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormErrorIterator;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FormTranslatedTest extends TestCase
@@ -24,7 +29,10 @@ class FormTranslatedTest extends TestCase
      */
     private FormConfigInterface&MockObject $formConfig;
     private TranslatorInterface&MockObject $translator;
-    private string $translationDomain = 'translation_domain';
+    private FlashBagInterface&MockObject $flashBag;
+    private CsrfTokenManagerInterface&MockObject $csrfToneManager;
+    private ResolvedFormTypeInterface&MockObject $resolvedFormType;
+    private FormTypeForTesting $formType;
     private string $locale = 'locale';
 
     protected function setUp(): void
@@ -33,10 +41,16 @@ class FormTranslatedTest extends TestCase
 
         $this->formConfig = $this->createMock(FormConfigInterface::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
+        $this->flashBag = $this->createMock(FlashBagInterface::class);
+        $this->resolvedFormType = $this->createMock(ResolvedFormTypeInterface::class);
+        $this->csrfToneManager = $this->createMock(CsrfTokenManagerInterface::class);
+        $this->formType = new FormTypeForTesting($this->translator, $this->csrfToneManager);
+        $this->createStubForGetInnerType($this->formConfig, $this->resolvedFormType, $this->formType);
+
         $this->object = new FormTranslated(
             $this->formConfig,
             $this->translator,
-            $this->translationDomain,
+            $this->flashBag,
             $this->locale
         );
     }
@@ -68,7 +82,7 @@ class FormTranslatedTest extends TestCase
 
                     return true;
                 }),
-                self::equalTo($this->translationDomain),
+                self::equalTo(FormTypeForTesting::TRANSLATION_DOMAIN),
                 self::equalTo($this->locale)
             )
             ->willReturnOnConsecutiveCalls(
@@ -116,7 +130,7 @@ class FormTranslatedTest extends TestCase
 
                     return true;
                 }),
-                self::equalTo($this->translationDomain),
+                self::equalTo(FormTypeForTesting::TRANSLATION_DOMAIN),
                 self::equalTo($this->locale)
             )
             ->willReturnOnConsecutiveCalls(
@@ -150,5 +164,65 @@ class FormTranslatedTest extends TestCase
         $return = $this->object->getErrorsTranslated($deep, $flatten);
 
         self::assertCount(0, $return);
+    }
+
+    #[Test]
+    public function itShouldGetMessagesOkTranslated(): void
+    {
+        $return = $this->object->getMessagesSuccessTranslated();
+
+        self::assertEquals($this->formType->getFormSuccessMessages(), $return);
+    }
+
+    #[Test]
+    public function itShouldAddSuccessFormFlashMessages(): void
+    {
+        $flashBagSuccessType = 'success';
+        $flashBagErrorType = 'error';
+        $formSuccessMessages = $this->formType->getFormSuccessMessages();
+        /** @var FormErrorIterator<FormError> */
+        $errors = new FormErrorIterator($this->object, []);
+
+        $flashBagAddInvokeCount = $this->exactly($formSuccessMessages->count());
+        $this->flashBag
+            ->expects($flashBagAddInvokeCount)
+            ->method('add')
+            ->with(
+                $flashBagSuccessType,
+                self::callback(function (mixed $message) use ($formSuccessMessages, $flashBagAddInvokeCount): bool {
+                    self::assertEquals($formSuccessMessages->get($flashBagAddInvokeCount->numberOfInvocations() - 1), $message);
+
+                    return true;
+                }));
+
+        $this->object->addFlashMessagesTranslated($errors, $flashBagSuccessType, $flashBagErrorType);
+    }
+
+    #[Test]
+    public function itShouldAddErrorFormFlashMessages(): void
+    {
+        $flashBagSuccessType = 'success';
+        $flashBagErrorType = 'error';
+        $errors = $this->createErrors();
+        /**
+         * @var FormErrorIterator<FormError>
+         *
+         * @phpstan-ignore argument.type
+         */
+        $errorsIterator = new FormErrorIterator($this->object, $errors->toArray());
+
+        $flashBagAddInvokeCount = $this->exactly($errors->count());
+        $this->flashBag
+            ->expects($flashBagAddInvokeCount)
+            ->method('add')
+            ->with(
+                $flashBagErrorType,
+                self::callback(function (mixed $message) use ($errors, $flashBagAddInvokeCount): bool {
+                    self::assertEquals($errors->get($flashBagAddInvokeCount->numberOfInvocations() - 1)?->getMessage(), $message);
+
+                    return true;
+                }));
+
+        $this->object->addFlashMessagesTranslated($errorsIterator, $flashBagSuccessType, $flashBagErrorType);
     }
 }
