@@ -28,6 +28,9 @@ use Symfony\Component\Routing\Attribute\Route;
 )]
 class RecipeCreateController extends AbstractController
 {
+    public const string FORM_FLASH_BAG_MESSAGES_SUCCESS = 'recipeCreateForm.success';
+    public const string FORM_FLASH_BAG_MESSAGES_ERROR = 'recipeCreateForm.error';
+
     public function __construct(
         private RecipeCreateService $recipeCreateService,
         private FormFactoryExtendedInterface $formFactoryExtended,
@@ -46,7 +49,7 @@ class RecipeCreateController extends AbstractController
             $this->recipeCreate($form);
         }
 
-        $this->AddFormErrorsToFlashBag($form);
+        $form->addFlashMessagesTranslated(self::FORM_FLASH_BAG_MESSAGES_SUCCESS, self::FORM_FLASH_BAG_MESSAGES_ERROR);
 
         return $this->redirectToRoute('recipe_home', [
             'page' => 1,
@@ -63,16 +66,5 @@ class RecipeCreateController extends AbstractController
         $formData = $form->getData();
 
         $this->recipeCreateService->__invoke($formData, null);
-    }
-
-    /**
-     * @param FormInterface<FormTranslated> $form
-     */
-    private function AddFormErrorsToFlashBag(FormInterface $form): void
-    {
-        foreach ($form->getErrors(true) as $error) {
-            $errorMessage = $error->getMessage();
-            $this->addFlash('error', $errorMessage);
-        }
     }
 }
