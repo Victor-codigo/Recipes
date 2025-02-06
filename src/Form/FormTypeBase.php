@@ -15,8 +15,9 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  *
  * @template-extends AbstractType<TData>
  */
-abstract class FormBase extends AbstractType
+abstract class FormTypeBase extends AbstractType
 {
+    public const string TRANSLATION_DOMAIN = '';
     protected const string CSRF_TOKEN_ID = '';
     protected const string CSRF_TOKEN_NAME = Config::FORM_TOKEN_FIELD_NAME;
 
