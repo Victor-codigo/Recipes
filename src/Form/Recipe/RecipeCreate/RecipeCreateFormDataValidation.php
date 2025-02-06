@@ -10,6 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class RecipeCreateFormDataValidation
 {
+    public const array FORM_SUCCESS_MESSAGES = [
+        'form.validation.msg.ok',
+    ];
+
     #[Assert\NotBlank(message: 'field.name.msg.error.not_blank')]
     #[Assert\Length(
         min: 2,
