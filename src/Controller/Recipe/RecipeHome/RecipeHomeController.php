@@ -6,6 +6,7 @@ namespace App\Controller\Recipe\RecipeHome;
 
 use App\Common\Config;
 use App\Controller\Exception\UserSessionNotFoundException;
+use App\Controller\Recipe\RecipeCreate\RecipeCreateController;
 use App\Entity\Recipe;
 use App\Entity\User;
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
@@ -163,9 +164,9 @@ class RecipeHomeController extends AbstractController
             $recipes,
             $recipesUsers,
             // @phpstan-ignore argument.type
-            $flashBagMessages->get('ok'),
+            $flashBagMessages->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS),
             // @phpstan-ignore argument.type
-            $flashBagMessages->get('error')
+            $flashBagMessages->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR),
         );
 
         return $this->render('Recipe/Home/index.html.twig', [
