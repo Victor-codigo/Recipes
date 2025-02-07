@@ -67,7 +67,7 @@ class RecipeCreateComponent extends TwigComponent
             ->component(
                 self::INGREDIENTS_SELECTOR,
                 $this->translate('field.ingredients.label'),
-                $this->translate('field.ingredients.msg.error')
+                $this->translate('field.ingredients.msg.error.not_blank')
             )
             ->items(
                 TYPE_INPUT::INPUT,
@@ -88,7 +88,7 @@ class RecipeCreateComponent extends TwigComponent
             ->component(
                 self::STEPS_SELECTOR,
                 $this->translate('field.steps.label'),
-                $this->translate('field.steps.msg.error')
+                $this->translate('field.steps.msg.error.not_blank')
             )
             ->items(
                 TYPE_INPUT::TEXTAREA,
