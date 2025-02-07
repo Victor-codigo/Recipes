@@ -73,11 +73,10 @@ class FormTranslated extends Form implements FormTranslatedInterface
         return $formType->getFormSuccessMessages();
     }
 
-    /**
-     * @param FormErrorIterator<FormError> $errors
-     */
-    public function addFlashMessagesTranslated(FormErrorIterator $errors, string $messagesSuccessType, string $messagesErrorType): void
+    public function addFlashMessagesTranslated(string $messagesSuccessType, string $messagesErrorType, bool $deep): void
     {
+        $errors = $this->getErrors($deep);
+
         if (0 === $errors->count()) {
             $this->getMessagesSuccessTranslated()
                  ->map(fn (string $message) => $this->flashBag->add($messagesSuccessType, $message));

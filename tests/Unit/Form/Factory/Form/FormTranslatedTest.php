@@ -13,7 +13,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -180,8 +179,6 @@ class FormTranslatedTest extends TestCase
         $flashBagSuccessType = 'success';
         $flashBagErrorType = 'error';
         $formSuccessMessages = $this->formType->getFormSuccessMessages();
-        /** @var FormErrorIterator<FormError> */
-        $errors = new FormErrorIterator($this->object, []);
 
         $flashBagAddInvokeCount = $this->exactly($formSuccessMessages->count());
         $this->flashBag
@@ -195,7 +192,7 @@ class FormTranslatedTest extends TestCase
                     return true;
                 }));
 
-        $this->object->addFlashMessagesTranslated($errors, $flashBagSuccessType, $flashBagErrorType);
+        $this->object->addFlashMessagesTranslated($flashBagSuccessType, $flashBagErrorType, true);
     }
 
     #[Test]
@@ -204,12 +201,7 @@ class FormTranslatedTest extends TestCase
         $flashBagSuccessType = 'success';
         $flashBagErrorType = 'error';
         $errors = $this->createErrors();
-        /**
-         * @var FormErrorIterator<FormError>
-         *
-         * @phpstan-ignore argument.type
-         */
-        $errorsIterator = new FormErrorIterator($this->object, $errors->toArray());
+        $errors->map(fn (FormError $error): FormTranslated => $this->object->addError($error));
 
         $flashBagAddInvokeCount = $this->exactly($errors->count());
         $this->flashBag
@@ -223,6 +215,6 @@ class FormTranslatedTest extends TestCase
                     return true;
                 }));
 
-        $this->object->addFlashMessagesTranslated($errorsIterator, $flashBagSuccessType, $flashBagErrorType);
+        $this->object->addFlashMessagesTranslated($flashBagSuccessType, $flashBagErrorType, true);
     }
 }

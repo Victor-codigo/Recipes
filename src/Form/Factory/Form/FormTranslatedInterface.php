@@ -26,8 +26,5 @@ interface FormTranslatedInterface extends FormInterface
      */
     public function getMessagesSuccessTranslated(): Collection;
 
-    /**
-     * @param FormErrorIterator<FormError> $errors
-     */
-    public function addFlashMessagesTranslated(FormErrorIterator $errors, string $messagesSuccessType, string $messagesErrorKey): void;
+    public function addFlashMessagesTranslated(string $messagesSuccessType, string $messagesErrorType, bool $deep): void;
 }

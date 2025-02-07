@@ -49,7 +49,7 @@ class RecipeCreateController extends AbstractController
             $this->recipeCreate($form);
         }
 
-        $form->addFlashMessagesTranslated($form->getErrors(true), self::FORM_FLASH_BAG_MESSAGES_SUCCESS, self::FORM_FLASH_BAG_MESSAGES_ERROR);
+        $form->addFlashMessagesTranslated(self::FORM_FLASH_BAG_MESSAGES_SUCCESS, self::FORM_FLASH_BAG_MESSAGES_ERROR, true);
 
         return $this->redirectToRoute('recipe_home', [
             'page' => 1,
