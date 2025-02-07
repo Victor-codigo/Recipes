@@ -93,4 +93,31 @@ trait TestingFormTrait
             ->method('getInnerType')
             ->willReturn($formType);
     }
+
+    /**
+     * @param Collection<int, FormError> $errors
+     * @param Collection<int, FormError> $errorsTranslated
+     */
+    private function createSubFormMethodTrans(Collection $errors, Collection $errorsTranslated): void
+    {
+        $translationDomain = $this->exactly($errors->count());
+        $this->translator
+            ->expects($translationDomain)
+            ->method('trans')
+            ->with(
+                self::callback(function (string $message) use ($translationDomain, $errors): bool {
+                    self::assertEquals($errors->get($translationDomain->numberOfInvocations() - 1)?->getMessage(), $message);
+
+                    return true;
+                }),
+                self::callback(function (array $params) use ($translationDomain, $errors): bool {
+                    self::assertEquals($errors->get($translationDomain->numberOfInvocations() - 1)?->getMessageParameters(), $params);
+
+                    return true;
+                }),
+                self::equalTo(FormTypeForTesting::TRANSLATION_DOMAIN),
+                self::equalTo($this->locale)
+            )
+            ->willReturnCallback(fn (): ?string => $errorsTranslated->get($translationDomain->numberOfInvocations() - 1)?->getMessage());
+    }
 }

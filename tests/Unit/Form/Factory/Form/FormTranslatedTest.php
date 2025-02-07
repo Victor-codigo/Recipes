@@ -65,31 +65,7 @@ class FormTranslatedTest extends TestCase
             new ArrayCollection(iterator_to_array($this->object->getErrors(true))),
             $this->object
         );
-
-        $translationDomain = $this->exactly($errors->count());
-        $this->translator
-            ->expects($translationDomain)
-            ->method('trans')
-            ->with(
-                self::callback(function (string $message) use ($translationDomain, $errors): bool {
-                    self::assertEquals($errors->get($translationDomain->numberOfInvocations() - 1)?->getMessage(), $message);
-
-                    return true;
-                }),
-                self::callback(function (array $params) use ($translationDomain, $errors): bool {
-                    self::assertEquals($errors->get($translationDomain->numberOfInvocations() - 1)?->getMessageParameters(), $params);
-
-                    return true;
-                }),
-                self::equalTo(FormTypeForTesting::TRANSLATION_DOMAIN),
-                self::equalTo($this->locale)
-            )
-            ->willReturnOnConsecutiveCalls(
-                $errorsTranslated->get(0)?->getMessage(),
-                $errorsTranslated->get(1)?->getMessage(),
-                $errorsTranslated->get(2)?->getMessage(),
-                $errorsTranslated->get(3)?->getMessage(),
-            );
+        $this->createSubFormMethodTrans($errors, $errorsTranslated);
 
         $return = $this->object->getErrorsTranslated($deep, $flatten);
 
@@ -202,6 +178,7 @@ class FormTranslatedTest extends TestCase
         $flashBagErrorType = 'error';
         $errors = $this->createErrors();
         $errors->map(fn (FormError $error): FormTranslated => $this->object->addError($error));
+        $errorsTranslated = $this->getErrorsTranslated($errors, $this->object);
 
         $flashBagAddInvokeCount = $this->exactly($errors->count());
         $this->flashBag
@@ -209,11 +186,13 @@ class FormTranslatedTest extends TestCase
             ->method('add')
             ->with(
                 $flashBagErrorType,
-                self::callback(function (mixed $message) use ($errors, $flashBagAddInvokeCount): bool {
-                    self::assertEquals($errors->get($flashBagAddInvokeCount->numberOfInvocations() - 1)?->getMessage(), $message);
+                self::callback(function (mixed $message) use ($errorsTranslated, $flashBagAddInvokeCount): bool {
+                    self::assertEquals($errorsTranslated->get($flashBagAddInvokeCount->numberOfInvocations() - 1)?->getMessage(), $message);
 
                     return true;
                 }));
+
+        $this->createSubFormMethodTrans($errors, $errorsTranslated);
 
         $this->object->addFlashMessagesTranslated($flashBagSuccessType, $flashBagErrorType, true);
     }

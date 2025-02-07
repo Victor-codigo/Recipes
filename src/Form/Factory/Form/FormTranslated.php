@@ -75,7 +75,7 @@ class FormTranslated extends Form implements FormTranslatedInterface
 
     public function addFlashMessagesTranslated(string $messagesSuccessType, string $messagesErrorType, bool $deep): void
     {
-        $errors = $this->getErrors($deep);
+        $errors = $this->getErrorsTranslated($deep);
 
         if (0 === $errors->count()) {
             $this->getMessagesSuccessTranslated()
