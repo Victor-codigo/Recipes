@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Unit\Form;
+namespace App\Tests\Unit\Form\Factory;
 
 use App\Form\Factory\FormFactoryExtended;
 use App\Form\Factory\Form\FormTranslated;
