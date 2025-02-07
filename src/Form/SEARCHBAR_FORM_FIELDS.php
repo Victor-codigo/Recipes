@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form;
 
-class SEARCHBAR_FORM_FIELDS implements FormErrorInterface
+class SEARCHBAR_FORM_FIELDS
 {
     public const FORM = 'searchbar_form';
     public const TOKEN = 'token';
