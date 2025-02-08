@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Form\Factory;
 
-use App\Form\Factory\Form\FormTranslated;
 use App\Form\Factory\Form\FormTranslatedInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
@@ -18,8 +17,6 @@ interface FormFactoryExtendedInterface extends FormFactoryInterface
      *
      * @param mixed                $data    The initial data
      * @param array<string, mixed> $options
-     *
-     * @return FormTranslatedInterface<FormTranslated>
      *
      * @throws InvalidOptionsException if any given option is not applicable to the given type
      */

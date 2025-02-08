@@ -6,27 +6,31 @@ namespace App\Form\Factory;
 
 use App\Form\Factory\Form\FormTranslated;
 use App\Form\Factory\Form\FormTranslatedInterface;
-use Symfony\Component\Form\FormFactory;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormRegistryInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\OptionsResolver\Exception\InvalidOptionsException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class FormFactoryExtended extends FormFactory implements FormFactoryExtendedInterface
+/**
+ * @template TData
+ */
+class FormFactoryExtended implements FormFactoryExtendedInterface
 {
+    private FormFactoryInterface $formFactory;
     private TranslatorInterface $translator;
     private FlashBagInterface $flashBag;
 
     /**
      * @throws \LogicException
      */
-    public function __construct(FormRegistryInterface $registry, TranslatorInterface $translator, RequestStack $request)
+    public function __construct(FormFactoryInterface $formFactory, TranslatorInterface $translator, RequestStack $request)
     {
-        parent::__construct($registry);
-
+        $this->formFactory = $formFactory;
         $this->translator = $translator;
         $session = $request->getSession();
 
@@ -45,7 +49,7 @@ class FormFactoryExtended extends FormFactory implements FormFactoryExtendedInte
      * @param mixed                $data    The initial data
      * @param array<string, mixed> $options
      *
-     * @return FormTranslatedInterface<FormTranslated>
+     * @return FormTranslatedInterface<TData>
      *
      * @throws InvalidOptionsException if any given option is not applicable to the given type
      */
@@ -53,9 +57,68 @@ class FormFactoryExtended extends FormFactory implements FormFactoryExtendedInte
     {
         $builder = $this->createNamedBuilder($name, $type, $data, $options);
 
-        /* @var FormInterface<FormTranslated> */
-        $form = new FormTranslated($builder->getFormConfig(), $this->translator, $this->flashBag, $locale);
+        return new FormTranslated($builder->getForm(), $this->translator, $this->flashBag, $locale);
+    }
+
+    /**
+     * @return FormInterface<TData>
+     */
+    public function create(string $type = FormType::class, mixed $data = null, array $options = []): FormInterface
+    {
+        /** @var FormInterface<TData> */
+        $form = $this->formFactory->create($type, $data, $options);
 
         return $form;
+    }
+
+    /**
+     * @param array<array-key, mixed> $options
+     *
+     * @return FormBuilderInterface<TData>
+     */
+    public function createBuilder(string $type = FormType::class, mixed $data = null, array $options = []): FormBuilderInterface
+    {
+        return $this->formFactory->createBuilder($type, $data, $options);
+    }
+
+    /**
+     * @param array<array-key, mixed> $options
+     *
+     * @return FormBuilderInterface<TData>
+     */
+    public function createBuilderForProperty(string $class, string $property, mixed $data = null, array $options = []): FormBuilderInterface
+    {
+        return $this->formFactory->createBuilderForProperty($class, $property, $data, $options);
+    }
+
+    /**
+     * @param array<array-key, mixed> $options
+     *
+     * @return FormInterface<TData>
+     */
+    public function createForProperty(string $class, string $property, mixed $data = null, array $options = []): FormInterface
+    {
+        return $this->formFactory->createForProperty($class, $property, $data, $options);
+    }
+
+    /**
+     * @return FormInterface<TData>
+     */
+    public function createNamed(string $name, string $type = FormType::class, mixed $data = null, array $options = []): FormInterface
+    {
+        /** @var FormInterface<TData> */
+        $form = $this->formFactory->createNamed($name, $type, $data, $options);
+
+        return $form;
+    }
+
+    /**
+     * @param array<array-key, TData> $options
+     *
+     * @return FormBuilderInterface<TData>
+     */
+    public function createNamedBuilder(string $name, string $type = FormType::class, mixed $data = null, array $options = []): FormBuilderInterface
+    {
+        return $this->formFactory->createNamedBuilder($name, $type, $data, $options);
     }
 }

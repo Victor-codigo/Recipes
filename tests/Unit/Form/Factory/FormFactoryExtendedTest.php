@@ -13,6 +13,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormConfigInterface;
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRegistryInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -25,8 +27,16 @@ class FormFactoryExtendedTest extends TestCase
 {
     use TestingFormTrait;
 
+    /**
+     * @var FormFactoryExtended<mixed>
+     */
     private FormFactoryExtended $object;
+    private FormFactoryInterface&MockObject $formFactory;
     private FormRegistryInterface&MockObject $formRegistry;
+    /**
+     * @var FormInterface<mixed>&MockObject
+     */
+    private FormInterface&MockObject $form;
     /**
      * @var FormConfigInterface<object>&MockObject
      */
@@ -48,7 +58,9 @@ class FormFactoryExtendedTest extends TestCase
     {
         parent::setUp();
 
+        $this->formFactory = $this->createMock(FormFactoryInterface::class);
         $this->formRegistry = $this->createMock(FormRegistryInterface::class);
+        $this->form = $this->createMock(FormInterface::class);
         $this->formConfig = $this->createMock(FormConfigInterface::class);
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->request = $this->createMock(RequestStack::class);
@@ -62,21 +74,26 @@ class FormFactoryExtendedTest extends TestCase
 
         $this->createStubForGetInnerType($this->formConfig, $this->resolvedFormType, $this->formType);
 
-        $this->formRegistry
+        $this->formFactory
             ->expects($this->once())
+            ->method('createNamedBuilder')
+            ->willReturn($this->formBuilder);
+
+        $this->form
+            ->expects($this->any())
+            ->method('getConfig')
+            ->willReturn($this->formConfig);
+
+        $this->formRegistry
+            ->expects($this->any())
             ->method('getType')
             ->with(FormTypeForTesting::class)
             ->willReturn($this->resolvedFormType);
 
-        $this->resolvedFormType
-            ->expects($this->once())
-            ->method('createBuilder')
-            ->willReturn($this->formBuilder);
-
         $this->formBuilder
             ->expects($this->once())
-            ->method('getFormConfig')
-            ->willReturn($this->formConfig);
+            ->method('getForm')
+            ->willReturn($this->form);
 
         $this->request
             ->expects($this->once())
@@ -89,7 +106,7 @@ class FormFactoryExtendedTest extends TestCase
             ->willReturn($this->flashBag);
 
         $this->object = new FormFactoryExtended(
-            $this->formRegistry,
+            $this->formFactory,
             $this->translator,
             $this->request
         );
@@ -100,7 +117,7 @@ class FormFactoryExtendedTest extends TestCase
     {
         $formName = 'formName';
         $formType = FormTypeForTesting::class;
-        $formExpected = new FormTranslated($this->formConfig, $this->translator, $this->flashBag, $this->locale);
+        $formExpected = new FormTranslated($this->form, $this->translator, $this->flashBag, $this->locale);
 
         $return = $this->object->createNamedTranslated($formName, $formType, $this->locale);
 
