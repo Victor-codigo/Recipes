@@ -11,8 +11,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -22,7 +24,14 @@ class FormTranslatedTest extends TestCase
 {
     use TestingFormTrait;
 
+    /**
+     * @var FormTranslated<mixed>
+     */
     private FormTranslated $object;
+    /**
+     * @var FormInterface<mixed>
+     */
+    private FormInterface $form;
     /**
      * @var FormConfigInterface<object>&MockObject
      */
@@ -39,6 +48,7 @@ class FormTranslatedTest extends TestCase
         parent::setUp();
 
         $this->formConfig = $this->createMock(FormConfigInterface::class);
+        $this->form = new Form($this->formConfig);
         $this->translator = $this->createMock(TranslatorInterface::class);
         $this->flashBag = $this->createMock(FlashBagInterface::class);
         $this->resolvedFormType = $this->createMock(ResolvedFormTypeInterface::class);
@@ -47,7 +57,7 @@ class FormTranslatedTest extends TestCase
         $this->createStubForGetInnerType($this->formConfig, $this->resolvedFormType, $this->formType);
 
         $this->object = new FormTranslated(
-            $this->formConfig,
+            $this->form,
             $this->translator,
             $this->flashBag,
             $this->locale
@@ -63,7 +73,7 @@ class FormTranslatedTest extends TestCase
         $errors->map(fn (FormError $error): FormTranslated => $this->object->addError($error));
         $errorsTranslated = $this->getErrorsTranslated(
             new ArrayCollection(iterator_to_array($this->object->getErrors(true))),
-            $this->object
+            $this->form
         );
         $this->createSubFormMethodTrans($errors, $errorsTranslated);
 
@@ -87,7 +97,7 @@ class FormTranslatedTest extends TestCase
         $errors->map(fn (FormError $error): FormTranslated => $this->object->addError($error));
         $errorsTranslated = $this->getErrorsTranslated(
             new ArrayCollection(iterator_to_array($this->object->getErrors(true))),
-            $this->object
+            $this->form
         );
 
         $translationDomain = $this->exactly($errors->count());
@@ -144,9 +154,17 @@ class FormTranslatedTest extends TestCase
     #[Test]
     public function itShouldGetMessagesOkTranslated(): void
     {
+        $messagesOk = FormTypeForTesting::getFormErrors();
+        $messagesOfTranslated = $this->getErrorsTranslated($messagesOk, $this->form);
+
+        $this->createSubFormMethodTrans($messagesOk, $messagesOfTranslated);
+
         $return = $this->object->getMessagesSuccessTranslated();
 
-        self::assertEquals($this->formType->getFormSuccessMessages(), $return);
+        self::assertEquals(
+            $messagesOfTranslated->map(fn (FormError $messageOk): string => $messageOk->getMessage()),
+            $return
+        );
     }
 
     #[Test]
@@ -155,6 +173,9 @@ class FormTranslatedTest extends TestCase
         $flashBagSuccessType = 'success';
         $flashBagErrorType = 'error';
         $formSuccessMessages = $this->formType->getFormSuccessMessages();
+        $formSuccessMessagesTranslated = $this->getErrorsTranslated($formSuccessMessages, $this->form);
+
+        $this->createSubFormMethodTrans($formSuccessMessages, $formSuccessMessagesTranslated);
 
         $flashBagAddInvokeCount = $this->exactly($formSuccessMessages->count());
         $this->flashBag
@@ -162,8 +183,8 @@ class FormTranslatedTest extends TestCase
             ->method('add')
             ->with(
                 $flashBagSuccessType,
-                self::callback(function (mixed $message) use ($formSuccessMessages, $flashBagAddInvokeCount): bool {
-                    self::assertEquals($formSuccessMessages->get($flashBagAddInvokeCount->numberOfInvocations() - 1), $message);
+                self::callback(function (mixed $message) use ($formSuccessMessagesTranslated, $flashBagAddInvokeCount): bool {
+                    self::assertEquals($formSuccessMessagesTranslated->get($flashBagAddInvokeCount->numberOfInvocations() - 1)?->getMessage(), $message);
 
                     return true;
                 }));
@@ -178,7 +199,7 @@ class FormTranslatedTest extends TestCase
         $flashBagErrorType = 'error';
         $errors = $this->createErrors();
         $errors->map(fn (FormError $error): FormTranslated => $this->object->addError($error));
-        $errorsTranslated = $this->getErrorsTranslated($errors, $this->object);
+        $errorsTranslated = $this->getErrorsTranslated($errors, $this->form);
 
         $flashBagAddInvokeCount = $this->exactly($errors->count());
         $this->flashBag

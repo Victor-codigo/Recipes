@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Traits;
 
-use App\Form\Factory\Form\FormTranslated;
 use App\Tests\Unit\Form\Fixture\FormTypeForTesting;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Form\FormConfigInterface;
@@ -21,44 +19,14 @@ trait TestingFormTrait
      */
     private function createErrors(): Collection
     {
-        return new ArrayCollection([
-            new FormError(
-                'message.error.msg1',
-                'messageTemplate.error.msg1',
-                [
-                    'param1' => 'value1',
-                    'param2' => 'value2',
-                ],
-                null,
-                null
-            ),
-            new FormError(
-                'message.error.msg2',
-                'messageTemplate.error.msg2',
-                [
-                    'param1' => 'value1',
-                    'param2' => 'value2',
-                ],
-                1,
-                'cause msg 2'
-            ),
-            new FormError(
-                'message.error.msg3',
-                'messageTemplate.error.msg3',
-                [
-                    'param1' => 'value1',
-                ],
-                2,
-                'cause msg 3'
-            ),
-        ]);
+        return FormTypeForTesting::getFormErrors();
     }
 
     /**
      * Adds to error message the string ".translated".
      *
-     * @param Collection<int, FormError>    $errors
-     * @param FormInterface<FormTranslated> $form
+     * @param Collection<int, FormError> $errors
+     * @param FormInterface<mixed>       $form
      *
      * @return Collection<int, FormError>
      */
@@ -100,24 +68,24 @@ trait TestingFormTrait
      */
     private function createSubFormMethodTrans(Collection $errors, Collection $errorsTranslated): void
     {
-        $translationDomain = $this->exactly($errors->count());
+        $transInvokeCount = $this->exactly($errors->count());
         $this->translator
-            ->expects($translationDomain)
+            ->expects($transInvokeCount)
             ->method('trans')
             ->with(
-                self::callback(function (string $message) use ($translationDomain, $errors): bool {
-                    self::assertEquals($errors->get($translationDomain->numberOfInvocations() - 1)?->getMessage(), $message);
+                self::callback(function (string $message) use ($transInvokeCount, $errors): bool {
+                    self::assertEquals($errors->get($transInvokeCount->numberOfInvocations() - 1)?->getMessage(), $message);
 
                     return true;
                 }),
-                self::callback(function (array $params) use ($translationDomain, $errors): bool {
-                    self::assertEquals($errors->get($translationDomain->numberOfInvocations() - 1)?->getMessageParameters(), $params);
+                self::callback(function (array $params) use ($transInvokeCount, $errors): bool {
+                    self::assertEquals($errors->get($transInvokeCount->numberOfInvocations() - 1)?->getMessageParameters(), $params);
 
                     return true;
                 }),
                 self::equalTo(FormTypeForTesting::TRANSLATION_DOMAIN),
                 self::equalTo($this->locale)
             )
-            ->willReturnCallback(fn (): ?string => $errorsTranslated->get($translationDomain->numberOfInvocations() - 1)?->getMessage());
+            ->willReturnCallback(fn (): string => $errorsTranslated->get($transInvokeCount->numberOfInvocations() - 1)?->getMessage() ?: throw new \Exception('Method trans should not return null'));
     }
 }

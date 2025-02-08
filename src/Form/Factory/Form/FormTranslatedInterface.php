@@ -10,9 +10,7 @@ use Symfony\Component\Form\FormErrorIterator;
 use Symfony\Component\Form\FormInterface;
 
 /**
- * @template TData
- *
- * @extends FormInterface<TData>
+ * @extends FormInterface<FormTranslatedInterface>
  */
 interface FormTranslatedInterface extends FormInterface
 {
