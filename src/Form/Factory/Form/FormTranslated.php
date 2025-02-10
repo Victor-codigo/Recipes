@@ -24,14 +24,12 @@ use Symfony\Component\PropertyAccess\PropertyPathInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
- * @template TData
- *
- * @implements \IteratorAggregate<string, TData>
+ * @implements \IteratorAggregate<string, mixed>
  */
 class FormTranslated implements FormTranslatedInterface, \IteratorAggregate, ClearableErrorsInterface
 {
     /**
-     * @var FormInterface<TData>
+     * @var FormInterface<mixed>
      */
     private FormInterface $form;
     private TranslatorInterface $translator;
@@ -40,7 +38,7 @@ class FormTranslated implements FormTranslatedInterface, \IteratorAggregate, Cle
     public readonly ?string $locale;
 
     /**
-     * @param FormInterface<TData> $form
+     * @param FormInterface<mixed> $form
      */
     public function __construct(FormInterface $form, TranslatorInterface $translator, FlashBagInterface $flashBag, ?string $locale)
     {
@@ -141,7 +139,7 @@ class FormTranslated implements FormTranslatedInterface, \IteratorAggregate, Cle
     /**
      * Sets the parent form.
      *
-     * @param FormInterface<TData>|null $parent The parent form or null if it's the root
+     * @param FormInterface<mixed>|null $parent The parent form or null if it's the root
      *
      * @return $this
      *
@@ -169,7 +167,7 @@ class FormTranslated implements FormTranslatedInterface, \IteratorAggregate, Cle
     /**
      * Adds or replaces a child to the form.
      *
-     * @param FormInterface<TData>|string $child   The FormInterface instance or the name of the child
+     * @param FormInterface<mixed>|string $child   The FormInterface instance or the name of the child
      * @param string|null                 $type    The child's type, if a name was passed
      * @param array<array-key, mixed>     $options The child's options, if a name was passed
      *
@@ -189,7 +187,7 @@ class FormTranslated implements FormTranslatedInterface, \IteratorAggregate, Cle
     /**
      * Returns the child with the given name.
      *
-     * @return FormInterface<TData>
+     * @return FormInterface<mixed>
      *
      * @throws OutOfBoundsException if the named child does not exist
      */
@@ -223,7 +221,7 @@ class FormTranslated implements FormTranslatedInterface, \IteratorAggregate, Cle
     /**
      * Returns all children in this group.
      *
-     * @return array<FormInterface<TData>>
+     * @return array<FormInterface<mixed>>
      */
     public function all(): array
     {
@@ -484,7 +482,7 @@ class FormTranslated implements FormTranslatedInterface, \IteratorAggregate, Cle
     /**
      * Returns the root of the form tree.
      *
-     * @return FormInterface<TData>
+     * @return FormInterface<mixed>
      */
     public function getRoot(): FormInterface
     {

@@ -56,8 +56,10 @@ class FormFactoryExtended implements FormFactoryExtendedInterface
     public function createNamedTranslated(string $name, string $type, ?string $locale = null, mixed $data = null, array $options = []): FormTranslatedInterface
     {
         $builder = $this->createNamedBuilder($name, $type, $data, $options);
+        /** @var FormInterface<mixed> */
+        $form = $builder->getForm();
 
-        return new FormTranslated($builder->getForm(), $this->translator, $this->flashBag, $locale);
+        return new FormTranslated($form, $this->translator, $this->flashBag, $locale);
     }
 
     /**
