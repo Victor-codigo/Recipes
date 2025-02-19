@@ -42,7 +42,9 @@ class RecipeCreateFormDataValidation
     ])]
     #[Assert\Count(
         min: 1,
-        minMessage: 'field.ingredients.msg.error.ingredientsMin'
+        max: 100,
+        minMessage: 'field.ingredients.msg.error.ingredientsMin',
+        maxMessage: 'field.ingredients.msg.error.ingredientsMax'
     )]
     public array $ingredients = [];
 
@@ -58,7 +60,9 @@ class RecipeCreateFormDataValidation
     ])]
     #[Assert\Count(
         min: 1,
-        minMessage: 'field.steps.msg.error.stepsMin'
+        max: 100,
+        minMessage: 'field.steps.msg.error.stepsMin',
+        maxMessage: 'field.steps.msg.error.stepsMax'
     )]
     public array $steps = [];
 
@@ -68,8 +72,8 @@ class RecipeCreateFormDataValidation
         maxWidth: 400,
         minHeight: 200,
         maxHeight: 400,
-        allowLandscape: false,
-        allowPortrait: false,
+        allowLandscape: true,
+        allowPortrait: true,
         mimeTypes: [
             'image/jpeg',
             'image/jpg',
@@ -84,9 +88,13 @@ class RecipeCreateFormDataValidation
     )]
     public ?File $image = null;
 
-    #[Assert\DateTime(
-        format: 'yyyy-mm-dd',
-        message: 'field.steps.preparation_time.error'
+    #[Assert\GreaterThan(
+        value: '1970-01-01 00:00:00',
+        message: 'field.preparation_time.msg.error.greater_than'
+    )]
+    #[Assert\LessThanOrEqual(
+        value: '1970-01-02 00:00:00',
+        message: 'field.preparation_time.msg.error.less_than'
     )]
     public ?\DateTimeImmutable $preparation_time = null;
 

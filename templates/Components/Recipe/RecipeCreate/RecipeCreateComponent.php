@@ -56,7 +56,7 @@ class RecipeCreateComponent extends TwigComponent
         return new DropZoneComponentDto(
             DropZoneComponent::getComponentName(),
             $this->translate('field.image.label'),
-            RECIPE_CREATE_FORM_FIELDS::IMAGE->value,
+            RECIPE_CREATE_FORM_FIELDS::getNameWithForm(RECIPE_CREATE_FORM_FIELDS::IMAGE),
             $this->translate('field.image.placeholder')
         );
     }
