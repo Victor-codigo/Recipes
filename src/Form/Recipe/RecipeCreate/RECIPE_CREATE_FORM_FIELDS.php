@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Form\Recipe\RecipeCreate;
 
-use App\Common\Config;
-
 enum RECIPE_CREATE_FORM_FIELDS: string
 {
     case FORM_NAME = 'recipe_create_form';
-    case CSRF_TOKEN = Config::FORM_TOKEN_FIELD_NAME;
+    case CSRF_TOKEN = 'token';
     case NAME = 'name';
     case DESCRIPTION = 'description';
     case STEPS = 'steps';

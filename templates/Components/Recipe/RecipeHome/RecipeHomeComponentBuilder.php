@@ -34,6 +34,8 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
     private const RECIPE_HOME_LIST_COMPONENT_NAME = 'RecipeHomeListComponent';
     private const RECIPE_HOME_LIST_ITEM_COMPONENT_NAME = 'RecipeHomeListItemComponent';
 
+    private readonly string $appConfigRecipeImageNotImagePublicPath;
+
     private readonly DtoBuilder $builder;
     private readonly HomeSectionComponentDto $homeSectionComponentDto;
     private readonly ModalComponentDto $recipeInfoModalDto;
@@ -41,7 +43,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
     private readonly Collection $recipes;
     private readonly Collection $recipesUsers;
 
-    public function __construct()
+    public function __construct(string $appConfigRecipeImageNotImagePublicPath)
     {
         $this->builder = new DtoBuilder([
             'title',
@@ -56,6 +58,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
             'searchBar',
         ]);
 
+        $this->appConfigRecipeImageNotImagePublicPath = $appConfigRecipeImageNotImagePublicPath;
         $this->homeSectionComponentDto = new HomeSectionComponentDto();
     }
 
@@ -190,7 +193,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
         $this->homeSectionComponentDto->listItems(
             RecipeListItemComponent::getComponentName(),
             $this->createRecipeListItemComponentDto($this->recipes, $this->recipesUsers)->toArray(),
-            Config::RECIPE_IMAGE_NO_IMAGE_PUBLIC_PATH
+            $this->appConfigRecipeImageNotImagePublicPath
         );
         $this->homeSectionComponentDto->display(
             true,

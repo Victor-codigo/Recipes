@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Recipe\RecipeHome;
 
-use App\Common\Config;
 use App\Controller\Exception\UserSessionNotFoundException;
 use App\Controller\Recipe\RecipeCreate\RecipeCreateController;
 use App\Entity\Recipe;
@@ -48,6 +47,8 @@ class RecipeHomeController extends AbstractController
         private RecipeRepository $recipeRepository,
         private RouterInterface $router,
         private FormFactoryInterface $formFactory,
+        private readonly int $appConfigPaginationPageMaxItems,
+        private readonly string $appConfigRecipeImageNotImagePublicPath,
     ) {
     }
 
@@ -110,7 +111,7 @@ class RecipeHomeController extends AbstractController
     {
         try {
             $recipesUsersId = $recipes->map(fn (Recipe $recipe): string => $recipe->getUserId());
-            $users = $this->userRepository->findUsersByIdOrFail($recipesUsersId, 1, Config::PAGINATION_PAGE_MAX_ITEMS);
+            $users = $this->userRepository->findUsersByIdOrFail($recipesUsersId, 1, $this->appConfigPaginationPageMaxItems);
 
             return new ArrayCollection(iterator_to_array($users->getIterator()));
         } catch (\Throwable $th) {
@@ -131,7 +132,7 @@ class RecipeHomeController extends AbstractController
         $formType = $form->getConfig()->getType()->getInnerType();
         $validForm = !empty($messagesOk) || !empty($messagesError);
 
-        return new RecipeHomeComponentBuilder()
+        return new RecipeHomeComponentBuilder($this->appConfigRecipeImageNotImagePublicPath)
             ->title('Page title', 'title path')
             ->validation($validForm)
             ->errors($messagesOk, $messagesError)

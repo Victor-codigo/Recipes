@@ -4,19 +4,17 @@ declare(strict_types=1);
 
 namespace App\Controller\Recipe\RecipeCreate;
 
-use App\Common\Config;
 use App\Controller\Exception\FormDataEmptyException;
-use App\Form\Factory\FormFactoryExtendedInterface;
-use App\Form\Factory\Form\FormTranslated;
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormDataValidation;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormType;
 use App\Service\Recipe\RecipeCreate\RecipeCreateService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use VictorCodigo\SymfonyFormExtended\Factory\FormFactoryExtendedInterface;
+use VictorCodigo\SymfonyFormExtended\Form\FormExtendedInterface;
 
 #[Route(
     name: 'recipe_create',
@@ -34,6 +32,7 @@ class RecipeCreateController extends AbstractController
     public function __construct(
         private RecipeCreateService $recipeCreateService,
         private FormFactoryExtendedInterface $formFactoryExtended,
+        private readonly string $appConfigUserRecipesUploadedPath,
     ) {
     }
 
@@ -42,26 +41,25 @@ class RecipeCreateController extends AbstractController
      */
     public function __invoke(Request $request): Response
     {
-        $form = $this->formFactoryExtended->createNamedTranslated(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class, 'RecipeCreateComponent');
+        $form = $this->formFactoryExtended
+            ->createNamedTranslated(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class)
+            ->handleRequest($request);
 
-        $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->recipeCreate($form);
+            $this->recipeCreate($form, $request);
         }
 
         $form->addFlashMessagesTranslated(self::FORM_FLASH_BAG_MESSAGES_SUCCESS, self::FORM_FLASH_BAG_MESSAGES_ERROR, true);
 
         return $this->redirectToRoute('recipe_home', [
             'page' => 1,
-            'pageItems' => Config::PAGINATION_PAGE_MAX_ITEMS,
+            'pageItems' => $this->appConfigUserRecipesUploadedPath,
         ]);
     }
 
-    /**
-     * @param FormInterface<FormTranslated> $form
-     */
-    private function recipeCreate(FormInterface $form): void
+    private function recipeCreate(FormExtendedInterface $form, Request $request): void
     {
+        $form->uploadFiles($request, $this->appConfigUserRecipesUploadedPath);
         /** @var RecipeCreateFormDataValidation */
         $formData = $form->getData();
 
