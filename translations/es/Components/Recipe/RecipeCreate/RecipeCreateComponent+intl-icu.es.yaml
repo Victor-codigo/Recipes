@@ -1,7 +1,8 @@
 form:
   title: Crea una receta
   validation:
-    ok: Receta creada
+    msg:
+      ok: Receta creada
 
 field:
   name:
@@ -10,16 +11,15 @@ field:
     msg:
       error:
         not_blank: El nombre es obligatorio para la receta
-        min: El número mínimo de caracteres es { nameLettersMin }
-        max: El número máximo de caracteres es { nameCharactersMax }
-        charset: el nombre debe estar compuesto de letras, números, espacios en blanco y "_"
+        min: El número mínimo de caracteres es { limit }. Actualmente { value }
+        max: El número máximo de caracteres es { limit }. Actualmente { value }
 
   description:
     label: Descripción
     placeholder: Añade una descripción para la receta
     msg:
       error:
-        max: El número máximo de caracteres es { descriptionCharactersMax }
+        max: El número máximo de caracteres es { limit }
 
   ingredients:
     label: Ingredientes
@@ -36,8 +36,9 @@ field:
     msg:
       error:
         not_blank: La receta debe contener al menos un ingrediente
-        ingredinetsMin: La receta debe contener al menos un ingrediente
-        max: El número máximo de caracteres es { ingredientsCharactersMax }
+        ingredientsMin: La receta debe contener al menos { limit } ingrediente
+        ingredientsMax: La receta puede contener como máximo { limit } ingredientes
+        max: El numero máximo de caracteres por ingrediente es de { limit }
 
   steps:
     label: Pasos
@@ -54,32 +55,35 @@ field:
     msg:
       error:
         not_blank: La receta debe contener al menos un paso
-        stepsMin: La receta debe contener al menos un paso
-        max: El número máximo de caracteres es { stepsCharactersMax }
+        stepsMin: La receta debe contener al menos { limit } paso
+        stepsMax: La receta puede contener como máximo { limit } pasos
+        max: El numero máximo de caracteres por paso es de { limit }
 
   image:
     label: Imagen
     placeholder: Arrastra o añade una imagen para la receta
     msg:
       error:
-        maxSizeMessage: El tamaño máximo de la imagen es de { imageSizeMax } pixels
-        minWidthMessage: El ancho mínimo de la imagen es de { imageWidthMin } pixels
-        maxWidthMessage: El ancho máximo de la imagen es de { imageWidthMax } pixels
-        minHeightMessage: El alto mínimo de la imagen es de { imageHeightMin } pixels
-        maxHeightMessage: El alto máximo de la imagen es de { imageHeightMax } pixels
-        mimeTypesMessage: "Los tipos de archivo permitidos son: { imageMineTypesAllowed }"
+        maxSizeMessage: El tamaño máximo de la imagen es de { limit } MB
+        minWidthMessage: "El ancho de la imagen es muy pequeño: { width } pixels. El mínimo requerido es de { min_width } pixels"
+        maxWidthMessage: "El ancho de la imagen es demasiado grande: { width } pixels. El máximo requerido es de { max_width } pixels"
+        minHeightMessage: "La altura de la imagen es muy pequeña: { height } pixels. El mínimo requerido es de { min_height } pixels"
+        maxHeightMessage: "La altura de la image es demasiado grande { height } pixels. El máximo requerido es de { max_height } pixels"
+        mimeTypesMessage: "El tipo de archivo de imagen subido { type } no es válido. Los tipos válidos permitidos son: { types }"
 
   preparation_time:
     label: Tiempo de preparación
     msg:
-      error: El tiempo de preparacion no es correcto
+      error:
+        greater_than: El tiempo de preparación, debe ser mayor a 00:00 horas
+        less_than: El tiempo de preparación debe ser menor de 24:00 horas
 
   public:
     label: Pública
-    description: La receta es visible por todo el mundo
+    description: Si la receta es pública, será visible para todos los usuarios
 
   category:
-    label: Categoria
+    label: Categoría
     type:
       no_category: Sin categoría
       breakfast: Desayuno
@@ -101,7 +105,8 @@ field:
       ice_cream: Helado
       meat: Carne
     msg:
-      error: La categoria seleccionada es incorrecta
+      error:
+        wrong_category: "La categoría seleccionada: { value }. Es incorrecta"
 
 buttons:
   close:

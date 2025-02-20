@@ -11,16 +11,15 @@ field:
     msg:
       error:
         not_blank: Name is required for a recipe
-        min: The minimum number of characters is { nameLettersMin }
-        max: The maximum number of characters is { nameCharactersMax }
-        charset: Name can contain letters, numbers, white spaces and "_"
+        min: The minimum number of characters is { limit }. Currently { value }
+        max: The maximum number of characters is { limit }. Currently { value }
 
   description:
     label: Description
     placeholder: Add a description for the recipe
     msg:
       error:
-        max: The maximum number characters is { descriptionCharactersMax }
+        max: The maximum number characters is { limit }
 
   ingredients:
     label: Ingredients
@@ -37,8 +36,9 @@ field:
     msg:
       error:
         not_blank: Recipe must contain at least one ingredient
-        ingredientsMin: Recipe must contain at least one ingredient
-        max: The maximum number of characters is { ingredientsCharactersMax }
+        ingredientsMin: Recipe must contain at least { limit } ingredient
+        ingredientsMax: Recipe must contain at most { limit } ingredients
+        max: The maximum number of characters per ingredient is { limit }
 
   steps:
     label: Steps
@@ -55,29 +55,32 @@ field:
     msg:
       error:
         not_blank: Recipe must contain at least one step
-        stepsMin: Recipe must contain at least one step
-        max: The maximum number of characters is { stepsCharactersMax }
+        stepsMin: Recipe must contain at least { limit } step
+        stepsMax: Recipe must contain at most { limit } steps
+        max: The maximum number of characters per step is { limit }
 
   image:
     label: Image
     placeholder: Drag or add an image for the recipe
     msg:
       error:
-        maxSizeMessage: The maximum size of the image must be { imageSizeMax }.
-        minWidthMessage: The minimum width for the image is { imageWidthMin } pixels
-        maxWidthMessage: The maximum width for the image is { imageWidthMax } pixels
-        minHeightMessage: The minimum height for the image is { imageHeightMin } pixels
-        maxHeightMessage: The maximum height for the image is { imageHeightMax } pixels
-        mimeTypesMessage: "File types allowed are: { imageMineTypesAllowed }"
+        maxSizeMessage: The maximum size of the image must be { limit } MB.
+        minWidthMessage: "The image width is too small: { width } pixels. Minimum width expected is { min_width } pixels"
+        maxWidthMessage: "The image width is too large: { width } pixels. Maximum width expected is { max_width } pixels"
+        minHeightMessage: "The image height is too small: { height } pixels. Minimum width expected is { min_height } pixels"
+        maxHeightMessage: "The image height is too large: { height } pixels. Maximum width expected is { max_height } pixels"
+        mimeTypesMessage: "The type of image file uploaded { type } is invalid. File types allowed are: { types }"
 
   preparation_time:
     label: Preparation time
     msg:
-      error: Preparation time is wrong
+      error:
+        greater_than: Preparation time must be greater than 00:00 hours
+        less_than: Preparation time must be less than 24:00 hours
 
   public:
-    label: "Public"
-    description: The recipe is visible for everybody
+    label: Public
+    description:  If the recipe is public, it will be visible to all users
 
   category:
     label: Category
@@ -102,7 +105,8 @@ field:
       ice_cream: Ice_cream
       meat: Meat
     msg:
-      error: The selected category is wrong
+      error:
+        wrong_category: "The selected category: { value }. It is wrong"
 
 buttons:
   close:
