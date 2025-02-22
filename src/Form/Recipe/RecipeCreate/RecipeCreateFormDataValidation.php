@@ -20,7 +20,6 @@ class RecipeCreateFormDataValidation
         max: 255,
         minMessage: 'field.name.msg.error.min',
         maxMessage: 'field.name.msg.error.max',
-        charsetMessage: 'field.name.msg.error.charset'
     )]
     public string $name;
 
@@ -101,7 +100,7 @@ class RecipeCreateFormDataValidation
     #[Assert\Choice(
         callback: [RECIPE_TYPE::class, 'cases'],
         multiple: false,
-        message: 'field.steps.category.error'
+        message: 'field.steps.category.error.wrong_category'
     )]
     public RECIPE_TYPE $category = RECIPE_TYPE::NO_CATEGORY;
 
