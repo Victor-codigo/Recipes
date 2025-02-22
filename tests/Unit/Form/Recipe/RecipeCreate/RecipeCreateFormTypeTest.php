@@ -8,7 +8,6 @@ use App\Common\RECIPE_TYPE;
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormDataValidation;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormType;
-use App\Tests\Traits\TestingImageUploadTrait;
 use App\Tests\Traits\TestingUserTrait;
 use DateTimeImmutable;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
@@ -32,7 +31,6 @@ use VictorCodigo\UploadFile\Adapter\UploadFileService;
 class RecipeCreateFormTypeTest extends TypeTestCase
 {
     use TestingUserTrait;
-    use TestingImageUploadTrait;
 
     private RecipeCreateFormType $object;
     private FormFactoryExtendedInterface $formFactoryExtended;
@@ -115,7 +113,7 @@ class RecipeCreateFormTypeTest extends TypeTestCase
     public function itShouldValidateAllFieldsFilled(array $formDataSubmitted, array $formDataExpected, bool $expectedIsValid): void
     {
         $formData = new RecipeCreateFormDataValidation();
-        $form = $this->formFactoryExtended->createNamedTranslated(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class, null, $formData);
+        $form = $this->formFactoryExtended->createNamedExtended(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class, null, $formData);
 
         $form->submit($formDataSubmitted);
 
