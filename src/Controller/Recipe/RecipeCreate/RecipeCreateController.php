@@ -10,8 +10,8 @@ use App\Form\Recipe\RecipeCreate\RecipeCreateFormDataValidation;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormType;
 use App\Service\Recipe\RecipeCreate\RecipeCreateService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use VictorCodigo\SymfonyFormExtended\Factory\FormFactoryExtendedInterface;
 use VictorCodigo\SymfonyFormExtended\Form\FormExtendedInterface;
@@ -32,6 +32,7 @@ class RecipeCreateController extends AbstractController
     public function __construct(
         private RecipeCreateService $recipeCreateService,
         private FormFactoryExtendedInterface $formFactoryExtended,
+        private readonly int $appConfigPaginationPageMaxItems,
         private readonly string $appConfigUserRecipesUploadedPath,
     ) {
     }
@@ -39,10 +40,10 @@ class RecipeCreateController extends AbstractController
     /**
      * @throws FormDataEmptyException
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): RedirectResponse
     {
         $form = $this->formFactoryExtended
-            ->createNamedTranslated(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class)
+            ->createNamedExtended(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class)
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -53,7 +54,7 @@ class RecipeCreateController extends AbstractController
 
         return $this->redirectToRoute('recipe_home', [
             'page' => 1,
-            'pageItems' => $this->appConfigUserRecipesUploadedPath,
+            'pageItems' => $this->appConfigPaginationPageMaxItems,
         ]);
     }
 
