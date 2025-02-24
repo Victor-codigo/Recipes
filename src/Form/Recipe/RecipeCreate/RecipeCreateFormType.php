@@ -52,7 +52,10 @@ class RecipeCreateFormType extends FormTypeBase implements FormTypeExtendedInter
                 'input' => 'datetime_immutable',
                 'input_format' => 'hh:mm',
             ])
-            ->add(RECIPE_CREATE_FORM_FIELDS::CATEGORY->value, EnumType::class, ['class' => RECIPE_TYPE::class])
+            ->add(RECIPE_CREATE_FORM_FIELDS::CATEGORY->value, EnumType::class, [
+                'class' => RECIPE_TYPE::class,
+                'empty_data' => RECIPE_TYPE::NO_CATEGORY,
+            ])
             ->add(RECIPE_CREATE_FORM_FIELDS::PUBLIC->value, CheckboxType::class)
             ->add(RECIPE_CREATE_FORM_FIELDS::INGREDIENTS->value, CollectionType::class, ['allow_add' => true, 'trim' => true])
             ->add(RECIPE_CREATE_FORM_FIELDS::STEPS->value, CollectionType::class, ['allow_add' => true, 'trim' => true])

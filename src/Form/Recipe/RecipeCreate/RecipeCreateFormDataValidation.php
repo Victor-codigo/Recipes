@@ -32,6 +32,7 @@ class RecipeCreateFormDataValidation
     /**
      * @var string[]
      */
+    #[Assert\NotNull]
     #[Assert\All([
         new Assert\NotBlank(message: 'field.ingredients.msg.error.not_blank'),
         new Assert\Length(
@@ -50,6 +51,7 @@ class RecipeCreateFormDataValidation
     /**
      * @var string[]
      */
+    #[Assert\NotNull]
     #[Assert\All([
         new Assert\NotBlank(message: 'field.steps.msg.error.not_blank'),
         new Assert\Length(
