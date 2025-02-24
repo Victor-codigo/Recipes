@@ -88,14 +88,14 @@ class RecipeCreateFormTypeTest extends TypeTestCase
 
     /**
      * @param array{
-     *  name: string,
-     *  description: string|null,
-     *  image: UploadedFile|null,
-     *  preparation_time: string|null,
-     *  category: string,
+     *  name?: string,
+     *  description?: string|null,
+     *  image?: UploadedFile|null,
+     *  preparation_time?: string|null,
+     *  category?: string,
      *  public?: string,
-     *  steps: array<int, string>,
-     *  ingredients: array<int, string>
+     *  steps?: array<int, string>,
+     *  ingredients?: array<int, string>
      * } $formDataSubmitted
      * @param array{
      *      name: string,
@@ -114,7 +114,6 @@ class RecipeCreateFormTypeTest extends TypeTestCase
     {
         $formData = new RecipeCreateFormDataValidation();
         $form = $this->formFactoryExtended->createNamedExtended(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class, null, $formData);
-
         $form->submit($formDataSubmitted);
 
         self::assertEquals($expectedIsValid, $form->isValid());

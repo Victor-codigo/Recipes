@@ -17,14 +17,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return iterable<array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -139,6 +139,11 @@ class RecipeCreateFormDataProvider
 
         // CATEGORY
         yield [
+            ...self::recipeCreateFormCategoryIsNull(),
+            'expectedIsValid' => false,
+        ];
+
+        yield [
             ...self::recipeCreateFormCategoryIsWrong(),
             'expectedIsValid' => false,
         ];
@@ -216,14 +221,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -254,14 +259,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -295,14 +300,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -336,14 +341,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -377,14 +382,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -418,14 +423,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -459,14 +464,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -500,14 +505,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -549,14 +554,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -598,14 +603,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -639,14 +644,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -680,14 +685,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -729,14 +734,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -778,14 +783,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -816,14 +821,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -854,14 +859,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -895,14 +900,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -936,14 +941,53 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
+     *      public?: string,
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
+     *  },
+     *  formDataExpected: array{
      *      name: string,
      *      description: string|null,
      *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
-     *      public?: string,
+     *      preparation_time: DateTimeImmutable|null,
+     *      category: RECIPE_TYPE,
+     *      public: bool,
      *      steps: array<int, string>,
      *      ingredients: array<int, string>
+     *  }}
+     */
+    public static function recipeCreateFormCategoryIsNull(): array
+    {
+        $submit = self::recipeCreateFormAllFieldsDefault();
+        unset($submit[RECIPE_CREATE_FORM_FIELDS::CATEGORY->value]);
+
+        $expected = [
+            ...self::recipeCreateFormDataDefault(),
+            RECIPE_CREATE_FORM_FIELDS::PREPARATION_TIME->value => null,
+        ];
+
+        return [
+            'formDataSubmitted' => $submit,
+            'formDataExpected' => $expected,
+        ];
+    }
+
+    /**
+     * @return array{
+     *  formDataSubmitted: array{
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
+     *      public?: string,
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -977,14 +1021,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -1018,14 +1062,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
@@ -1059,14 +1103,14 @@ class RecipeCreateFormDataProvider
     /**
      * @return array{
      *  formDataSubmitted: array{
-     *      name: string,
-     *      description: string|null,
-     *      image: UploadedFile|null,
-     *      preparation_time: string|null,
-     *      category: string,
+     *      name?: string,
+     *      description?: string|null,
+     *      image?: UploadedFile|null,
+     *      preparation_time?: string|null,
+     *      category?: string,
      *      public?: string,
-     *      steps: array<int, string>,
-     *      ingredients: array<int, string>
+     *      steps?: array<int, string>,
+     *      ingredients?: array<int, string>
      *  },
      *  formDataExpected: array{
      *      name: string,
