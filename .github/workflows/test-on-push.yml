@@ -43,9 +43,7 @@ jobs:
       - name: Setting up project for development
         run: |
           docker-compose \
-            --file ./.docker/build/docker-compose.yml \
-            --env-file ./.docker/build/env/.env \
-            exec -u 0 php bash -c "cd /home/developer/Recipes/makefile && make setup-dev"
+            --file ./.docker/build/docker-compose.yml --env-file ./.docker/build/env/.env exec -u 0 php bash -c "cd /home/developer/Recipes/makefile && make setup-dev"
 
       - name: Containers up
         run: |
