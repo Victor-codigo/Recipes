@@ -42,19 +42,12 @@ jobs:
 
       - name: Setting up project for development
         run: |
-          docker-compose \
-            --file ./.docker/build/docker-compose.yml --env-file ./.docker/build/env/.env exec -u 0 php bash -c "cd /home/developer/Recipes/makefile && make setup-dev"
+          docker-compose --file ./.docker/build/docker-compose.yml --env-file ./.docker/build/env/.env exec -u 0 php bash -c "cd ./home/developer/Recipes/makefile && make setup-dev"
 
       - name: Containers up
         run: |
-          docker-compose \
-            --file .docker/build/docker-compose.yml \
-            --env-file .docker/build/env/.env \
-            ps
+          docker-compose --file ./.docker/build/docker-compose.yml --env-file ./.docker/build/env/.env ps
 
       - name: Execute tests
         run: |
-          docker-compose \
-            --file .docker/build/docker-compose.yml \
-            --env-file .docker/build/env/.env \
-            exec -u 0 php bash -c "cd /home/developer/Recipes && bin/phpunit"
+          docker-compose --file ./.docker/build/docker-compose.yml --env-file ./.docker/build/env/.env exec -u 0 php bash -c "cd ./home/developer/Recipes && bin/phpunit"
