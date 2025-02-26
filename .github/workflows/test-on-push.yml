@@ -46,7 +46,9 @@ jobs:
             exec -u 0 php bash -c "whoami \
                                    && ls -la /home/developer \
                                    && ls -la /home/developer/Recipes \
-                                   && cd /home/developer/Recipes \
+                                   && ls -la /usr/src \
+                                   && ls -la /usr/src/Recipes \
+                                   && cd /usr/src/Recipes \
                                    && pwd \
                                    && make setup-test"
             # exec -u 0 php bash -c "cd /home/developer/Recipes && pwd && ls -la && ls -la /home/developer/Recipes && make setup-test"
