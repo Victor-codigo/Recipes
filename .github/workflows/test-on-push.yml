@@ -45,7 +45,7 @@ jobs:
           docker-compose \
             --file ./.docker/build/docker-compose.yml \
             --env-file ./.docker/build/env/.env \
-            exec -u 0 php bash -c "cd /home/developer/Recipes && ls -la && make setup-test"
+            exec -u 0 php bash -c "cd /home/developer/Recipes && pwd && ls -la && ls -la /home/developer/Recipes && make setup-test"
 
       - name: Containers up
         run: |
