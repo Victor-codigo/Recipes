@@ -45,7 +45,16 @@ jobs:
           docker-compose \
             --file ./.docker/build/docker-compose.yml \
             --env-file ./.docker/build/env/.env \
-            exec -u 0 php bash -c "whoami && cd /home/runner/work/Recipes/Recipes && ls -la /home/runner/work/Recipes/Recipes && make setup-test"
+            exec -u 0 php bash -c "whoami \
+                                   && ls -la /home \
+                                   && ls -la /home/runner \
+                                   && ls -la /home/runner/work \
+                                   && ls -la /home/runner/work/Recipes \
+                                   && ls -la /home/runner/work/Recipes/Recipes \
+                                   && ls -la /home/developer \
+                                   && ls -la /home/developer/Recipes \
+                                   && cd /home/developer/Recipes \
+                                   && make setup-test"
             # exec -u 0 php bash -c "cd /home/developer/Recipes && pwd && ls -la && ls -la /home/developer/Recipes && make setup-test"
 
       - name: Containers up
