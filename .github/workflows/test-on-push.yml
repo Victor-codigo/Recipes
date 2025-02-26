@@ -30,7 +30,9 @@ jobs:
         with:
           compose-file: "./.docker/build/docker-compose.yml"
           services: |
+            nginx
             php
+            mysql
             composer
           compose-flags: |
             --env-file ./.docker/build/env/.env
