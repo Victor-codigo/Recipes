@@ -45,8 +45,7 @@ jobs:
             --env-file ./.docker/build/env/.env \
             exec -u 0 php bash -c "whoami \
                                    && ls -la /home \
-                                   && ls -la /home/runner \
-                                   && ls -la /home/runner/work \
+                                   &&  find / -name .php-cs-fixer.dist.php \
                                    && cd /home/runner/work \
                                    && pwd \
                                    && make setup-test"
