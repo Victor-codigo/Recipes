@@ -47,7 +47,7 @@ jobs:
                                    && ls -la /home/developer \
                                    && ls -la /home/developer/Recipes \
                                    && cd /home/developer/Recipes \
-                                   && pwd
+                                   && pwd \
                                    && make setup-test"
             # exec -u 0 php bash -c "cd /home/developer/Recipes && pwd && ls -la && ls -la /home/developer/Recipes && make setup-test"
 
