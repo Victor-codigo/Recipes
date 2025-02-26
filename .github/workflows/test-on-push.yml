@@ -46,7 +46,7 @@ jobs:
             --file ./.docker/build/docker-compose.yml \
             --env-file ./.docker/build/env/.env \
             exec -u 1001 php bash -c "cd ./home/runner/work/Recipes/Recipes \
-                                   && make setup-test"
+                                      && make setup-test"
 
       - name: Containers up
         run: |
@@ -60,4 +60,5 @@ jobs:
           docker-compose \
             --file ./.docker/build/docker-compose.yml \
             --env-file ./.docker/build/env/.env \
-            exec -u 0 php bash -c "cd /home/developer/Recipes && bin/phpunit"
+            exec -u 1001 php bash -c "cd ./home/runner/work/Recipes/Recipes \
+                                      && bin/phpunit"
