@@ -44,10 +44,10 @@ jobs:
             --file ./.docker/build/docker-compose.yml \
             --env-file ./.docker/build/env/.env \
             exec -u 0 php bash -c "whoami \
-                                   && ls -la /home/developer \
-                                   && ls -la /home/developer/Recipes \
-                                   && chmod -R 777 /home/developer/Recipes
-                                   && cd /usr/src/Recipes \
+                                   && ls -la /home \
+                                   && ls -la /home/runner \
+                                   && ls -la /home/runner/work \
+                                   && cd /home/runner/work \
                                    && pwd \
                                    && make setup-test"
             # exec -u 0 php bash -c "cd /home/developer/Recipes && pwd && ls -la && ls -la /home/developer/Recipes && make setup-test"
