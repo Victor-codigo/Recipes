@@ -44,9 +44,8 @@ jobs:
             --file ./.docker/build/docker-compose.yml \
             --env-file ./.docker/build/env/.env \
             exec -u 0 php bash -c "whoami \
-                                   && ls -la /home \
-                                   &&  find / -name .php-cs-fixer.dist.php \
-                                   && cd /home/runner/work \
+                                   && ls -la ./home/runner/work \
+                                   && cd ./home/runner/work \
                                    && pwd \
                                    && make setup-test"
             # exec -u 0 php bash -c "cd /home/developer/Recipes && pwd && ls -la && ls -la /home/developer/Recipes && make setup-test"
