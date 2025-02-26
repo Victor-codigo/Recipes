@@ -45,12 +45,18 @@ jobs:
           docker-compose \
             --file ./.docker/build/docker-compose.yml \
             --env-file ./.docker/build/env/.env \
-            exec -u 0 php bash -c "cd /home/developer/Recipes && make setup-test"
+            USER_ID=1001 GROUP_ID=1002  exec -u 0 php bash -c "cd /home/developer/Recipes && ll && make setup-test"
 
       - name: Containers up
         run: |
-          docker-compose --file ./.docker/build/docker-compose.yml --env-file ./.docker/build/env/.env ps
+          docker-compose \
+            --file ./.docker/build/docker-compose.yml \
+            --env-file ./.docker/build/env/.env \
+            ps
 
       - name: Execute tests
         run: |
-          docker-compose --file ./.docker/build/docker-compose.yml --env-file ./.docker/build/env/.env exec -u 0 php bash -c "cd /home/developer/Recipes && bin/phpunit"
+          docker-compose \
+            --file ./.docker/build/docker-compose.yml \
+            --env-file ./.docker/build/env/.env \
+            exec -u 0 php bash -c "cd /home/developer/Recipes && bin/phpunit"
