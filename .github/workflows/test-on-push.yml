@@ -30,9 +30,9 @@ jobs:
         with:
           compose-file: "./.docker/build/docker-compose.yml"
           services: |
-            nginx
+            # nginx
             php
-            mysql
+            # mysql
             composer
           compose-flags: |
             --env-file ./.docker/build/env/.env
@@ -49,6 +49,7 @@ jobs:
                                    && ls -la /home/developer \
                                    && ls -la /home/developer/Recipes \
                                    && cd /home/developer/Recipes \
+                                   && pwd
                                    && make setup-test"
             # exec -u 0 php bash -c "cd /home/developer/Recipes && pwd && ls -la && ls -la /home/developer/Recipes && make setup-test"
 
