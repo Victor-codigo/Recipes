@@ -32,6 +32,8 @@ jobs:
           services: |
             nginx
             php
+            mysql
+            composer
           compose-flags: |
             --env-file ./.docker/build/env/.env
         env:
