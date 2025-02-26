@@ -12,6 +12,7 @@ use App\Service\Recipe\RecipeCreate\RecipeCreateService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use VictorCodigo\SymfonyFormExtended\Factory\FormFactoryExtendedInterface;
 use VictorCodigo\SymfonyFormExtended\Form\FormExtendedInterface;
@@ -55,7 +56,9 @@ class RecipeCreateController extends AbstractController
         return $this->redirectToRoute('recipe_home', [
             'page' => 1,
             'pageItems' => $this->appConfigPaginationPageMaxItems,
-        ]);
+        ],
+            Response::HTTP_SEE_OTHER
+        );
     }
 
     private function recipeCreate(FormExtendedInterface $form, Request $request): void

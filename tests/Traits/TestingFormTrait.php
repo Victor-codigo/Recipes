@@ -4,88 +4,117 @@ declare(strict_types=1);
 
 namespace App\Tests\Traits;
 
-use App\Tests\Unit\Form\Fixture\FormTypeForTesting;
-use Doctrine\Common\Collections\Collection;
-use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\Form\FormConfigInterface;
-use Symfony\Component\Form\FormError;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\ResolvedFormTypeInterface;
+use App\Common\RECIPE_TYPE;
+use App\Controller\Recipe\RecipeCreate\RecipeCreateController;
+use App\Entity\Recipe;
+use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 trait TestingFormTrait
 {
     /**
-     * @return Collection<int, FormError>
+     * @param array{
+     *      name: string,
+     *      description?: string|null,
+     *      preparation_time?: string|null,
+     *      category: string,
+     *      public?: bool,
+     *      steps: array<int, string>,
+     *      ingredients: array<int, string>
+     * } $formData
      */
-    private function createErrors(): Collection
+    protected function assertRecipeIsSavedInDataBaseAndRemoveImage(array $formData, string $uploadPath, bool $fileUploaded): void
     {
-        return FormTypeForTesting::getFormErrors();
+        /** @var Recipe|null */
+        $recipe = $this->recipeRepository->findOneBy(['name' => $formData[RECIPE_CREATE_FORM_FIELDS::NAME->value]]);
+
+        self::assertNotNull($recipe);
+        self::assertEquals($formData[RECIPE_CREATE_FORM_FIELDS::NAME->value], $recipe->getName());
+        self::assertEquals($formData[RECIPE_CREATE_FORM_FIELDS::DESCRIPTION->value] ?? null, $recipe->getDescription());
+        self::assertEquals(RECIPE_TYPE::tryFrom($formData[RECIPE_CREATE_FORM_FIELDS::CATEGORY->value]), $recipe->getCategory());
+
+        $preparationTime = null;
+        if (isset($formData[RECIPE_CREATE_FORM_FIELDS::PREPARATION_TIME->value])) {
+            $preparationTime = new \DateTimeImmutable('1970-01-01 '.$formData[RECIPE_CREATE_FORM_FIELDS::PREPARATION_TIME->value]);
+        }
+
+        self::assertEquals($preparationTime, $recipe->getPreparationTime());
+        self::assertEquals($formData[RECIPE_CREATE_FORM_FIELDS::PUBLIC->value] ?? false, $recipe->getPublic());
+        self::assertEquals($formData[RECIPE_CREATE_FORM_FIELDS::INGREDIENTS->value], $recipe->getIngredients());
+        self::assertEquals($formData[RECIPE_CREATE_FORM_FIELDS::STEPS->value], $recipe->getSteps());
+
+        if ($fileUploaded) {
+            self::assertNotNull($recipe->getImage());
+            self::assertFileExists("{$uploadPath}/{$recipe->getImage()}");
+        }
+
+        if (!$fileUploaded) {
+            self::assertNull($recipe->getImage());
+        }
+
+        unlink("{$uploadPath}/{$recipe->getImage()}");
     }
 
     /**
-     * Adds to error message the string ".translated".
-     *
-     * @param Collection<int, FormError> $errors
-     * @param FormInterface<mixed>       $form
-     *
-     * @return Collection<int, FormError>
+     * @param array{
+     *      name: string,
+     *      description?: string|null,
+     *      preparation_time?: string|null,
+     *      category: string,
+     *      public?: bool,
+     *      steps: array<int, string>,
+     *      ingredients: array<int, string>
+     * } $formData
      */
-    private function getErrorsTranslated(Collection $errors, FormInterface $form): Collection
+    protected function assertRecipeIsNotSavedInDataBase(array $formData): void
     {
-        return $errors->map(function (FormError $error) use ($form): FormError {
-            $error = new FormError(
-                $error->getMessage().'.translated',
-                $error->getMessageTemplate(),
-                $error->getMessageParameters(),
-                $error->getMessagePluralization(),
-                $error->getCause()
-            );
-            $error->setOrigin($form);
+        $recipe = $this->recipeRepository->findOneBy(['name' => $formData[RECIPE_CREATE_FORM_FIELDS::NAME->value]]);
+        $this->assertNull($recipe);
+    }
 
-            return $error;
-        });
+    protected function assertResponseHasFlashMessageSuccess(): void
+    {
+        /** @var Session */
+        $session = $this->clientAuthenticated->getRequest()->getSession();
+        $this->assertNotEmpty($session->getFlashBag()->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS));
+    }
+
+    protected function assertResponseHasNotFlashMessageSuccess(): void
+    {
+        /** @var Session */
+        $session = $this->clientAuthenticated->getRequest()->getSession();
+        $this->assertEmpty($session->getFlashBag()->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS));
+    }
+
+    protected function assertResponseHasFlashMessageError(): void
+    {
+        /** @var Session */
+        $session = $this->clientAuthenticated->getRequest()->getSession();
+        $this->assertNotEmpty($session->getFlashBag()->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR));
+    }
+
+    protected function assertResponseHasNotFlashMessageError(): void
+    {
+        /** @var Session */
+        $session = $this->clientAuthenticated->getRequest()->getSession();
+        $this->assertEmpty($session->getFlashBag()->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR));
     }
 
     /**
-     * @param FormConfigInterface<object>&MockObject $formConfig
+     * @throws \Exception
      */
-    private function createStubForGetInnerType(FormConfigInterface&MockObject $formConfig, ResolvedFormTypeInterface&MockObject $resolvedFormType, FormTypeForTesting $formType): void
+    protected function getFormCsrfToken(string $formUrl, string $tokenSelector): string
     {
-        $formConfig
-            ->expects($this->any())
-            ->method('getType')
-            ->willReturn($resolvedFormType);
+        $pageCrawler = $this->clientAuthenticated->request('GET', $formUrl);
 
-        $resolvedFormType
-            ->expects($this->any())
-            ->method('getInnerType')
-            ->willReturn($formType);
-    }
+        $csrfToken = $pageCrawler
+            ->filter($tokenSelector)
+            ->attr('value');
 
-    /**
-     * @param Collection<int, FormError> $errors
-     * @param Collection<int, FormError> $errorsTranslated
-     */
-    private function createSubFormMethodTrans(Collection $errors, Collection $errorsTranslated): void
-    {
-        $transInvokeCount = $this->exactly($errors->count());
-        $this->translator
-            ->expects($transInvokeCount)
-            ->method('trans')
-            ->with(
-                self::callback(function (string $message) use ($transInvokeCount, $errors): bool {
-                    self::assertEquals($errors->get($transInvokeCount->numberOfInvocations() - 1)?->getMessage(), $message);
+        if (null === $csrfToken) {
+            throw new \Exception('CSRF token not found');
+        }
 
-                    return true;
-                }),
-                self::callback(function (array $params) use ($transInvokeCount, $errors): bool {
-                    self::assertEquals($errors->get($transInvokeCount->numberOfInvocations() - 1)?->getMessageParameters(), $params);
-
-                    return true;
-                }),
-                self::equalTo(FormTypeForTesting::TRANSLATION_DOMAIN),
-                self::equalTo($this->locale)
-            )
-            ->willReturnCallback(fn (): string => $errorsTranslated->get($transInvokeCount->numberOfInvocations() - 1)?->getMessage() ?: throw new \Exception('Method trans should not return null'));
+        return $csrfToken;
     }
 }

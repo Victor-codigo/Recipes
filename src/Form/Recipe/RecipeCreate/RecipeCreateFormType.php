@@ -29,8 +29,8 @@ use VictorCodigo\SymfonyFormExtended\Type\FormTypeExtendedInterface;
 class RecipeCreateFormType extends FormTypeBase implements FormTypeExtendedInterface
 {
     public const string TRANSLATION_DOMAIN = 'RecipeCreateComponent';
-    protected const string CSRF_TOKEN_ID = 'RecipeCreateForm';
-    protected const string CSRF_TOKEN_NAME = RECIPE_CREATE_FORM_FIELDS::CSRF_TOKEN->value;
+    public const string CSRF_TOKEN_ID = 'RecipeCreateForm';
+    public const string CSRF_TOKEN_NAME = RECIPE_CREATE_FORM_FIELDS::CSRF_TOKEN->value;
 
     public function configureOptions(OptionsResolver $resolver): void
     {
