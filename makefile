@@ -43,9 +43,7 @@ setup-test: ## Sets the application up for testing
 
 	@echo "$(TITLE)Migrating database, dev and test environments$(END)"
 	@echo "$(SEPARATOR)--------------------------------------------$(END)"
-	bin/console doctrine:database:create --if-not-exists --env=dev
 	bin/console doctrine:database:create --if-not-exists --env=test
-	bin/console doctrine:migrations:migrate --no-interaction --env=dev
 	bin/console doctrine:migrations:migrate --no-interaction --env=test
 
 	@echo "$(TITLE)Application ready for development.$(END)"
