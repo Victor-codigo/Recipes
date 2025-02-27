@@ -16,14 +16,6 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
-      - name: Build the backend image with cache
-        uses: docker/build-push-action@v6
-        with:
-          load: true
-          # context: backend
-          # file: backend/Dockerfile.dev
-          cache-from: type=gha,scope=$GITHUB_REF_NAME-backend-dev
-          cache-to: type=gha,scope=$GITHUB_REF_NAME-backend-dev,mode=max
 
       - name: Setting the containers up
         run: |
