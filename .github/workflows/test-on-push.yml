@@ -30,15 +30,13 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
-      - name: Build and push Docker images
+      - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          tags: user/app:latest
-          load: true
           push: true
-          context: .
+          tags: user/app:latest
           cache-from: type=gha
-          cache-to: type=gha,mode=max`
+          cache-to: type=gha,mode=max
 
       - name: "Build containers"
         uses: hoverkraft-tech/compose-action@v2.2.0
