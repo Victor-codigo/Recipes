@@ -14,13 +14,13 @@ jobs:
       - name: "Clone repository"
         uses: actions/checkout@v4
 
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-build-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-build-
+      # - name: Cache Docker layers
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: /tmp/.buildx-cache
+      #     key: ${{ runner.os }}-build-${{ github.sha }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-build-
 
       # Composer cache
       # - name: Get Composer Cache Directory
