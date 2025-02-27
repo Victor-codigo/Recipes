@@ -14,6 +14,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-build-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
       - name: Install docker compose
         uses: ndeloof/install-compose-action@v0.0.1
         with:
@@ -22,11 +30,25 @@ jobs:
 
       - uses: docker/setup-buildx-action@v3
 
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          cache-from: type=gha
+          cache-to: type=gha,mode=max`
 
-      - name: Setting the containers up
-        run: |
-          docker-compose \
-            --file ./.docker/build/docker-compose.yml \
-            --env-file ./.docker/build/env/.env \
-            up -d
+      - name: "Build containers"
+        uses: hoverkraft-tech/compose-action@v2.2.0
+        with:
+          compose-file: "./.docker/build/docker-compose.yml"
+          services: |
+            nginx
+            php
+            mysql
+            composer
+          compose-flags: |
+            --env-file ./.docker/build/env/.env
+        env:
+          USER_ID: 1001
+          GROUP_ID: 1001
 
