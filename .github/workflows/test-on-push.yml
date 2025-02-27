@@ -11,83 +11,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: "Clone repository"
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      - name: Cache Docker layers
-        uses: actions/cache@v2
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build the backend image with cache
+        uses: docker/build-push-action@v6
         with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-build-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-build-
+          load: true
+          # context: backend
+          # file: backend/Dockerfile.dev
+          cache-from: type=gha,scope=$GITHUB_REF_NAME-backend-dev
+          cache-to: type=gha,scope=$GITHUB_REF_NAME-backend-dev,mode=max
 
-      # Composer cache
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
-      - name: Install docker compose
-        uses: ndeloof/install-compose-action@v0.0.1
-        with:
-          version: latest
-          legacy: true
-
-      - name: "Create ssh fake key"
-        run: |
-          mkdir ~/.ssh
-          echo "" > ~/.ssh/id_ed25519
-
-      - name: "Build containers"
-        uses: hoverkraft-tech/compose-action@v2.2.0
-        with:
-          compose-file: "./.docker/build/docker-compose.yml"
-          services: |
-            nginx
-            php
-            mysql
-            composer
-          compose-flags: |
-            --env-file ./.docker/build/env/.env
-        env:
-          USER_ID: 1001
-          GROUP_ID: 1001
-
-      - name: Setting up project for development
+      - name: Setting the containers up
         run: |
           docker-compose \
             --file ./.docker/build/docker-compose.yml \
             --env-file ./.docker/build/env/.env \
-            exec -u 1001 php bash -c "cd ./home/runner/work/Recipes/Recipes \
-                                      && make setup-test"
-
-      - name: Containers up
-        run: |
-          docker-compose \
-            --file ./.docker/build/docker-compose.yml \
-            --env-file ./.docker/build/env/.env \
-            ps
-
-      - name: Execute tests
-        run: |
-          docker-compose \
-            --file ./.docker/build/docker-compose.yml \
-            --env-file ./.docker/build/env/.env \
-            exec -u 1001 php bash -c "cd ./home/runner/work/Recipes/Recipes \
-                                      && bin/phpunit"
+            up -d
 
