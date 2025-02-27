@@ -15,6 +15,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Cache Docker layers
+        id: docker-cache
         uses: actions/cache@v2
         with:
           path: /tmp/.buildx-cache
@@ -22,40 +23,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
 
-      # Composer cache
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-          echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache Composer dependencies
-        uses: actions/cache@v4
-        with:
-          # path: ${{ steps.composer-cache.outputs.dir }}
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Cache node modules
-        uses: actions/cache@v4
-        with:
-          # path: ~/.npm
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
-
       - name: Install docker compose
         uses: ndeloof/install-compose-action@v0.0.1
         with:
           version: latest
           legacy: true
 
-      - name: "Create ssh fake key"
-        run: |
-          mkdir ~/.ssh
-          echo "" > ~/.ssh/id_ed25519
-
       - name: "Build containers"
+        if: steps.docker-cache.outputs.cache-hit != 'true'
         uses: hoverkraft-tech/compose-action@v2.2.0
         with:
           compose-file: "./.docker/build/docker-compose.yml"
