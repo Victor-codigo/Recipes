@@ -32,7 +32,7 @@ jobs:
         uses: actions/cache@v4
         with:
           # path: ${{ steps.composer-cache.outputs.dir }}
-          path: /tmp/.composer/cache
+          path: /tmp/.buildx-cache
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: |
             ${{ runner.os }}-composer-
@@ -41,7 +41,7 @@ jobs:
         uses: actions/cache@v4
         with:
           # path: ~/.npm
-          path: /tmp/.npm
+          path: /tmp/.buildx-cache
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
 
       - name: Install docker compose
