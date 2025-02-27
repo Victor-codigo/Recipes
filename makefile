@@ -46,6 +46,12 @@ setup-test: ## Sets the application up for testing
 	bin/console doctrine:database:create --if-not-exists --env=test
 	bin/console doctrine:migrations:migrate --no-interaction --env=test
 
+	@echo "$(TITLE)Installing node dependencies$(END)"
+	npm install
+
+	@echo "$(TITLE)Compiling js$(END)"
+	npm run dev
+
 	@echo "$(TITLE)Application ready for development.$(END)"
 
 # setup-deploy: ## Sets the application up for production deploy
