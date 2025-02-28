@@ -54,10 +54,12 @@ class RecipeCreateControllerTest extends WebTestCase
      *      ingredients: array<int, string>
      * } $request
      * @param array<string, UploadedFile> $files
+     * @param array<int, string>          $messagesOk
+     * @param array<int, string>          $messagesError
      */
     #[Test]
     #[DataProviderExternal(RecipeCreateFormDataProvider::class, 'dataProvider')]
-    public function itShouldValidateRecipeCreateForm(array $request, array $files, bool $validationOk): void
+    public function itShouldValidateRecipeCreateForm(array $request, array $files, bool $validationOk, array $messagesOk, array $messagesError): void
     {
         $this->clientAuthenticated->request('POST', self::RECIPE_CREATE_URL, [
             RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value => [
@@ -72,11 +74,11 @@ class RecipeCreateControllerTest extends WebTestCase
 
         if ($validationOk) {
             $this->assertRecipeIsSavedInDataBaseAndRemoveImage($request, self::UPLOAD_RECIPES_PATH, !empty($files));
-            $this->assertResponseHasFlashMessageSuccess();
+            $this->assertResponseHasFlashMessageSuccess($messagesOk);
             $this->assertResponseHasNotFlashMessageError();
         } else {
             $this->assertRecipeIsNotSavedInDataBase($request);
-            $this->assertResponseHasFlashMessageError();
+            $this->assertResponseHasFlashMessageError($messagesError);
             $this->assertResponseHasNotFlashMessageSuccess();
         }
     }

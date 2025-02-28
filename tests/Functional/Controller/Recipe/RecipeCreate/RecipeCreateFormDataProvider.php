@@ -24,7 +24,10 @@ class RecipeCreateFormDataProvider
      *          steps?: array<int, string>,
      *          ingredients?: array<int, string>
      *      },
-     *     files: array<string, UploadedFile>
+     *      files: array<string, UploadedFile>,
+     *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }>
      */
     public static function dataProvider(): iterable
@@ -37,7 +40,7 @@ class RecipeCreateFormDataProvider
         yield self::formWithNameTooShort();
         yield self::formWithNameTooLarge();
 
-        // Description
+        // // Description
         yield self::formWithDescriptionTooLarge();
 
         // Preparation time
@@ -47,7 +50,7 @@ class RecipeCreateFormDataProvider
         yield self::formWithPreparationTimeMaximum();
         yield self::formWithPreparationTimeMaximumOut();
 
-        // Category
+        // // Category
         yield self::formWithCategoryNotSet();
         yield self::formWithCategoryWrong();
 
@@ -58,14 +61,14 @@ class RecipeCreateFormDataProvider
         yield self::formWithIngredientsOneOrMoreAreBlank();
         yield self::formWithIngredientsOneOrMoreAreTooLarge();
 
-        // Steps
+        // // Steps
         yield self::formWithStepsNotSet();
         yield self::formWithStepsEmpty();
         yield self::formWithStepsTooMany();
         yield self::formWithStepsOneOrMoreAreBlank();
         yield self::formWithStepsOneOrMoreAreTooLarge();
 
-        // Image
+        // // Image
         yield self::formWithImageValid();
         yield self::formWithImageWidthTooShort();
         yield self::formWithImageWidthTooLarge();
@@ -87,6 +90,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithMinimumData(): array
@@ -104,6 +109,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => true,
+            'messagesOk' => ['form.validation.msg.ok'],
+            'messagesError' => [],
         ];
     }
 
@@ -120,6 +127,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithAllData(): array
@@ -144,6 +153,8 @@ class RecipeCreateFormDataProvider
                 'image' => self::createImagePng(200, 200),
             ],
             'validationOk' => true,
+            'messagesOk' => ['form.validation.msg.ok'],
+            'messagesError' => [],
         ];
     }
 
@@ -159,6 +170,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithNameNotSet(): array
@@ -175,6 +188,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.name.msg.error.not_blank'],
         ];
     }
 
@@ -191,6 +206,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithNameTooShort(): array
@@ -208,6 +225,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.name.msg.error.min'],
         ];
     }
 
@@ -224,6 +243,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithNameTooLarge(): array
@@ -241,6 +262,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.name.msg.error.max'],
         ];
     }
 
@@ -257,6 +280,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithDescriptionTooLarge(): array
@@ -275,6 +300,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.description.msg.error.max'],
         ];
     }
 
@@ -291,6 +318,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithPreparationTimeWrong(): array
@@ -309,6 +338,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['validation.message'],
         ];
     }
 
@@ -325,6 +356,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithPreparationTimeMinimum(): array
@@ -343,6 +376,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => true,
+            'messagesOk' => ['form.validation.msg.ok'],
+            'messagesError' => [],
         ];
     }
 
@@ -359,6 +394,9 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
+     *
      * }
      */
     private static function formWithPreparationTimeMinimumOut(): array
@@ -377,6 +415,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.preparation_time.msg.error.greater_than'],
         ];
     }
 
@@ -393,6 +433,9 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
+     *
      * }
      */
     private static function formWithPreparationTimeMaximum(): array
@@ -411,6 +454,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => true,
+            'messagesOk' => ['form.validation.msg.ok'],
+            'messagesError' => [],
         ];
     }
 
@@ -427,6 +472,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithPreparationTimeMaximumOut(): array
@@ -445,6 +492,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['validation.message'],
         ];
     }
 
@@ -460,6 +509,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithCategoryNotSet(): array
@@ -476,6 +527,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['validation.message'],
         ];
     }
 
@@ -492,6 +545,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithCategoryWrong(): array
@@ -509,6 +564,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['validation.message'],
         ];
     }
 
@@ -524,6 +581,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithIngredientsNotSet(): array
@@ -538,6 +597,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.ingredients.msg.error.ingredientsMin'],
         ];
     }
 
@@ -554,6 +615,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithIngredientsEmpty(): array
@@ -569,6 +632,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.ingredients.msg.error.ingredientsMin'],
         ];
     }
 
@@ -585,6 +650,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithIngredientsTooMany(): array
@@ -600,6 +667,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.ingredients.msg.error.ingredientsMax'],
         ];
     }
 
@@ -616,6 +685,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithIngredientsOneOrMoreAreBlank(): array
@@ -635,6 +706,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.ingredients.msg.error.not_blank'],
         ];
     }
 
@@ -651,6 +724,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithIngredientsOneOrMoreAreTooLarge(): array
@@ -670,6 +745,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.ingredients.msg.error.max'],
         ];
     }
 
@@ -685,6 +762,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithStepsNotSet(): array
@@ -699,6 +778,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.steps.msg.error.stepsMin'],
         ];
     }
 
@@ -715,6 +796,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithStepsEmpty(): array
@@ -730,6 +813,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.steps.msg.error.stepsMin'],
         ];
     }
 
@@ -746,6 +831,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithStepsTooMany(): array
@@ -761,6 +848,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.steps.msg.error.stepsMax'],
         ];
     }
 
@@ -777,6 +866,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithStepsOneOrMoreAreBlank(): array
@@ -796,6 +887,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.steps.msg.error.not_blank'],
         ];
     }
 
@@ -812,6 +905,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithStepsOneOrMoreAreTooLarge(): array
@@ -831,6 +926,8 @@ class RecipeCreateFormDataProvider
             ],
             'files' => [],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.steps.msg.error.max'],
         ];
     }
 
@@ -847,6 +944,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithImageValid(): array
@@ -866,6 +965,8 @@ class RecipeCreateFormDataProvider
                 'image' => self::createImagePng(200, 200),
             ],
             'validationOk' => true,
+            'messagesOk' => ['form.validation.msg.ok'],
+            'messagesError' => [],
         ];
     }
 
@@ -882,6 +983,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithImageWidthTooShort(): array
@@ -901,6 +1004,8 @@ class RecipeCreateFormDataProvider
                 'image' => self::createImagePng(199, 200),
             ],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.image.msg.error.minWidthMessage'],
         ];
     }
 
@@ -917,6 +1022,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithImageWidthTooLarge(): array
@@ -936,6 +1043,8 @@ class RecipeCreateFormDataProvider
                 'image' => self::createImagePng(401, 200),
             ],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.image.msg.error.maxWidthMessage'],
         ];
     }
 
@@ -952,6 +1061,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithImageHeightTooShort(): array
@@ -971,6 +1082,8 @@ class RecipeCreateFormDataProvider
                 'image' => self::createImagePng(200, 199),
             ],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.image.msg.error.minHeightMessage'],
         ];
     }
 
@@ -987,6 +1100,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithImageHeightTooLarge(): array
@@ -1006,6 +1121,8 @@ class RecipeCreateFormDataProvider
                 'image' => self::createImagePng(200, 401),
             ],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.image.msg.error.maxHeightMessage'],
         ];
     }
 
@@ -1022,6 +1139,8 @@ class RecipeCreateFormDataProvider
      *      },
      *      files: array<string, UploadedFile>,
      *      validationOk: bool,
+     *      messagesOk: array<int, string>,
+     *      messagesError: array<int, string>
      * }
      */
     private static function formWithImageMimeTypeWrong(): array
@@ -1041,6 +1160,8 @@ class RecipeCreateFormDataProvider
                 'image' => self::createImageBmp(200, 200),
             ],
             'validationOk' => false,
+            'messagesOk' => [],
+            'messagesError' => ['field.image.msg.error.mimeTypesMessage'],
         ];
     }
 }

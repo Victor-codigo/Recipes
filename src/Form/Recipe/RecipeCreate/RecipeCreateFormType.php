@@ -15,9 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\UX\Dropzone\Form\DropzoneType;
+use VictorCodigo\SymfonyFormExtended\Form\FormMessage;
 use VictorCodigo\SymfonyFormExtended\Type\FormTypeBase;
 use VictorCodigo\SymfonyFormExtended\Type\FormTypeExtendedInterface;
 
@@ -64,13 +64,13 @@ class RecipeCreateFormType extends FormTypeBase implements FormTypeExtendedInter
     }
 
     /**
-     * @return Collection<array-key, FormError>
+     * @return Collection<array-key, FormMessage>
      */
     public function getFormSuccessMessages(): Collection
     {
         $messagesOk = [];
         foreach (RecipeCreateFormDataValidation::FORM_SUCCESS_MESSAGES as $message) {
-            $messagesOk[] = new FormError($message);
+            $messagesOk[] = new FormMessage('', $message, [], null);
         }
 
         return new ArrayCollection($messagesOk);

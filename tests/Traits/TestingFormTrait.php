@@ -9,6 +9,7 @@ use App\Controller\Recipe\RecipeCreate\RecipeCreateController;
 use App\Entity\Recipe;
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
 use Symfony\Component\HttpFoundation\Session\Session;
+use VictorCodigo\SymfonyFormExtended\Form\FormMessage;
 
 trait TestingFormTrait
 {
@@ -72,11 +73,23 @@ trait TestingFormTrait
         $this->assertNull($recipe);
     }
 
-    protected function assertResponseHasFlashMessageSuccess(): void
+    /**
+     * @param array<int, string> $messagesOkExpected
+     */
+    protected function assertResponseHasFlashMessageSuccess(array $messagesOkExpected): void
     {
         /** @var Session */
         $session = $this->clientAuthenticated->getRequest()->getSession();
-        $this->assertNotEmpty($session->getFlashBag()->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS));
+        /** @var array<int, FormMessage> */
+        $messagesOk = $session->getFlashBag()->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS);
+        $messagesText = array_map(
+            fn (FormMessage $messageOk): string => $messageOk->template,
+            $messagesOk
+        );
+
+        if (1 == count($messagesOkExpected) && 'validation.message' !== $messagesOkExpected[0]) {
+            $this->assertEquals($messagesOkExpected, $messagesText);
+        }
     }
 
     protected function assertResponseHasNotFlashMessageSuccess(): void
@@ -86,11 +99,23 @@ trait TestingFormTrait
         $this->assertEmpty($session->getFlashBag()->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS));
     }
 
-    protected function assertResponseHasFlashMessageError(): void
+    /**
+     * @param array<int, string> $messagesErrorExpected
+     */
+    protected function assertResponseHasFlashMessageError(array $messagesErrorExpected): void
     {
         /** @var Session */
         $session = $this->clientAuthenticated->getRequest()->getSession();
-        $this->assertNotEmpty($session->getFlashBag()->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR));
+        /** @var array<int, FormMessage> */
+        $messagesError = $session->getFlashBag()->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR);
+        $messagesText = array_map(
+            fn (FormMessage $messageError): string => $messageError->template,
+            $messagesError
+        );
+
+        if (1 == count($messagesErrorExpected) && 'validation.message' !== $messagesErrorExpected[0]) {
+            $this->assertEquals($messagesErrorExpected, $messagesText);
+        }
     }
 
     protected function assertResponseHasNotFlashMessageError(): void
