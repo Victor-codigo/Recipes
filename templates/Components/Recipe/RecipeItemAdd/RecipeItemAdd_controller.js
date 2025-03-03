@@ -48,7 +48,9 @@ export default class RecipeItemAdd extends Controller {
     itemAdd() {
         const itemTemplate = /** @type {HTMLElement} */ (this.#itemTemplate.content.cloneNode(true));
         const textArea =/** @type {HTMLTextAreaElement|null} */ (itemTemplate.querySelector('[data-js-input-textarea]'));
+        const list = /** @var {HTMLLIElement} */ (itemTemplate.querySelector('[data-js-item-id]'));
 
+        list.dataset.jsItem = Math.random().toString(36).substring(2);
         this.#itemsContainer.append(itemTemplate);
         this.#items.push(/** @type {HTMLElement} */(this.#itemsContainer.lastElementChild));
 
@@ -65,7 +67,7 @@ export default class RecipeItemAdd extends Controller {
             return;
         }
 
-        const itemRemoved = event.target.closest('[data-js-item]');
+        const itemRemoved = event.target.closest('[data-js-item-id]');
         const indexItemToRemove = this.#items.findIndex((item) => item.isEqualNode(itemRemoved));
 
         this.#items.splice(indexItemToRemove, 1);
@@ -97,6 +99,7 @@ export default class RecipeItemAdd extends Controller {
         if (!this.hasItems()) {
             return false;
         }
+        let it = this.#items;
 
         for (const item of this.#items) {
             const inputTag = this.#getInputTag(item);
