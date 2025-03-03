@@ -21,11 +21,11 @@ jobs:
           version: latest
           legacy: true
 
-      - name: Pull the latest images to build
-        run: docker-compose pull
+      # - name: Pull the latest images to build
+      #   run: docker-compose pull
 
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
+      # - uses: satackey/action-docker-layer-caching@v0.0.11
+      #   continue-on-error: true
 
       - name: "Create ssh fake key"
         run: |
