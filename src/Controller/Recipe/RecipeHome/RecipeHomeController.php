@@ -19,15 +19,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use VictorCodigo\SymfonyFormExtended\Factory\FormFactoryExtended;
+use VictorCodigo\SymfonyFormExtended\Form\FormExtendedInterface;
 
 #[Route(
     name: 'recipe_home',
@@ -41,12 +38,15 @@ use Symfony\Component\Security\Core\User\UserInterface;
 )]
 class RecipeHomeController extends AbstractController
 {
+    /**
+     * @param FormFactoryExtended<RecipeCreateFormType> $formFactory
+     */
     public function __construct(
         private Security $security,
         private UserRepository $userRepository,
         private RecipeRepository $recipeRepository,
         private RouterInterface $router,
-        private FormFactoryInterface $formFactory,
+        private FormFactoryExtended $formFactory,
         private readonly int $appConfigPaginationPageMaxItems,
         private readonly string $appConfigRecipeImageNotImagePublicPath,
     ) {
@@ -56,19 +56,15 @@ class RecipeHomeController extends AbstractController
      * @throws DBNotFoundException
      * @throws UserSessionNotFoundException
      */
-    public function __invoke(int $page, int $pageItems, SessionInterface $session): Response
+    public function __invoke(int $page, int $pageItems): Response
     {
         $userSession = $this->getUserSession();
         $recipes = $this->getRecipesFromDb($userSession->getId(), $page, $pageItems);
         $recipesUsers = $this->getRecipesUsersFromDb($recipes);
-        /** @var FormInterface<RecipeCreateFormType> */
-        $recipesCreateForm = $this->formFactory->createNamed(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class);
+        /** @var FormExtendedInterface<RecipeCreateFormType> */
+        $recipesCreateForm = $this->formFactory->createNamedExtended(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class);
 
-        if (!$session instanceof Session) {
-            throw UserSessionNotFoundException::fromMessage('User session not found');
-        }
-
-        return $this->createView($recipesCreateForm, $recipes, $recipesUsers, $session->getFlashBag());
+        return $this->createView($recipesCreateForm, $recipes, $recipesUsers);
     }
 
     /**
@@ -120,13 +116,13 @@ class RecipeHomeController extends AbstractController
     }
 
     /**
-     * @param FormInterface<RecipeCreateFormType> $form
-     * @param Collection<int, Recipe>             $recipes
-     * @param Collection<int, User>               $recipesUsers
-     * @param string[]                            $messagesOk
-     * @param string[]                            $messagesError
+     * @param FormExtendedInterface<RecipeCreateFormType> $form
+     * @param Collection<int, Recipe>                     $recipes
+     * @param Collection<int, User>                       $recipesUsers
+     * @param string[]                                    $messagesOk
+     * @param string[]                                    $messagesError
      */
-    private function createRecipeHomeSectionComponentDto(FormInterface $form, Collection $recipes, Collection $recipesUsers, array $messagesOk, array $messagesError): RecipeHomeSectionComponentDto
+    private function createRecipeHomeSectionComponentDto(FormExtendedInterface $form, Collection $recipes, Collection $recipesUsers, array $messagesOk, array $messagesError): RecipeHomeSectionComponentDto
     {
         /** @var RecipeCreateFormType */
         $formType = $form->getConfig()->getType()->getInnerType();
@@ -154,20 +150,18 @@ class RecipeHomeController extends AbstractController
     }
 
     /**
-     * @param FormInterface<RecipeCreateFormType> $form
-     * @param Collection<int, Recipe>             $recipes
-     * @param Collection<int, User>               $recipesUsers
+     * @param FormExtendedInterface<RecipeCreateFormType> $form
+     * @param Collection<int, Recipe>                     $recipes
+     * @param Collection<int, User>                       $recipesUsers
      */
-    private function createView(FormInterface $form, Collection $recipes, Collection $recipesUsers, FlashBagInterface $flashBagMessages): Response
+    private function createView(FormExtendedInterface $form, Collection $recipes, Collection $recipesUsers): Response
     {
         $recipeHomeSectionComponentDto = $this->createRecipeHomeSectionComponentDto(
             $form,
             $recipes,
             $recipesUsers,
-            // @phpstan-ignore argument.type
-            $flashBagMessages->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS),
-            // @phpstan-ignore argument.type
-            $flashBagMessages->get(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR),
+            $form->getFlashMessages(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS)->toArray(),
+            $form->getFlashMessages(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR)->toArray()
         );
 
         return $this->render('Recipe/Home/index.html.twig', [

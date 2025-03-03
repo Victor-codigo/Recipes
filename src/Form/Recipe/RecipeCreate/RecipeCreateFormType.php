@@ -70,7 +70,7 @@ class RecipeCreateFormType extends FormTypeBase implements FormTypeExtendedInter
     {
         $messagesOk = [];
         foreach (RecipeCreateFormDataValidation::FORM_SUCCESS_MESSAGES as $message) {
-            $messagesOk[] = new FormMessage('', $message, [], null);
+            $messagesOk[] = new FormMessage($message, $message, [], null);
         }
 
         return new ArrayCollection($messagesOk);
