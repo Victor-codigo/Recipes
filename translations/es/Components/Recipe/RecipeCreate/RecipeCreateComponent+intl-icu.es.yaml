@@ -10,6 +10,7 @@ field:
     placeholder: Añade un Nombre para la receta
     msg:
       error:
+        charset: El nombre de la receta debe contener números, letras, "_" y espacios. Además debe contener entre 2 y 255 caracteres
         not_blank: El nombre es obligatorio para la receta
         min: El número mínimo de caracteres es { limit }. Actualmente { value }
         max: El número máximo de caracteres es { limit }. Actualmente { value }

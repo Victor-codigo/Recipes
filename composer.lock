@@ -7823,16 +7823,16 @@
         },
         {
             "name": "victor-codigo/symfony-form-extended",
-            "version": "v1.0.3",
+            "version": "v1.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Victor-codigo/SymfonyFormExtended.git",
-                "reference": "b7c7018da7c47344dd1a6cc8690e45168fd8c1f7"
+                "reference": "5d8f1e9a5cc51433712167cf9622237bc4c108de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Victor-codigo/SymfonyFormExtended/zipball/b7c7018da7c47344dd1a6cc8690e45168fd8c1f7",
-                "reference": "b7c7018da7c47344dd1a6cc8690e45168fd8c1f7",
+                "url": "https://api.github.com/repos/Victor-codigo/SymfonyFormExtended/zipball/5d8f1e9a5cc51433712167cf9622237bc4c108de",
+                "reference": "5d8f1e9a5cc51433712167cf9622237bc4c108de",
                 "shasum": ""
             },
             "require": {
@@ -7869,9 +7869,9 @@
             "description": "Classes to extend symfony form functionality",
             "support": {
                 "issues": "https://github.com/Victor-codigo/SymfonyFormExtended/issues",
-                "source": "https://github.com/Victor-codigo/SymfonyFormExtended/tree/v1.0.3"
+                "source": "https://github.com/Victor-codigo/SymfonyFormExtended/tree/v1.0.4"
             },
-            "time": "2025-02-28T17:53:04+00:00"
+            "time": "2025-03-01T11:44:35+00:00"
         },
         {
             "name": "victor-codigo/upload-file",

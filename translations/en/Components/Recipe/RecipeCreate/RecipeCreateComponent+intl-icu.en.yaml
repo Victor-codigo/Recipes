@@ -10,6 +10,7 @@ field:
     placeholder: Add a recipe name
     msg:
       error:
+        charset: Recipe name must contain numbers, letters, "_" and white spaces. Besides i mus contain between 2 and 255 characters
         not_blank: Name is required for a recipe
         min: The minimum number of characters is { limit }. Currently { value }
         max: The maximum number of characters is { limit }. Currently { value }
