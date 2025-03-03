@@ -5,6 +5,7 @@ on:
     branches:
       - dev
       - Recipes-home
+      - main
 
 jobs:
   execute-tests:
