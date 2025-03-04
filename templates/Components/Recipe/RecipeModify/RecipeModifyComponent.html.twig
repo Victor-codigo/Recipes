@@ -1,0 +1,139 @@
+{% trans_default_domain 'RecipeCreateComponent' %}
+{% set formFields = enum('App\\Form\\Recipe\\RecipeCreate\\RECIPE_CREATE_FORM_FIELDS') %}
+{% set RECIPE_TYPES = enum('App\\Common\\RECIPE_TYPE') %}
+
+<form id="{{ formFields.FORM_NAME.value }}"
+	  name="{{ formFields.FORM_NAME.value }}"
+	  data-controller="RecipeCreateComponent"
+	  data-action="ModalComponent:beforeShowed->RecipeCreateComponent#handleMessageBeforeShowed
+				   RecipeCreateComponent:clear->RecipeCreateComponent#handleMessageClear"
+	  class="contaniner  p-3  p-sm-4  pt-0  create-recipe-form"
+	  action="{{ data.recipeCreateFormActionUrl|escape('html_attr') }}"
+	  method="post"
+	  enctype="multipart/form-data"
+	  novalidate
+	  data-modal-component-content>
+
+	<input type="hidden"
+		   name="{{ formFields.getNameWithForm(formFields.CSRF_TOKEN) }}"
+		   value="{{ data.csrfToken }}" />
+
+	{{ component('TitleComponent', { data: titleDto } ) }}
+
+	<div class="mb-3">
+		<label for="name"
+			   class="form-label">
+			{{ 'field.name.label'|trans }}
+		</label>
+		<input type="text"
+			   class="form-control"
+			   id="name"
+			   maxlength="255"
+			   pattern="[A-Za-zÀ-ÿ0-9_\s]+"
+			   name="{{ formFields.getNameWithForm(formFields.NAME) }}"
+			   placeholder="{{ 'field.name.placeholder'|trans }}"
+			   value="{{ data.name }}"
+			   required/>
+		<div class="invalid-feedback">
+			{{ 'field.name.msg.error.charset'|trans }}
+		</div>
+	</div>
+
+	<div class="mb-3">
+		<label for="description"
+			   class="form-label">
+			{{ 'field.description.label'|trans }}
+		</label>
+		<textarea class="form-control  textarea-fallback"
+				  name="{{ formFields.getNameWithForm(formFields.DESCRIPTION) }}"
+				  id="description"
+				  maxlength="500"
+				  placeholder="{{ 'field.description.placeholder'|trans }}">{{ data.description }}</textarea>
+	</div>
+
+	<div class="mb-3">
+		<label for="preparation_time"
+			   class="form-label">
+			{{ 'field.preparation_time.label'|trans }}
+		</label>
+		<input type="time"
+			   class="form-control"
+			   id="preparation_time"
+			   name="{{ formFields.getNameWithForm(formFields.PREPARATION_TIME) }}"
+			   value="{{ data.preparationTime }}"/>
+	</div>
+
+	<div class="mb-3">
+		<label class="form-label"
+			   for="category">
+			{{ 'field.category.label'|trans }}
+		</label>
+
+		<select class="form-select"
+				name="{{ formFields.getNameWithForm(formFields.CATEGORY) }}"
+				id="category"
+				required>
+
+			{% for recipeType in RECIPE_TYPES.cases() %}
+
+				<option value="{{ recipeType.value }}">
+					{{ "field.category.type.#{ recipeType.value }"|lower|trans }}
+				</option>
+
+			{% endfor %}
+
+		</select>
+	</div>
+
+	<div class="form-chack  mb-3">
+		<input type="checkbox"
+			   class="form-check-input"
+			   id="recipe_public"
+			   name="{{ formFields.getNameWithForm(formFields.PUBLIC) }}"
+			   value="{{ data.public }}"
+			   aria-label=""/>
+
+		<label for="recipe_public"
+			   class="form-label">
+			{{ 'field.public.label'|trans }}
+			<br>
+			<small class="text-secondary">{{ 'field.public.description'|trans }}</small>
+		</label>
+	</div>
+
+	<div class="mb-3">
+		{{ component('DropZoneComponent', { data: imageDto }) }}
+	</div>
+
+	<div class="mb-3">
+		{{ component('RecipeItemAddComponent', { data: ingredientsItemAddDto }) }}
+	</div>
+
+	<div class="mb-3">
+		{{ component('RecipeItemAddComponent', { data: stepsItemAddDto }) }}
+	</div>
+
+	<div class="d-flex  flex-row  mt-5">
+
+		{% block buttons %}
+
+		<button type="button"
+				class="btn  btn-transparent  me-4"
+				data-bs-dismiss="modal">
+
+			{% include "common/arrow-back-icon.svg" %}
+
+			<span class="align-text-top">
+				{{ 'buttons.close.label'|trans }}
+			</span>
+		</button>
+
+		<input type="submit"
+			   class="btn  btn-primary  flex-grow-1"
+			   name="{{ formFields.getNameWithForm(formFields.SUBMIT) }}"
+			   value="{{ 'buttons.recipe_create.label'|trans }}" />
+
+		{% endblock buttons %}
+
+	</div>
+</form>

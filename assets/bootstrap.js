@@ -30,6 +30,7 @@ import HomeListItemComponent from 'App/Templates/Components/HomeSection/HomeList
 import RecipeSectionComponent from 'App/Templates/Components/Recipe/RecipeHome/Home/RecipeHomeSection_controller.js';
 import RecipeListItemComponent from 'App/Templates/Components/Recipe/RecipeHome/ListItem/RecipeListItem_controller.js';
 import RecipeCreateComponent from 'App/Templates/Components/Recipe/RecipeCreate/RecipeCreate_controller.js';
+import RecipeModifyComponent from 'App/Templates/Components/Recipe/RecipeModify/RecipeModify_controller.js';
 import RecipeItemAddComponent from 'App/Templates/Components/Recipe/RecipeItemAdd/RecipeItemAdd_controller.js';
 
 
@@ -57,4 +58,5 @@ app.register('HomeListItemComponent', HomeListItemComponent);
 app.register('RecipeSectionComponent', RecipeSectionComponent);
 app.register('RecipeListItemComponent', RecipeListItemComponent);
 app.register('RecipeCreateComponent', RecipeCreateComponent);
+app.register('RecipeModifyComponent', RecipeModifyComponent);
 app.register('RecipeItemAddComponent', RecipeItemAddComponent);
