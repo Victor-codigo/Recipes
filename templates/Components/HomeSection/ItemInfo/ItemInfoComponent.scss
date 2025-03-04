@@ -1,0 +1,29 @@
+.item-info {
+    &__image {
+        max-width: 120px;
+        max-height: 120px;
+    }
+}
+
+[data-bs-theme="dark"] {
+
+    .item-info__image {
+        max-width: 120px;
+        height: 120px;
+
+        &--svg {
+            background-color: #fff0;
+            filter: invert(100);
+            border: 1px solid $gray-100;
+        }
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .item-info {
+        &__image {
+            max-width: 75px;
+            max-height: 75px;
+        }
+    }
+}

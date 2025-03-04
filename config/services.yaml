@@ -4,21 +4,50 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    # Recipe
+    app.config.recipe.image_no_image_public_path: "images/recipes/recipe-no-image.svg"
+
+    # Pagination
+    app.config.pagination.page_max_items: 100
+
+    # User
+    app.config.user.recipes_uploaded_path: "images/upload/recipe/"
 
 services:
     # default configuration for services in *this* file
     _defaults:
-        autowire: true      # Automatically injects dependencies in your services.
+        autowire: true # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            # Pagination
+            $appConfigPaginationPageMaxItems: "%app.config.pagination.page_max_items%"
+
+            # Recipe
+            $appConfigRecipeImageNotImagePublicPath: "%app.config.recipe.image_no_image_public_path%"
+
+            # User
+            $appConfigUserRecipesUploadedPath: "%app.config.user.recipes_uploaded_path%"
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/'
+        resource: "../src/"
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
+            - "../src/DependencyInjection/"
+            - "../src/Entity/"
+            - "../src/Kernel.php"
+
+    App\Templates\Components\:
+        resource: "../templates/Components/"
+
+    VictorCodigo\DoctrinePaginatorAdapter\:
+        resource: "../vendor/victor-codigo/doctrine-paginator-adapter/src/"
+
+    VictorCodigo\SymfonyFormExtended\:
+        resource: "../vendor/victor-codigo/symfony-form-extended/src/"
+
+    VictorCodigo\UploadFile\:
+        resource: "../vendor/victor-codigo/upload-file/src/"
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

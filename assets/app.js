@@ -1,10 +1,14 @@
-import './bootstrap.js';
-/*
- * Welcome to your app's main JavaScript file!
- *
- * This file will be included onto the page via the importmap() Twig function,
- * which should already be in your base.html.twig.
- */
-import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+
+// any CSS you import will output into a single css file (app.css in this case)
+import './styles/app.scss';
+
+// start the Stimulus application
+import './bootstrap';
+
+import * as bootstrap from 'bootstrap';
+// import * as themeLoader from 'App/ThemeLoader';
+
+// themeLoader.updateThemeButtons();
+
+import 'App/Modules/Recaptcha';

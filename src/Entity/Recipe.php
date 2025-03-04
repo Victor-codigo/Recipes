@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Common\RECIPE_TYPE;
 use App\Repository\RecipeRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -36,8 +37,8 @@ class Recipe
     #[ORM\Column(length: 500, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $preparationTime = null;
+    #[ORM\Column(type: Types::TIME_IMMUTABLE, nullable: true)]
+    private ?\DateTimeImmutable $preparationTime = null;
 
     /**
      * @var string[]
@@ -57,6 +58,9 @@ class Recipe
     #[ORM\Column(nullable: true)]
     private ?int $rating = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $public;
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private \DateTimeInterface $createdOn;
 
@@ -75,11 +79,12 @@ class Recipe
         string $name,
         ?string $category,
         ?string $description,
-        ?\DateTimeInterface $preparationTime,
+        ?\DateTimeImmutable $preparationTime,
         array $ingredients,
         array $steps,
         ?string $image,
         ?int $rating,
+        bool $public,
     ) {
         $this->id = $id;
         $this->user = $user;
@@ -93,6 +98,7 @@ class Recipe
         $this->steps = $steps;
         $this->image = $image;
         $this->rating = $rating;
+        $this->public = $public;
         $this->createdOn = new \DateTimeImmutable();
     }
 
@@ -218,12 +224,12 @@ class Recipe
         return $this;
     }
 
-    public function getPreparationTime(): ?\DateTimeInterface
+    public function getPreparationTime(): ?\DateTimeImmutable
     {
         return $this->preparationTime;
     }
 
-    public function setPreparationTime(?\DateTimeInterface $preparationTime): static
+    public function setPreparationTime(?\DateTimeImmutable $preparationTime): static
     {
         $this->preparationTime = $preparationTime;
 
@@ -242,15 +248,95 @@ class Recipe
         return $this;
     }
 
-    public function getCategory(): ?string
+    public function getCategory(): RECIPE_TYPE
     {
-        return $this->category;
+        if (null === $this->category) {
+            return RECIPE_TYPE::NO_CATEGORY;
+        }
+
+        return RECIPE_TYPE::from($this->category);
     }
 
-    public function setCategory(?string $category): static
+    public function setCategory(RECIPE_TYPE $category): static
     {
-        $this->category = $category;
+        $this->category = null;
+        if (RECIPE_TYPE::NO_CATEGORY !== $category) {
+            $this->category = $category->value;
+        }
 
         return $this;
+    }
+
+    public function setPublic(bool $public): static
+    {
+        $this->public = $public;
+
+        return $this;
+    }
+
+    public function getPublic(): bool
+    {
+        return $this->public;
+    }
+
+    /**
+     * @throws \LogicException
+     */
+    public function toJson(): string
+    {
+        $json = json_encode([
+            'id' => $this->getId(),
+            'userId' => $this->getUserId(),
+            'groupId' => $this->getGroupId(),
+            'name' => $this->getName(),
+            'category' => $this->getCategory(),
+            'description' => $this->getDescription(),
+            'preparationTime' => $this->getPreparationTime(),
+            'ingredients' => $this->getIngredients(),
+            'steps' => $this->getSteps(),
+            'image' => $this->getImage(),
+            'rating' => $this->getRating(),
+            'createdOn' => $this->getCreatedOn(),
+        ]);
+
+        if (false === $json) {
+            throw new \LogicException('It was not possible to create a json from Recipe entity');
+        }
+
+        return $json;
+    }
+
+    /**
+     * @return array{
+     * id: string,
+     * userId: string,
+     * groupId: string|null,
+     * name: string,
+     * category: string|null,
+     * description: string|null,
+     * preparationTime: \DateTimeImmutable|null,
+     * ingredients: string[],
+     * steps: string[],
+     * image: string|null,
+     * rating: int|null,
+     * createdOn: \DateTimeInterface
+     * }
+     */
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'userId' => $this->getUserId(),
+            'groupId' => $this->getGroupId(),
+            'name' => $this->getName(),
+            'category' => $this->getCategory()->value,
+            'description' => $this->getDescription(),
+            'preparationTime' => $this->getPreparationTime(),
+            'ingredients' => $this->getIngredients(),
+            'steps' => $this->getSteps(),
+            'image' => $this->getImage(),
+            'rating' => $this->getRating(),
+            'createdOn' => $this->getCreatedOn(),
+        ];
     }
 }

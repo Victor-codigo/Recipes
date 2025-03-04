@@ -1,0 +1,92 @@
+<section data-controller="HomeSectionComponent"
+		 class="contaniner"
+		 {{data.interactive?'data-interactive':''}}>
+
+	{{ component('TitleComponent', { data: titleDto } ) }}
+
+	{% if lang.validationErrors %}
+	{{ component('AlertValidationComponent', { data: alertValidationComponentDto }) }}
+	{% endif %}
+
+	{% if not searchBarFormDto is empty %}
+
+	{{ component('SearchBarComponent', { data: searchBarFormDto } ) }}
+
+	{% endif %}
+
+	<div class="border  border-0  p-2">
+
+		{% if not data.displayHeaderButtonsHide %}
+
+		<header class="mb-3">
+			<div class="d-flex  flex-row">
+				{% block headerButtonsBlock %}
+
+				{% if not createFormModalDto is empty %}
+
+				<button type="button"
+						class="btn btn-primary  flex-grow-1  rounded-1"
+						title="{{ lang.buttonAddTitle }}"
+						data-bs-toggle="modal"
+						data-bs-target="#{{ createFormModalDto.idAttribute }}"
+						data-js-add-item>
+
+					{% include "common/add-icon.svg" %}
+
+					<span class="align-text-top">{{ lang.buttonAddLabel }}</span>
+				</button>
+
+				{% endif %}
+
+				{% block headerButtonsBetweenBlock %}
+				{% endblock headerButtonsBetweenBlock %}
+
+				{% if not data.removeMultiFormModalDto is empty %}
+
+				<div id="{{ data.removeMultiFormDto.formName }}"
+					 data-remove-items-id-input-name="{{ data.removeMultiFormDto.itemsIdFieldName }}"
+					 data-js-form-remove-many-items
+					 novalidate>
+
+					<button class="btn btn-danger  flex-grow-0  ms-1  ps-4  pe-4  rounded-1  h-100"
+							type="button"
+							name="{{ data.removeMultiFormDto.submitFieldName }}"
+							title="{{ lang.buttonRemoveMultipleTitle }}"
+							data-bs-toggle="modal"
+							data-bs-target="#{{ data.removeMultiFormDto.modalIdAttribute }}"
+							data-action="HomeSectionComponent#sendMessageHomeSectionRemoveMultiToParent"
+							data-js-form-remove-many-items-button>
+
+						{% include "common/remove-icon.svg" %}
+					</button>
+				</div>
+
+				{% endif %}
+
+
+				{% endblock headerButtonsBlock %}
+			</div>
+
+			{% block headerBlock %}
+			{% endblock headerBlock %}
+		</header>
+
+		{% endif %}
+
+		{{ component('HomeListComponent', { data: listComponentDto }) }}
+	</div>
+
+
+	{% if not createFormModalDto is empty %}
+
+	{{ component('ModalComponent', { data: createFormModalDto }) }}
+
+	{% endif %}
+
+	{% if not removeMultiFormModalDto is empty %}
+
+	{{ component('ModalComponent', { data: removeMultiFormModalDto }) }}
+
+	{% endif %}
+
+</section>

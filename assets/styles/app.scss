@@ -1,0 +1,66 @@
+@import '/assets/styles/bootstrap';
+
+@import '/assets/styles/style';
+
+
+// Google recaptcha
+@import '/assets/styles/recaptcha';
+
+// Cookies Consent
+@import '/node_modules/vanilla-cookieconsent/dist/cookieconsent.css';
+
+
+// Landing page
+// @import '/src/Twig/Components/Home/Home/HomePageComponent';
+
+
+// Footer
+// @import '/src/Twig/Components/Common/Footer/FooterComponent';
+
+// Navigation bar
+// @import '/src/Twig/Components/NavigationBar/NavigationBarComponent';
+
+// Info modal
+// @import '/src/Twig/Components/Controls/InfoModal/InfoModalComponent';
+
+// AlertComponent
+@import '/templates/Components/Alert/AlertComponent';
+
+// Avatar
+// @import '/src/Twig/Components/Controls/ImageAvatar/ImageAvatarComponent';
+
+// Notification
+// @import '/src/Twig/Components/Notification/NotificationHome/ListItem/NotificationListItemComponent';
+
+// Profile
+// @import '/src/Twig/Components/User/Profile/ProfileComponent';
+
+// ShopAddComponent
+// @import '/src/Twig/Components/Controls/ItemPriceAdd/ItemPriceAddComponent';
+
+
+// List
+@import '/templates/Components/List/ListComponent';
+
+// Recipe list item
+@import '/templates/Components/Recipe/RecipeHome/ListItem/RecipeListItemComponent';
+
+// Recipe itemAddComponent
+@import '/templates/Components/Recipe/RecipeItemAdd/RecipeItemAddComponent';
+
+// ShopModifyComponent
+// @import '/src/Twig/Components/Shop/ShopModify/ShopModifyComponent';
+
+
+// SearchBar Component
+@import '/templates/Components/HomeSection/SearchBar/SearchBarComponent';
+
+// TextAreaFallback
+@import '/assets/Modules/TextArea/TextAreaFallback';
+
+// RecipeCreateComponent
+@import '/templates/Components/Recipe/RecipeCreate/RecipeCreateComponent';
+
+
+// Error page
+// @import '/src/Twig/page_errors/error';

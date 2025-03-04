@@ -1,0 +1,79 @@
+{% set INPUT_TYPE = enum('App\\Templates\\Components\\Recipe\\RecipeItemAdd\\TYPE_INPUT') %}
+
+<div data-controller="RecipeItemAddComponent"
+     data-action="RecipeItemAddComponent:clear->RecipeItemAddComponent#handleMessageClear"
+     class="d-flex  flex-column"
+     {{ data.componentSelector }}>
+
+     <fieldset class="mt-2">
+        <legend class="mb-3  pb-1  border-bottom"
+                data-js-component-title>
+                {{ data.componentLabel }}
+        </legend>
+
+        <div class="item-add-component  d-flex  flex-column">
+
+            <ol class="w-100  list-group  list-group-flush  list-group-numbered  recipe-item-container"
+                data-js-items-container>
+
+            </ol>
+            <button class="btn btn-primary  rounded-0  rounded-bottom  align-self-end  mt-1"
+                    type="button"
+                    data-action="click->RecipeItemAddComponent#itemAdd"
+                    data-js-button-item-add>
+                {{ data.buttonItemAddLabel }}
+            </button>
+        </div>
+        <div class="invalid-feedback">
+
+            {{ data.componentErrorMsg }}
+
+		</div>
+     </fieldset>
+
+    <template data-js-item-template>
+        <li class="d-flex  flex-row  list-group-item  border-0  ps-0  pe-0"
+            data-js-item-id>
+            <label class="w-100  ps-2">
+                {{ data.itemLabel }}
+
+                <div class="d-flex  flex-row  input-group has-validation">
+
+                    {% if data.inputType == INPUT_TYPE.INPUT %}
+
+                        <input class="form-control  rounded-0  rounded-start"
+                            name="{{ data.itemNameField }}"
+                            placeholder="{{ data.itemPlaceholder }}"
+                            maxlength="255"
+                            required
+                            data-js-input-input>
+
+                    {% endif %}
+
+                    {% if data.inputType == INPUT_TYPE.TEXTAREA %}
+
+                        <textarea class="form-control  rounded-0  rounded-start  textarea-fallback"
+                                name="{{ data.itemNameField }}"
+                                placeholder="{{ data.itemPlaceholder }}"
+                                maxlength="500"
+                                required
+                                data-js-input-textarea></textarea>
+
+                    {% endif %}
+
+                    <button data-action="click->RecipeItemAddComponent#itemRemove"
+                            class="btn btn-danger  h-100  rounded-0  rounded-end"
+                            type="button"
+                            title="{{ data.buttonItemAddTitle }}">
+                        {% include "common/remove-icon.svg" %}
+                    </button>
+                    <div class="invalid-feedback" >
+
+                        {{ data.itemErrorMsg }}
+
+                    </div>
+                </div>
+            </label>
+        </li>
+    </template>
+</div>

@@ -1,0 +1,48 @@
+<form id="{{ formName }}"
+	  name="{{ formName }}"
+	  data-controller="{{ componentName }}"
+	  data-action="ItemRemoveComponent:removeHomeListItem@window->{{ componentName }}#handleMessageRemoveListItem
+	  			   HomeSectionComponent:homeSectionRemoveMulti@window->{{ componentName }}#handleMessageHomeSectionRemoveMulti"
+	  class="contaniner p-3  p-sm-4  pt-0"
+	  method="post"
+	  enctype="multipart/form-data"
+	  action="{{ data.formActionUrl|escape('html_attr') }}"
+	  {{
+	  data.removeMulti
+	  ? 'data-remove-multi'
+	  : ''
+	  }}
+	  novalidate>
+
+	{% block formControls %}
+	{% endblock formControls %}
+
+	<input type="hidden"
+		   name="{{ tokenCsrfFieldName }}"
+		   value="{{ data.csrfToken }}" />
+
+	{{ component('TitleComponent', { data: titleDto } ) }}
+
+	<div class="mt-5  text-wrap  text-center"
+		 data-placeholder="{{ lang.messageAdvice|nl2br }}"
+		 data-js-message>
+	</div>
+
+	<div class="d-flex  flex-row  mt-5">
+		<button type="button"
+				class="btn  btn-transparent  me-2"
+				data-bs-dismiss="modal">
+
+			{% include "common/arrow-back-icon.svg" %}
+
+			<span class="align-text-top">
+				{{ lang.itemCloseButtonLabel }}
+			</span>
+		</button>
+		<input type="submit"
+			   class="btn btn-danger  flex-grow-1"
+			   name="{{ submitFieldName }}"
+			   value="{{ lang.itemRemoveButton }}" />
+
+	</div>
+</form>
