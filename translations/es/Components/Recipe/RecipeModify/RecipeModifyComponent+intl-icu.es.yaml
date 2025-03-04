@@ -1,8 +1,8 @@
 form:
-  title: Crea una receta
+  title: Modifica una receta
   validation:
     msg:
-      ok: Receta creada
+      ok: Receta modificada
 
 field:
   name:
@@ -39,7 +39,7 @@ field:
         not_blank: La receta debe contener al menos un ingrediente
         ingredientsMin: La receta debe contener al menos { limit } ingrediente
         ingredientsMax: La receta puede contener como máximo { limit } ingredientes
-        max: El número máximo de caracteres por ingrediente es de { limit }
+        max: El numero máximo de caracteres por ingrediente es de { limit }
 
   steps:
     label: Pasos
@@ -58,7 +58,7 @@ field:
         not_blank: La receta debe contener al menos un paso
         stepsMin: La receta debe contener al menos { limit } paso
         stepsMax: La receta puede contener como máximo { limit } pasos
-        max: El numero máximo de caracteres por paso es de { limit }
+        max: El número máximo de caracteres por paso es de { limit }
 
   image:
     label: Imagen
@@ -112,5 +112,5 @@ field:
 buttons:
   close:
     label: Cerrar
-  recipe_create:
+  recipe_modify:
     label: Crear
