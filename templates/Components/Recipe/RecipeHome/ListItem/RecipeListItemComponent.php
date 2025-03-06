@@ -33,10 +33,15 @@ final class RecipeListItemComponent extends HomeListItemComponent
     private function parseItemDataToJson(RecipeListItemComponentDto $recipeData): string
     {
         $recipeDataToParse = [
+            'userOwnerName' => $recipeData->userOwnerName,
             'id' => $recipeData->id,
             'name' => $recipeData->name,
-            'userOwnerName' => $recipeData->userOwnerName,
+            'description' => $recipeData->description,
+            'preparation_time' => $recipeData->preparationTime?->format('H:i'),
             'category' => $recipeData->category->value,
+            'public' => $recipeData->public,
+            'ingredients' => $recipeData->ingredients,
+            'steps' => $recipeData->steps,
             'image' => $recipeData->image,
             'rating' => $recipeData->rating,
         ];
