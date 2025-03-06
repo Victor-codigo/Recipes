@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Templates\Components\Recipe\RecipeHome;
 
-use App\Common\Config;
 use App\Common\DtoBuilder\DtoBuilder;
 use App\Common\DtoBuilder\DtoBuilderInterface;
+use App\Common\RECIPE_TYPE;
 use App\Entity\Recipe;
 use App\Entity\User;
 use App\Form\RECIPE_REMOVE_MULTI_FORM_FIELDS;
@@ -20,6 +20,8 @@ use App\Templates\Components\Recipe\RecipeCreate\RecipeCreateComponentDto;
 use App\Templates\Components\Recipe\RecipeHome\Home\RecipeHomeSectionComponentDto;
 use App\Templates\Components\Recipe\RecipeHome\ListItem\RecipeListItemComponent;
 use App\Templates\Components\Recipe\RecipeHome\ListItem\RecipeListItemComponentDto;
+use App\Templates\Components\Recipe\RecipeModify\RecipeModifyComponent;
+use App\Templates\Components\Recipe\RecipeModify\RecipeModifyComponentDto;
 use Doctrine\Common\Collections\Collection;
 
 class RecipeHomeComponentBuilder implements DtoBuilderInterface
@@ -277,26 +279,31 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
 
     private function createRecipeModifyModalDto(string $recipeModifyFormCsrfToken, string $recipeModifyFormActionUrlPlaceholder): ModalComponentDto
     {
-        // $homeModalModify = new RecipeModifyComponentDto(
-        //     [],
-        //     '{name_placeholder}',
-        //     '{address_placeholder}',
-        //     '{description_placeholder}',
-        //     '{image_placeholder}',
-        //     Config::RECIPE_IMAGE_NO_IMAGE_PUBLIC_PATH_200_200,
-        //     $recipeModifyFormCsrfToken,
-        //     false,
-        //     mb_strtolower($recipeModifyFormActionUrlPlaceholder)
-        // );
+        $homeModalModify = new RecipeModifyComponentDto()
+            ->form(
+                $recipeModifyFormCsrfToken,
+                mb_strtolower($recipeModifyFormActionUrlPlaceholder)
+            )
+            ->formFields(
+                '',
+                '',
+                null,
+                [],
+                [],
+                null,
+                null,
+                RECIPE_TYPE::NO_CATEGORY->value,
+                false
+            );
 
-        // return new ModalComponentDto(
-        //     self::RECIPE_MODIFY_MODAL_ID,
-        //     '',
-        //     false,
-        //     RecipeModifyComponent::getComponentName(),
-        //     $homeModalModify,
-        //     []
-        // );
+        return new ModalComponentDto(
+            self::RECIPE_MODIFY_MODAL_ID,
+            '',
+            false,
+            RecipeModifyComponent::getComponentName(),
+            $homeModalModify,
+            []
+        );
 
         return $this->createFakeModalComponentDto();
     }
@@ -352,7 +359,9 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
      */
     private function createRecipeListItemComponentDto(Collection $recipes, Collection $users): Collection
     {
-        return $recipes->map(static function (Recipe $recipeEntity) use ($users): RecipeListItemComponentDto {
+        $appConfigRecipeImageNotImagePublicPath = $this->appConfigRecipeImageNotImagePublicPath;
+
+        return $recipes->map(static function (Recipe $recipeEntity) use ($users, $appConfigRecipeImageNotImagePublicPath): RecipeListItemComponentDto {
             /** @var User|null $recipeUser */
             $recipeUser = $users->findFirst(
                 fn (int $index, User $user): bool => $user->getId() === $recipeEntity->getUserId()
@@ -367,10 +376,15 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
                 $recipeEntity->getId(),
                 $recipeUser->getName(),
                 $recipeEntity->getName(),
+                $recipeEntity->getDescription(),
+                $recipeEntity->getPreparationTime(),
                 $recipeEntity->getCategory(),
-                $recipeEntity->getImage(),
+                $recipeEntity->getPublic(),
+                $recipeEntity->getIngredients(),
+                $recipeEntity->getSteps(),
+                $recipeEntity->getImage() ?? $appConfigRecipeImageNotImagePublicPath,
                 $recipeEntity->getRating(),
-                $recipeEntity->toJson(),
+                // $recipeEntity->toJson(),
                 self::RECIPE_MODIFY_MODAL_ID,
                 self::RECIPE_DELETE_MODAL_ID,
                 self::RECIPE_INFO_MODAL_ID,
