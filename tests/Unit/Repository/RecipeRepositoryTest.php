@@ -62,7 +62,7 @@ class RecipeRepositoryTest extends KernelTestCase
         $pageItems = 10;
         $recipesExpected = $recipesFixtures->filter(fn (Recipe $recipe): bool => $recipe->getUserId() === $user->getId());
 
-        $return = $this->object->getRecipesByUserIdOrFail($user->getId(), null, $page, $pageItems);
+        $return = $this->object->findRecipesByUserIdOrFail($user->getId(), null, $page, $pageItems);
         $recipesReturned = $this->iteratorToCollection($return);
 
         static::assertCount($recipesExpected->count(), $recipesReturned);
@@ -91,7 +91,7 @@ class RecipeRepositoryTest extends KernelTestCase
             ->filter(fn (Recipe $recipe): bool => null !== $recipe->getGroupId())
             ->first() ?: throw new \Exception('Recipe with group is false');
 
-        $return = $this->object->getRecipesByUserIdOrFail($user->getId(), $recipeWithGroup->getGroupId(), $page, $pageItems);
+        $return = $this->object->findRecipesByUserIdOrFail($user->getId(), $recipeWithGroup->getGroupId(), $page, $pageItems);
         $recipesReturned = $this->iteratorToCollection($return);
 
         static::assertCount($recipesExpected->count(), $recipesReturned);
@@ -106,7 +106,29 @@ class RecipeRepositoryTest extends KernelTestCase
         $pageItems = 10;
 
         $this->expectException(DBNotFoundException::class);
-        $this->object->getRecipesByUserIdOrFail($userId, null, $page, $pageItems);
+        $this->object->findRecipesByUserIdOrFail($userId, null, $page, $pageItems);
+    }
+
+    #[Test]
+    public function itShouldFindARecipeById(): void
+    {
+        /** @var Collection<int, Recipe> */
+        $recipesFixtures = $this->getAliceBundleFixturesFilterByType(Recipe::class, [
+            self::USERS_FIXTURES_PATH,
+            self::RECIPES_FIXTURES_PATH,
+            self::DATETIME_FIXTURES_PATH,
+        ]);
+        $recipeExpected = $recipesFixtures->filter(fn (Recipe $recipe): bool => self::RECIPE_1_FIXTURES_ID === $recipe->getId());
+        $return = $this->object->findRecipeByIdOrFail(self::RECIPE_1_FIXTURES_ID);
+
+        $this->assertRecipesAreEqualCanonicalize($recipeExpected, new ArrayCollection([$return]));
+    }
+
+    #[Test]
+    public function itShouldFailFindingARecipeById(): void
+    {
+        $this->expectException(DBNotFoundException::class);
+        $this->object->findRecipeByIdOrFail('wrong recipe id');
     }
 
     #[Test]

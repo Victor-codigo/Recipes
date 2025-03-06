@@ -26,7 +26,7 @@ class RecipeRepository extends RepositoryBase
      *
      * @throws DBNotFoundException
      */
-    public function getRecipesByUserIdOrFail(string $userId, ?string $groupId, int $page, int $pageItems): PaginatorInterface
+    public function findRecipesByUserIdOrFail(string $userId, ?string $groupId, int $page, int $pageItems): PaginatorInterface
     {
         $query = $this->entityManager->createQueryBuilder()
             ->select('recipe')
@@ -44,6 +44,21 @@ class RecipeRepository extends RepositoryBase
         $recipesPaginator = $this->createPaginator($query, $page, $pageItems);
 
         return $recipesPaginator;
+    }
+
+    /**
+     * @throws DBNotFoundException
+     */
+    public function findRecipeByIdOrFail(string $recipeId): Recipe
+    {
+        /** @var Recipe|null */
+        $result = $this->findOneBy(['id' => $recipeId]);
+
+        if (null === $result) {
+            throw DBNotFoundException::fromMessage('Recipe not found');
+        }
+
+        return $result;
     }
 
     /**
