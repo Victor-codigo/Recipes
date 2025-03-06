@@ -7,12 +7,14 @@ namespace App\Templates\Components\Recipe\RecipeModify;
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
 use App\Templates\Components\DropZone\DropZoneComponent;
 use App\Templates\Components\DropZone\DropZoneComponentDto;
+use App\Templates\Components\ImageAvatar\ImageAvatarComponentDto;
 use App\Templates\Components\Recipe\RecipeItemAdd\RecipeItemAddComponentDto;
 use App\Templates\Components\Recipe\RecipeItemAdd\TYPE_INPUT;
 use App\Templates\Components\Title\TITLE_TYPE;
 use App\Templates\Components\Title\TitleComponentDto;
 use App\Templates\Components\TwigComponent;
 use App\Templates\Components\TwigComponentDtoInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent(
@@ -28,8 +30,16 @@ class RecipeModifyComponent extends TwigComponent
 
     public readonly TitleComponentDto $titleDto;
     public readonly DropZoneComponentDto $imageDto;
+    public readonly ImageAvatarComponentDto $imageRecipeAvatarDto;
     public readonly RecipeItemAddComponentDto $ingredientsItemAddDto;
     public readonly RecipeItemAddComponentDto $stepsItemAddDto;
+
+    public function __construct(
+        TranslatorInterface $translator,
+        private readonly string $appConfigRecipeImageNotImagePublicPath,
+    ) {
+        parent::__construct($translator);
+    }
 
     public static function getComponentName(): string
     {
@@ -44,6 +54,7 @@ class RecipeModifyComponent extends TwigComponent
         $this->imageDto = $this->createImageDropZone();
         $this->ingredientsItemAddDto = $this->createIngredientsItemAddDto();
         $this->stepsItemAddDto = $this->createStepsItemAddDto();
+        $this->imageRecipeAvatarDto = $this->createRecipeImageAvatar();
     }
 
     private function createTitleComponentDto(): TitleComponentDto
@@ -101,5 +112,14 @@ class RecipeModifyComponent extends TwigComponent
                 $this->translate('field.steps.button.add.label'),
                 $this->translate('field.steps.button.remove.title')
             );
+    }
+
+    private function createRecipeImageAvatar(): ImageAvatarComponentDto
+    {
+        return new ImageAvatarComponentDto(
+            '',
+            $this->appConfigRecipeImageNotImagePublicPath,
+            $this->translate('field.image.alt')
+        );
     }
 }

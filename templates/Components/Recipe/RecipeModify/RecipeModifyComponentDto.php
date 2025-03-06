@@ -11,6 +11,7 @@ readonly class RecipeModifyComponentDto implements TwigComponentDtoInterface
     public ?string $csrfToken;
     public string $recipeModifyFormActionUrl;
 
+    public string $id;
     public string $name;
     public ?string $description;
     public array $steps;
@@ -29,6 +30,7 @@ readonly class RecipeModifyComponentDto implements TwigComponentDtoInterface
     }
 
     public function formFields(
+        string $id,
         string $name,
         ?string $description,
         array $steps,

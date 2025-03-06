@@ -1,14 +1,16 @@
-{% trans_default_domain 'RecipeCreateComponent' %}
-{% set formFields = enum('App\\Form\\Recipe\\RecipeCreate\\RECIPE_CREATE_FORM_FIELDS') %}
+{% trans_default_domain 'RecipeModifyComponent' %}
+{% set formFields = enum('App\\Form\\Recipe\\RecipeModify\\RECIPE_MODIFY_FORM_FIELDS') %}
 {% set RECIPE_TYPES = enum('App\\Common\\RECIPE_TYPE') %}
 
 <form id="{{ formFields.FORM_NAME.value }}"
 	  name="{{ formFields.FORM_NAME.value }}"
-	  data-controller="RecipeCreateComponent"
-	  data-action="ModalComponent:beforeShowed->RecipeCreateComponent#handleMessageBeforeShowed
-				   RecipeCreateComponent:clear->RecipeCreateComponent#handleMessageClear"
-	  class="contaniner  p-3  p-sm-4  pt-0  create-recipe-form"
-	  action="{{ data.recipeCreateFormActionUrl|escape('html_attr') }}"
+	  data-controller="RecipeModifyComponent"
+	  data-action="ModalComponent:beforeShowed->RecipeModifyComponent#handleMessageBeforeShowed
+				   RecipeModifyComponent:clear->RecipeModifyComponent#handleMessageClear
+				   RecipeModifyComponent:avatarSetImage->ImageAvatarComponent#handleMessageSetImage
+				   RecipeListItemComponent:homeListItemModify@window->RecipeModifyComponent#handleMessageHomeListItemModify"
+	  class="contaniner  p-3  p-sm-4  pt-0  d-flex flex-column"
+	  action="{{ data.recipeModifyFormActionUrl|escape('html_attr') }}"
 	  method="post"
 	  enctype="multipart/form-data"
 	  novalidate
@@ -18,7 +20,21 @@
 		   name="{{ formFields.getNameWithForm(formFields.CSRF_TOKEN) }}"
 		   value="{{ data.csrfToken }}" />
 
+	<input type="hidden"
+		   name="{{ formFields.getNameWithForm(formFields.IMAGE_REMOVE) }}"
+		   data-js-image-remove />
+
+	<input type="hidden"
+		   name="{{ formFields.getNameWithForm(formFields.ID) }}"
+		   data-js-recipe-id />
+
 	{{ component('TitleComponent', { data: titleDto } ) }}
+
+	<div class="mb-4  align-self-center  recipe-modify__image">
+
+		{{ component('ImageAvatarComponent', { data: imageRecipeAvatarDto } ) }}
+
+	</div>
 
 	<div class="mb-3">
 		<label for="name"
@@ -33,6 +49,7 @@
 			   name="{{ formFields.getNameWithForm(formFields.NAME) }}"
 			   placeholder="{{ 'field.name.placeholder'|trans }}"
 			   value="{{ data.name }}"
+			   data-js-recipe-name
 			   required/>
 		<div class="invalid-feedback">
 			{{ 'field.name.msg.error.charset'|trans }}
@@ -48,7 +65,8 @@
 				  name="{{ formFields.getNameWithForm(formFields.DESCRIPTION) }}"
 				  id="description"
 				  maxlength="500"
-				  placeholder="{{ 'field.description.placeholder'|trans }}">{{ data.description }}</textarea>
+				  placeholder="{{ 'field.description.placeholder'|trans }}"
+				  data-js-recipe-description>{{ data.description }}</textarea>
 	</div>
 
 	<div class="mb-3">
@@ -60,7 +78,8 @@
 			   class="form-control"
 			   id="preparation_time"
 			   name="{{ formFields.getNameWithForm(formFields.PREPARATION_TIME) }}"
-			   value="{{ data.preparationTime }}"/>
+			   value="{{ data.preparationTime }}"
+			   data-js-recipe-preparation-time/>
 	</div>
 
 	<div class="mb-3">
@@ -72,7 +91,8 @@
 		<select class="form-select"
 				name="{{ formFields.getNameWithForm(formFields.CATEGORY) }}"
 				id="category"
-				required>
+				required
+				data-js-recipe-category>
 
 			{% for recipeType in RECIPE_TYPES.cases() %}
 
@@ -91,7 +111,8 @@
 			   id="recipe_public"
 			   name="{{ formFields.getNameWithForm(formFields.PUBLIC) }}"
 			   value="{{ data.public }}"
-			   aria-label=""/>
+			   aria-label=""
+			   data-js-recipe-public/>
 
 		<label for="recipe_public"
 			   class="form-label">
@@ -131,7 +152,7 @@
 		<input type="submit"
 			   class="btn  btn-primary  flex-grow-1"
 			   name="{{ formFields.getNameWithForm(formFields.SUBMIT) }}"
-			   value="{{ 'buttons.recipe_create.label'|trans }}" />
+			   value="{{ 'buttons.recipe_modify.label'|trans }}" />
 
 		{% endblock buttons %}
 
