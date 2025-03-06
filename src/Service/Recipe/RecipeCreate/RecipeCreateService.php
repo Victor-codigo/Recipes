@@ -25,12 +25,8 @@ class RecipeCreateService
      */
     public function __invoke(RecipeCreateFormDataValidation $formData, ?string $groupId): void
     {
-        /** @var User|null */
+        /** @var User */
         $userSession = $this->security->getUser();
-
-        if (null === $userSession) {
-            throw RecipeCreateException::fromMessage('User session not found');
-        }
 
         $recipeId = $this->recipeRepository->uuidCreate();
         $recipeEntity = $this->recipeCreateFormDataMapper->toEntity($formData, $userSession, $recipeId, $groupId);

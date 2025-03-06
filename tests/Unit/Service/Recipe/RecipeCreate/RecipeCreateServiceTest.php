@@ -6,7 +6,6 @@ namespace App\Tests\Unit\Service\Recipe\RecipeCreate;
 
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormDataMapper;
 use App\Repository\RecipeRepository;
-use App\Service\Exception\RecipeCreateException;
 use App\Service\Recipe\RecipeCreate\RecipeCreateService;
 use App\Tests\Traits\TestingRecipeTrait;
 use App\Tests\Traits\TestingUserTrait;
@@ -69,33 +68,6 @@ class RecipeCreateServiceTest extends TestCase
             ->method('save')
             ->with($recipe);
 
-        $this->object->__invoke($recipeCreateFormDataValidation, $groupId);
-    }
-
-    #[Test]
-    public function itShouldFailCreatingARecipeUserSessionIsNull(): void
-    {
-        $recipeCreateFormDataValidation = $this->createRecipeFormDataValidation();
-        $groupId = 'recipe group id';
-
-        $this->security
-            ->expects($this->once())
-            ->method('getUser')
-            ->willReturn(null);
-
-        $this->recipeRepository
-            ->expects($this->never())
-            ->method('uuidCreate');
-
-        $this->recipeCreateFormDataMapper
-            ->expects($this->never())
-            ->method('toEntity');
-
-        $this->recipeRepository
-            ->expects($this->never())
-            ->method('save');
-
-        $this->expectException(RecipeCreateException::class);
         $this->object->__invoke($recipeCreateFormDataValidation, $groupId);
     }
 
