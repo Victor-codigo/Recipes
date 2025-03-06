@@ -7,12 +7,16 @@ namespace App\Form\Recipe\RecipeModify;
 use App\Common\RECIPE_TYPE;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Uuid;
 
 class RecipeModifyFormDataValidation
 {
     public const array FORM_SUCCESS_MESSAGES = [
         'form.validation.msg.ok',
     ];
+
+    #[Uuid(versions: Uuid::V4_RANDOM)]
+    public string $id;
 
     #[Assert\NotBlank(message: 'field.name.msg.error.not_blank')]
     #[Assert\Length(
@@ -86,6 +90,9 @@ class RecipeModifyFormDataValidation
         mimeTypesMessage: 'field.image.msg.error.mimeTypesMessage'
     )]
     public ?File $image = null;
+
+    #[Assert\Choice([true, false])]
+    public bool $image_remove = false;
 
     #[Assert\GreaterThan(
         value: '1970-01-01 00:00:00',
