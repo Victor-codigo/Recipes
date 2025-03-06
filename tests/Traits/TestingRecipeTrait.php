@@ -15,6 +15,7 @@ trait TestingRecipeTrait
 {
     use TestingHelperTrait;
     use TestingFixturesTrait;
+    use TestingAliceBundleTrait;
 
     /**
      * @param Collection<array-key, Recipe> $expected
@@ -90,11 +91,11 @@ trait TestingRecipeTrait
     }
 
     /**
-     * @return Collection<int, Recipe>
+     * @return Collection<string, Recipe>
      */
     protected function getRecipesFixtures(): Collection
     {
-        /** @var array<string, Collection<int, Recipe>> */
+        /** @var array<string, Collection<string, Recipe>> */
         $fixtures = $this->getAliceBundleFixturesGroupedByType([
             self::RECIPES_FIXTURES_PATH,
             self::DATETIME_FIXTURES_PATH,
