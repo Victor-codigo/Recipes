@@ -7,6 +7,7 @@ namespace App\Form\Recipe\RecipeModify;
 enum RECIPE_MODIFY_FORM_FIELDS: string
 {
     case FORM_NAME = 'recipe_modify_form';
+    case ID = 'id';
     case CSRF_TOKEN = 'token';
     case NAME = 'name';
     case DESCRIPTION = 'description';
