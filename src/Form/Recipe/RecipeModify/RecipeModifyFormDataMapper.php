@@ -6,32 +6,24 @@ namespace App\Form\Recipe\RecipeModify;
 
 use App\Common\RECIPE_TYPE;
 use App\Entity\Recipe;
-use App\Entity\User;
 use Symfony\Component\HttpFoundation\File\File;
 
 class RecipeModifyFormDataMapper
 {
-    public function toEntity(RecipeModifyFormDataValidation $recipeModifyFormConstraints, User $userSession, string $recipeId, ?string $groupId): Recipe
+    public function mergeToEntity(Recipe $recipeToModify, RecipeModifyFormDataValidation $recipeModifyFormConstraints): void
     {
-        $category = null;
+        $category = RECIPE_TYPE::NO_CATEGORY;
         if (RECIPE_TYPE::NO_CATEGORY !== $recipeModifyFormConstraints->category) {
-            $category = $recipeModifyFormConstraints->category->value;
+            $category = $recipeModifyFormConstraints->category;
         }
-
-        return new Recipe(
-            $recipeId,
-            $userSession,
-            $groupId,
-            $recipeModifyFormConstraints->name,
-            $category,
-            $recipeModifyFormConstraints->description,
-            $recipeModifyFormConstraints->preparation_time,
-            $recipeModifyFormConstraints->ingredients,
-            $recipeModifyFormConstraints->steps,
-            $recipeModifyFormConstraints->image?->getFilename(),
-            null,
-            $recipeModifyFormConstraints->public
-        );
+        $recipeToModify->setName($recipeModifyFormConstraints->name);
+        $recipeToModify->setCategory($category);
+        $recipeToModify->setDescription($recipeModifyFormConstraints->description);
+        $recipeToModify->setPreparationTime($recipeModifyFormConstraints->preparation_time);
+        $recipeToModify->setIngredients($recipeModifyFormConstraints->ingredients);
+        $recipeToModify->setSteps($recipeModifyFormConstraints->steps);
+        $recipeToModify->setImage($recipeModifyFormConstraints->image_remove ? null : $recipeModifyFormConstraints->image?->getFilename());
+        $recipeToModify->setPublic($recipeModifyFormConstraints->public);
     }
 
     public function toForm(Recipe $recipe): RecipeModifyFormDataValidation
@@ -42,6 +34,7 @@ class RecipeModifyFormDataMapper
         }
 
         $recipeModifyFormDataValidation = new RecipeModifyFormDataValidation();
+        $recipeModifyFormDataValidation->id = $recipe->getId();
         $recipeModifyFormDataValidation->name = $recipe->getName();
         $recipeModifyFormDataValidation->description = $recipe->getDescription();
         $recipeModifyFormDataValidation->ingredients = $recipe->getIngredients();
