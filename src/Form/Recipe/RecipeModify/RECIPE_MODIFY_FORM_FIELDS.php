@@ -13,6 +13,7 @@ enum RECIPE_MODIFY_FORM_FIELDS: string
     case STEPS = 'steps';
     case INGREDIENTS = 'ingredients';
     case IMAGE = 'image';
+    case IMAGE_REMOVE = 'image_remove';
     case PREPARATION_TIME = 'preparation_time';
     case CATEGORY = 'category';
     case PUBLIC = 'public';
