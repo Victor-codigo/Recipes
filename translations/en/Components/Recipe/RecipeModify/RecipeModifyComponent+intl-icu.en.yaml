@@ -63,6 +63,7 @@ field:
   image:
     label: Image
     placeholder: Drag or add an image for the recipe
+    alt: Recipe image
     msg:
       error:
         maxSizeMessage: The maximum size of the image must be { limit } MB.

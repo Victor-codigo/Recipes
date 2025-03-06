@@ -63,6 +63,7 @@ field:
   image:
     label: Imagen
     placeholder: Arrastra o añade una imagen para la receta
+    alt: Imagen de la receta
     msg:
       error:
         maxSizeMessage: El tamaño máximo de la imagen es de { limit } MB
