@@ -15,6 +15,9 @@ import ModalComponent from 'App/Templates/Components/Modal/Modal_Component.js';
 // DROP ZONE COMPONENT
 import DropZoneComponent from 'App/Templates/Components/DropZone/DropZone_Component.js';
 
+// IMAGE AVATAR
+import ImageAvatarComponent from 'App/Templates/Components/ImageAvatar/ImageAvatar_Component.js';
+
 // PAGINATION COMPONENT
 import PaginatorComponent from 'App/Templates/Components/Paginator/Paginator_Component.js';
 
@@ -42,6 +45,9 @@ app.register('ModalComponent', ModalComponent);
 
 // DROP ZONE COMPONENT
 app.register('DropZoneComponent', DropZoneComponent);
+
+// IMAGE AVATAR
+app.register('ImageAvatarComponent', ImageAvatarComponent);
 
 // PAGINATION COMPONENT
 app.register('PaginatorComponent', PaginatorComponent);
