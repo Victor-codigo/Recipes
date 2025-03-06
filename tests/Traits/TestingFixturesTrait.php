@@ -11,4 +11,5 @@ trait TestingFixturesTrait
     protected const string USERS_FIXTURES_PATH = 'tests/Fixtures/Database/Users.yml';
 
     protected const string USER_1_FIXTURES_ID = 'a9fee148-7b07-4c3e-8f8c-3cf8225a9bf6';
+    protected const string RECIPE_1_FIXTURES_ID = 'a5b729af-30a5-4a9d-aa62-2ead180cc204';
 }
