@@ -14,7 +14,6 @@ use App\Repository\RecipeRepository;
 use App\Service\Exception\RecipeModifyException;
 use App\Service\Recipe\RecipeModify\RecipeModifyService;
 use App\Tests\Traits\TestingAliceBundleTrait;
-use App\Tests\Traits\TestingDoctrineTrait;
 use App\Tests\Traits\TestingFixturesTrait;
 use App\Tests\Traits\TestingRecipeTrait;
 use PHPUnit\Framework\Attributes\Test;
@@ -26,7 +25,6 @@ class RecipeModifyServiceTest extends TestCase
     use TestingAliceBundleTrait;
     use TestingRecipeTrait;
     use TestingFixturesTrait;
-    use TestingDoctrineTrait;
 
     private RecipeModifyService $object;
     private RecipeRepository&MockObject $recipeRepository;
