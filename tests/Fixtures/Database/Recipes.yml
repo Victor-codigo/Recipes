@@ -121,3 +121,27 @@ App\Entity\Recipe:
       image: null
       rating: 5
       public: false
+  recipe_6:
+    __construct:
+      id: "24778697-696c-4466-bd3d-404bbe000ed0"
+      user: "@user_1"
+      groupId: "8ff7041c-85b8-4f42-b4ce-4935f7fb5d73"
+      name: "recipe_6 name"
+      category: "DINNER"
+      preparationTime: "@preparationTime_5"
+      description: "recipe_6 description"
+      ingredients: |
+        [
+          "recipe 6 ingredient 1",
+          "recipe 6 ingredient 2",
+          "recipe 6 ingredient 3"
+        ]
+      steps: |
+        [
+          "recipe 6 step 1",
+          "recipe 6 step 2",
+          "recipe 6 step 3"
+        ]
+      image: "image.png"
+      rating: 6
+      public: false
