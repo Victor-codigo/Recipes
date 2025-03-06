@@ -45,14 +45,18 @@ export default class RecipeItemAdd extends Controller {
         this.setIsValidStyles(isValid);
     }
 
-    itemAdd() {
+    /**
+     * @param {string|null} value
+     */
+    itemAdd(value) {
         const itemTemplate = /** @type {HTMLElement} */ (this.#itemTemplate.content.cloneNode(true));
         const textArea =/** @type {HTMLTextAreaElement|null} */ (itemTemplate.querySelector('[data-js-input-textarea]'));
-        const list = /** @var {HTMLLIElement} */ (itemTemplate.querySelector('[data-js-item-id]'));
+        const list = /** @type {HTMLLIElement} */ (itemTemplate.querySelector('[data-js-item-id]'));
 
         list.dataset.jsItem = Math.random().toString(36).substring(2);
         this.#itemsContainer.append(itemTemplate);
         this.#items.push(/** @type {HTMLElement} */(this.#itemsContainer.lastElementChild));
+        this.#getInputTag(/** @type {HTMLElement} */ (this.#itemsContainer.lastElementChild)).value = value;
 
         if (textArea !== null) {
             new TextAreaFallback(textArea);
@@ -154,5 +158,15 @@ export default class RecipeItemAdd extends Controller {
 
     handleMessageClear() {
         this.#clear();
+    }
+
+    /**
+     * @param {object} event
+     * @param {object} event.detail
+     * @param {object} event.detail.content
+     * @param {object} event.detail.content.value
+     */
+    handleMessageItemAdd({ detail: { content } }) {
+        this.itemAdd(content.value);
     }
 }

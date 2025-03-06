@@ -1,7 +1,8 @@
 {% set INPUT_TYPE = enum('App\\Templates\\Components\\Recipe\\RecipeItemAdd\\TYPE_INPUT') %}
 
 <div data-controller="RecipeItemAddComponent"
-     data-action="RecipeItemAddComponent:clear->RecipeItemAddComponent#handleMessageClear"
+     data-action="RecipeItemAddComponent:clear->RecipeItemAddComponent#handleMessageClear
+                  RecipeItemAddComponent:itemAdd->RecipeItemAddComponent#handleMessageItemAdd"
      class="d-flex  flex-column"
      {{ data.componentSelector }}>
 
