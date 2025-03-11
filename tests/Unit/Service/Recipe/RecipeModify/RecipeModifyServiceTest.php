@@ -15,26 +15,44 @@ use App\Service\Exception\RecipeModifyException;
 use App\Service\Recipe\RecipeModify\RecipeModifyService;
 use App\Tests\Traits\TestingAliceBundleTrait;
 use App\Tests\Traits\TestingFixturesTrait;
+use App\Tests\Traits\TestingImageTrait;
 use App\Tests\Traits\TestingRecipeTrait;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use VictorCodigo\SymfonyFormExtended\Form\FormExtendedInterface;
 
-class RecipeModifyServiceTest extends TestCase
+class RecipeModifyServiceTest extends TypeTestCase
 {
     use TestingAliceBundleTrait;
     use TestingRecipeTrait;
     use TestingFixturesTrait;
+    use TestingImageTrait;
+
+    private const string UPLOAD_RECIPES_PATH = 'public/images/upload/recipe';
 
     private RecipeModifyService $object;
     private RecipeRepository&MockObject $recipeRepository;
+    private Filesystem&MockObject $filesystem;
+    private Request&MockObject $request;
+    private FormExtendedInterface&MockObject $formExtended;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->request = $this->createMock(Request::class);
+        $this->formExtended = $this->createMock(FormExtendedInterface::class);
         $this->recipeRepository = $this->createMock(RecipeRepository::class);
-        $this->object = new RecipeModifyService($this->recipeRepository, new RecipeModifyFormDataMapper());
+        $this->filesystem = $this->createMock(Filesystem::class);
+        $this->object = new RecipeModifyService(
+            $this->recipeRepository,
+            new RecipeModifyFormDataMapper(),
+            $this->filesystem,
+            self::UPLOAD_RECIPES_PATH
+        );
     }
 
     protected function createRecipeFormDataValidationWithId(string $id): RecipeModifyFormDataValidation
@@ -56,7 +74,7 @@ class RecipeModifyServiceTest extends TestCase
             '4. Add the potatoes to the cooked vegetables and cook for 30 minutes.',
         ];
         $recipeFormValidationData->image = null;
-        $recipeFormValidationData->image_remove = true;
+        $recipeFormValidationData->image_remove = false;
         $recipeFormValidationData->preparation_time = new \DateTimeImmutable('2025-02-01 12:00:00');
         $recipeFormValidationData->category = RECIPE_TYPE::BREAKFAST;
         $recipeFormValidationData->public = false;
@@ -88,10 +106,20 @@ class RecipeModifyServiceTest extends TestCase
         $formData = $this->createRecipeFormDataValidationWithId('recipe id');
         $recipe = $this->getRecipesFixtures()->first();
 
+        $this->formExtended
+            ->expects($this->exactly(2))
+            ->method('getData')
+            ->willReturn($formData);
+
+        $this->formExtended
+            ->expects($this->once())
+            ->method('uploadFiles')
+            ->with($this->request, self::UPLOAD_RECIPES_PATH, []);
+
         $this->recipeRepository
             ->expects($this->once())
-            ->method('findRecipeByIdOrFail')
-            ->with($formData->id)
+            ->method('findRecipeByIdAndGroupIdOrFail')
+            ->with($formData->id, null)
             ->willReturn($recipe);
 
         $this->recipeRepository
@@ -99,7 +127,119 @@ class RecipeModifyServiceTest extends TestCase
             ->method('save')
             ->with($recipe);
 
-        $this->object->__invoke($formData);
+        $this->object->__invoke($this->request, $this->formExtended, null);
+    }
+
+    #[Test]
+    public function itShouldModifyASavedRecipeWithUploadImage2(): void
+    {
+        $formData = $this->createRecipeFormDataValidationWithId('recipe id');
+        $formData->image = $this->createImagePng(200, 200);
+        $formData->image_remove = false;
+        /** @var Recipe */
+        $recipe = $this->getRecipesFixtures()->first();
+
+        $this->formExtended
+            ->expects($this->exactly(2))
+            ->method('getData')
+            ->willReturn($formData);
+
+        $this->formExtended
+            ->expects($this->once())
+            ->method('uploadFiles')
+            ->with($this->request, self::UPLOAD_RECIPES_PATH, []);
+
+        $this->recipeRepository
+            ->expects($this->once())
+            ->method('findRecipeByIdAndGroupIdOrFail')
+            ->with($formData->id, null)
+            ->willReturn($recipe);
+
+        $this->recipeRepository
+            ->expects($this->once())
+            ->method('save')
+            ->with($recipe);
+
+        $this->object->__invoke($this->request, $this->formExtended, null);
+    }
+
+    #[Test]
+    public function itShouldModifyASavedRecipeWithUploadImageRecipeAlreadyHasImage(): void
+    {
+        $formData = $this->createRecipeFormDataValidationWithId('recipe id');
+        $formData->image = $this->createImagePng(200, 200);
+        $formData->image_remove = false;
+        /** @var Recipe */
+        $recipe = $this->getRecipesFixtures()->first();
+        $recipeImage = $this->createImagePng(200, 200);
+        $imageUploaded = $recipeImage->move(self::UPLOAD_RECIPES_PATH);
+        $recipe->setImage($imageUploaded->getFilename());
+
+        $this->formExtended
+            ->expects($this->exactly(2))
+            ->method('getData')
+            ->willReturn($formData);
+
+        $this->formExtended
+            ->expects($this->once())
+            ->method('uploadFiles')
+            ->with($this->request, self::UPLOAD_RECIPES_PATH, [$recipeImage->getFilename()]);
+
+        $this->recipeRepository
+            ->expects($this->once())
+            ->method('findRecipeByIdAndGroupIdOrFail')
+            ->with($formData->id, null)
+            ->willReturn($recipe);
+
+        $this->recipeRepository
+            ->expects($this->once())
+            ->method('save')
+            ->with($recipe);
+
+        $this->object->__invoke($this->request, $this->formExtended, null);
+
+        unlink(self::UPLOAD_RECIPES_PATH."/{$imageUploaded->getFilename()}");
+    }
+
+    #[Test]
+    public function itShouldModifyASavedRecipeWithRemoveImage(): void
+    {
+        $formData = $this->createRecipeFormDataValidationWithId('recipe id');
+        $formData->image_remove = true;
+        /** @var Recipe */
+        $recipe = $this->getRecipesFixtures()->first();
+        $recipeImage = $this->createImagePng(200, 200);
+        $imageUploaded = $recipeImage->move(self::UPLOAD_RECIPES_PATH);
+        $recipe->setImage($imageUploaded->getFilename());
+
+        $this->formExtended
+            ->expects($this->exactly(2))
+            ->method('getData')
+            ->willReturn($formData);
+
+        $this->formExtended
+            ->expects($this->never())
+            ->method('uploadFiles');
+
+        $this->filesystem
+            ->expects($this->once())
+            ->method('remove')
+            ->with(self::UPLOAD_RECIPES_PATH."/{$recipe->getImage()}");
+
+        $this->recipeRepository
+            ->expects($this->once())
+            ->method('findRecipeByIdAndGroupIdOrFail')
+            ->with($formData->id, null)
+            ->willReturn($recipe);
+
+        $this->recipeRepository
+            ->expects($this->once())
+            ->method('save')
+            ->with($recipe);
+
+        $this->object->__invoke($this->request, $this->formExtended, null);
+
+        unlink(self::UPLOAD_RECIPES_PATH."/{$imageUploaded->getFilename()}");
     }
 
     #[Test]
@@ -107,10 +247,15 @@ class RecipeModifyServiceTest extends TestCase
     {
         $formData = $this->createRecipeFormDataValidationWithId('recipe id');
 
+        $this->formExtended
+            ->expects($this->once())
+            ->method('getData')
+            ->willReturn($formData);
+
         $this->recipeRepository
             ->expects($this->once())
-            ->method('findRecipeByIdOrFail')
-            ->with($formData->id)
+            ->method('findRecipeByIdAndGroupIdOrFail')
+            ->with($formData->id, null)
             ->willThrowException(DBNotFoundException::fromMessage('recipe not found'));
 
         $this->recipeRepository
@@ -118,7 +263,7 @@ class RecipeModifyServiceTest extends TestCase
             ->method('save');
 
         $this->expectException(RecipeModifyException::class);
-        $this->object->__invoke($formData);
+        $this->object->__invoke($this->request, $this->formExtended, null);
     }
 
     #[Test]
@@ -127,10 +272,20 @@ class RecipeModifyServiceTest extends TestCase
         $formData = $this->createRecipeFormDataValidationWithId('recipe id');
         $recipe = $this->getRecipesFixtures()->first();
 
+        $this->formExtended
+            ->expects($this->exactly(2))
+            ->method('getData')
+            ->willReturn($formData);
+
+        $this->formExtended
+            ->expects($this->once())
+            ->method('uploadFiles')
+            ->with($this->request, self::UPLOAD_RECIPES_PATH, []);
+
         $this->recipeRepository
             ->expects($this->once())
-            ->method('findRecipeByIdOrFail')
-            ->with($formData->id)
+            ->method('findRecipeByIdAndGroupIdOrFail')
+            ->with($formData->id, null)
             ->willReturn($recipe);
 
         $this->recipeRepository
@@ -140,6 +295,6 @@ class RecipeModifyServiceTest extends TestCase
             ->willThrowException(new \Exception());
 
         $this->expectException(RecipeModifyException::class);
-        $this->object->__invoke($formData);
+        $this->object->__invoke($this->request, $this->formExtended, null);
     }
 }
