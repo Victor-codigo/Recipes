@@ -40,7 +40,7 @@ class RecipeCreateFormDataProvider
         yield self::formWithNameTooShort();
         yield self::formWithNameTooLarge();
 
-        // // Description
+        // Description
         yield self::formWithDescriptionTooLarge();
 
         // Preparation time
@@ -50,7 +50,7 @@ class RecipeCreateFormDataProvider
         yield self::formWithPreparationTimeMaximum();
         yield self::formWithPreparationTimeMaximumOut();
 
-        // // Category
+        // Category
         yield self::formWithCategoryNotSet();
         yield self::formWithCategoryWrong();
 
@@ -61,14 +61,14 @@ class RecipeCreateFormDataProvider
         yield self::formWithIngredientsOneOrMoreAreBlank();
         yield self::formWithIngredientsOneOrMoreAreTooLarge();
 
-        // // Steps
+        // Steps
         yield self::formWithStepsNotSet();
         yield self::formWithStepsEmpty();
         yield self::formWithStepsTooMany();
         yield self::formWithStepsOneOrMoreAreBlank();
         yield self::formWithStepsOneOrMoreAreTooLarge();
 
-        // // Image
+        // Image
         yield self::formWithImageValid();
         yield self::formWithImageWidthTooShort();
         yield self::formWithImageWidthTooLarge();
