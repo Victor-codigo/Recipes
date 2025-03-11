@@ -16,6 +16,7 @@ class RecipeModifyFormDataMapper
         if (RECIPE_TYPE::NO_CATEGORY !== $recipeModifyFormConstraints->category) {
             $category = $recipeModifyFormConstraints->category;
         }
+
         $recipeToModify->setName($recipeModifyFormConstraints->name);
         $recipeToModify->setCategory($category);
         $recipeToModify->setDescription($recipeModifyFormConstraints->description);

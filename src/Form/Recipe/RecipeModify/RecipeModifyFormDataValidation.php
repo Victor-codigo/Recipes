@@ -7,7 +7,6 @@ namespace App\Form\Recipe\RecipeModify;
 use App\Common\RECIPE_TYPE;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Constraints\Uuid;
 
 class RecipeModifyFormDataValidation
 {
@@ -15,7 +14,7 @@ class RecipeModifyFormDataValidation
         'form.validation.msg.ok',
     ];
 
-    #[Uuid(versions: Uuid::V4_RANDOM)]
+    #[Assert\Uuid(versions: Assert\Uuid::V4_RANDOM)]
     public string $id;
 
     #[Assert\NotBlank(message: 'field.name.msg.error.not_blank')]

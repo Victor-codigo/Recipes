@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -45,6 +46,7 @@ class RecipeModifyFormType extends FormTypeBase implements FormTypeExtendedInter
         parent::buildForm($builder, $options);
 
         $builder
+            ->add(RECIPE_MODIFY_FORM_FIELDS::ID->value, HiddenType::class)
             ->add(RECIPE_MODIFY_FORM_FIELDS::NAME->value, TextType::class, ['trim' => true])
             ->add(RECIPE_MODIFY_FORM_FIELDS::DESCRIPTION->value, TextareaType::class, ['trim' => true])
             ->add(RECIPE_MODIFY_FORM_FIELDS::PREPARATION_TIME->value, TimeType::class, [
@@ -60,6 +62,9 @@ class RecipeModifyFormType extends FormTypeBase implements FormTypeExtendedInter
             ->add(RECIPE_MODIFY_FORM_FIELDS::INGREDIENTS->value, CollectionType::class, ['allow_add' => true, 'trim' => true])
             ->add(RECIPE_MODIFY_FORM_FIELDS::STEPS->value, CollectionType::class, ['allow_add' => true, 'trim' => true])
             ->add(RECIPE_MODIFY_FORM_FIELDS::IMAGE->value, DropzoneType::class)
+            ->add(RECIPE_MODIFY_FORM_FIELDS::IMAGE_REMOVE->value, HiddenType::class, [
+                'empty_data' => false,
+            ])
             ->add(RECIPE_MODIFY_FORM_FIELDS::SUBMIT->value, SubmitType::class);
     }
 
