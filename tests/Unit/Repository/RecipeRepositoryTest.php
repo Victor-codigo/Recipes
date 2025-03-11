@@ -110,7 +110,7 @@ class RecipeRepositoryTest extends KernelTestCase
     }
 
     #[Test]
-    public function itShouldFindARecipeById(): void
+    public function itShouldFindARecipeByIdNoGroup(): void
     {
         /** @var Collection<int, Recipe> */
         $recipesFixtures = $this->getAliceBundleFixturesFilterByType(Recipe::class, [
@@ -119,16 +119,52 @@ class RecipeRepositoryTest extends KernelTestCase
             self::DATETIME_FIXTURES_PATH,
         ]);
         $recipeExpected = $recipesFixtures->filter(fn (Recipe $recipe): bool => self::RECIPE_1_FIXTURES_ID === $recipe->getId());
-        $return = $this->object->findRecipeByIdOrFail(self::RECIPE_1_FIXTURES_ID);
+        $return = $this->object->findRecipeByIdAndGroupIdOrFail(self::RECIPE_1_FIXTURES_ID, null);
 
         $this->assertRecipesAreEqualCanonicalize($recipeExpected, new ArrayCollection([$return]));
     }
 
     #[Test]
-    public function itShouldFailFindingARecipeById(): void
+    public function itShouldFindARecipeByIdAndGroup(): void
+    {
+        /** @var Collection<int, Recipe> */
+        $recipesFixtures = $this->getAliceBundleFixturesFilterByType(Recipe::class, [
+            self::USERS_FIXTURES_PATH,
+            self::RECIPES_FIXTURES_PATH,
+            self::DATETIME_FIXTURES_PATH,
+        ]);
+        /** @var Recipe */
+        $recipeExpected = $recipesFixtures
+            ->filter(fn (Recipe $recipe): bool => self::RECIPE_WITH_GROUP_FIXTURES_ID === $recipe->getId())
+            ->first();
+        $return = $this->object->findRecipeByIdAndGroupIdOrFail(self::RECIPE_WITH_GROUP_FIXTURES_ID, $recipeExpected->getGroupId());
+
+        $this->assertRecipesAreEqualCanonicalize(new ArrayCollection([$recipeExpected]), new ArrayCollection([$return]));
+    }
+
+    #[Test]
+    public function itShouldFailFindingARecipeByIdAndGroupGroupNotFound(): void
+    {
+        /** @var Collection<int, Recipe> */
+        $recipesFixtures = $this->getAliceBundleFixturesFilterByType(Recipe::class, [
+            self::USERS_FIXTURES_PATH,
+            self::RECIPES_FIXTURES_PATH,
+            self::DATETIME_FIXTURES_PATH,
+        ]);
+        /** @var Recipe */
+        $recipeExpected = $recipesFixtures
+            ->filter(fn (Recipe $recipe): bool => self::RECIPE_WITH_GROUP_FIXTURES_ID === $recipe->getId())
+            ->first();
+
+        $this->expectException(DBNotFoundException::class);
+        $this->object->findRecipeByIdAndGroupIdOrFail(self::RECIPE_WITH_GROUP_FIXTURES_ID, 'wrong group');
+    }
+
+    #[Test]
+    public function itShouldFailFindingARecipeByIdNoGroup(): void
     {
         $this->expectException(DBNotFoundException::class);
-        $this->object->findRecipeByIdOrFail('wrong recipe id');
+        $this->object->findRecipeByIdAndGroupIdOrFail('wrong recipe id', null);
     }
 
     #[Test]

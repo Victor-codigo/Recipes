@@ -49,10 +49,13 @@ class RecipeRepository extends RepositoryBase
     /**
      * @throws DBNotFoundException
      */
-    public function findRecipeByIdOrFail(string $recipeId): Recipe
+    public function findRecipeByIdAndGroupIdOrFail(string $recipeId, ?string $groupId): Recipe
     {
         /** @var Recipe|null */
-        $result = $this->findOneBy(['id' => $recipeId]);
+        $result = $this->findOneBy([
+            'id' => $recipeId,
+            'groupId' => $groupId,
+        ]);
 
         if (null === $result) {
             throw DBNotFoundException::fromMessage('Recipe not found');
