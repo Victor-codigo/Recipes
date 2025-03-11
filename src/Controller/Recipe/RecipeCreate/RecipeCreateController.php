@@ -6,7 +6,6 @@ namespace App\Controller\Recipe\RecipeCreate;
 
 use App\Controller\Exception\FormDataEmptyException;
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
-use App\Form\Recipe\RecipeCreate\RecipeCreateFormDataValidation;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormType;
 use App\Service\Recipe\RecipeCreate\RecipeCreateService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use VictorCodigo\SymfonyFormExtended\Factory\FormFactoryExtendedInterface;
-use VictorCodigo\SymfonyFormExtended\Form\FormExtendedInterface;
 
 #[Route(
     name: 'recipe_create',
@@ -34,7 +32,6 @@ class RecipeCreateController extends AbstractController
         private RecipeCreateService $recipeCreateService,
         private FormFactoryExtendedInterface $formFactoryExtended,
         private readonly int $appConfigPaginationPageMaxItems,
-        private readonly string $appConfigUserRecipesUploadedPath,
     ) {
     }
 
@@ -48,7 +45,7 @@ class RecipeCreateController extends AbstractController
             ->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->recipeCreate($form, $request);
+            $this->recipeCreateService->__invoke($request, $form, null);
         }
 
         $form->addFlashMessagesTranslated(self::FORM_FLASH_BAG_MESSAGES_SUCCESS, self::FORM_FLASH_BAG_MESSAGES_ERROR, true);
@@ -59,14 +56,5 @@ class RecipeCreateController extends AbstractController
         ],
             Response::HTTP_SEE_OTHER
         );
-    }
-
-    private function recipeCreate(FormExtendedInterface $form, Request $request): void
-    {
-        $form->uploadFiles($request, $this->appConfigUserRecipesUploadedPath);
-        /** @var RecipeCreateFormDataValidation */
-        $formData = $form->getData();
-
-        $this->recipeCreateService->__invoke($formData, null);
     }
 }
