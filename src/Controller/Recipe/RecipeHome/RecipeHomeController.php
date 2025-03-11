@@ -6,10 +6,13 @@ namespace App\Controller\Recipe\RecipeHome;
 
 use App\Controller\Exception\UserSessionNotFoundException;
 use App\Controller\Recipe\RecipeCreate\RecipeCreateController;
+use App\Controller\Recipe\RecipeModify\RecipeModifyController;
 use App\Entity\Recipe;
 use App\Entity\User;
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormType;
+use App\Form\Recipe\RecipeModify\RECIPE_MODIFY_FORM_FIELDS;
+use App\Form\Recipe\RecipeModify\RecipeModifyFormType;
 use App\Repository\Exception\DBNotFoundException;
 use App\Repository\RecipeRepository;
 use App\Repository\UserRepository;
@@ -63,8 +66,9 @@ class RecipeHomeController extends AbstractController
         $recipesUsers = $this->getRecipesUsersFromDb($recipes);
         /** @var FormExtendedInterface<RecipeCreateFormType> */
         $recipesCreateForm = $this->formFactory->createNamedExtended(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class);
+        $recipesModifyForm = $this->formFactory->createNamedExtended(RECIPE_MODIFY_FORM_FIELDS::FORM_NAME->value, RecipeModifyFormType::class);
 
-        return $this->createView($recipesCreateForm, $recipes, $recipesUsers);
+        return $this->createView($recipesCreateForm, $recipesModifyForm, $recipes, $recipesUsers);
     }
 
     /**
@@ -90,7 +94,7 @@ class RecipeHomeController extends AbstractController
     private function getRecipesFromDb(string $userId, int $page, int $pageItems): Collection
     {
         try {
-            $recipesPaginator = $this->recipeRepository->getRecipesByUserIdOrFail($userId, null, $page, $pageItems);
+            $recipesPaginator = $this->recipeRepository->findRecipesByUserIdOrFail($userId, null, $page, $pageItems);
 
             return new ArrayCollection(\iterator_to_array($recipesPaginator));
         } catch (\Throwable $th) {
@@ -116,22 +120,24 @@ class RecipeHomeController extends AbstractController
     }
 
     /**
-     * @param FormExtendedInterface<RecipeCreateFormType> $form
+     * @param FormExtendedInterface<RecipeCreateFormType> $recipeCreateForm
      * @param Collection<int, Recipe>                     $recipes
      * @param Collection<int, User>                       $recipesUsers
-     * @param string[]                                    $messagesOk
-     * @param string[]                                    $messagesError
+     * @param Collection<int, string>                     $messagesOk
+     * @param Collection<int, string>                     $messagesError
      */
-    private function createRecipeHomeSectionComponentDto(FormExtendedInterface $form, Collection $recipes, Collection $recipesUsers, array $messagesOk, array $messagesError): RecipeHomeSectionComponentDto
+    private function createRecipeHomeSectionComponentDto(FormExtendedInterface $recipeCreateForm, FormExtendedInterface $recipeModifyForm, Collection $recipes, Collection $recipesUsers, Collection $messagesOk, Collection $messagesError): RecipeHomeSectionComponentDto
     {
         /** @var RecipeCreateFormType */
-        $formType = $form->getConfig()->getType()->getInnerType();
-        $validForm = !empty($messagesOk) || !empty($messagesError);
+        $recipeCreateFormType = $recipeCreateForm->getConfig()->getType()->getInnerType();
+        /** @var RecipeModifyFormType */
+        $recipeModifyFormType = $recipeModifyForm->getConfig()->getType()->getInnerType();
+        $validForm = !$messagesOk->isEmpty() || !$messagesError->isEmpty();
 
         return new RecipeHomeComponentBuilder($this->appConfigRecipeImageNotImagePublicPath)
             ->title('Page title', 'title path')
             ->validation($validForm)
-            ->errors($messagesOk, $messagesError)
+            ->errors($messagesOk->toArray(), $messagesError->toArray())
             ->listItems($recipes, $recipesUsers)
             ->pagination(1, 20, 1)
             ->searchBar(
@@ -142,26 +148,37 @@ class RecipeHomeController extends AbstractController
                 'search autocomplete url',
                 'search form action url'
             )
-            ->recipeCreateFormModal($formType->getCsrfToken(), $this->router->generate('recipe_create'))
-            ->recipeModifyFormModal('', '')
+            ->recipeCreateFormModal($recipeCreateFormType->getCsrfToken(), $this->router->generate('recipe_create'))
+            ->recipeModifyFormModal($recipeModifyFormType->getCsrfToken(), $this->router->generate('recipe_modify'))
             ->recipeRemoveFormModal('', '')
             ->recipeRemoveMultiFormModal('', '')
             ->build();
     }
 
     /**
-     * @param FormExtendedInterface<RecipeCreateFormType> $form
+     * @param FormExtendedInterface<RecipeCreateFormType> $recipesCreateForm
      * @param Collection<int, Recipe>                     $recipes
      * @param Collection<int, User>                       $recipesUsers
      */
-    private function createView(FormExtendedInterface $form, Collection $recipes, Collection $recipesUsers): Response
+    private function createView(FormExtendedInterface $recipesCreateForm, FormExtendedInterface $recipeModifyForm, Collection $recipes, Collection $recipesUsers): Response
     {
+        $messagesOk = new ArrayCollection([
+            ...$recipesCreateForm->getFlashMessages(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS),
+            ...$recipesCreateForm->getFlashMessages(RecipeModifyController::FORM_FLASH_BAG_MESSAGES_SUCCESS),
+        ]);
+
+        $messagesError = new ArrayCollection([
+            ...$recipesCreateForm->getFlashMessages(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR),
+            ...$recipesCreateForm->getFlashMessages(RecipeModifyController::FORM_FLASH_BAG_MESSAGES_ERROR),
+        ]);
+
         $recipeHomeSectionComponentDto = $this->createRecipeHomeSectionComponentDto(
-            $form,
+            $recipesCreateForm,
+            $recipeModifyForm,
             $recipes,
             $recipesUsers,
-            $form->getFlashMessages(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS)->toArray(),
-            $form->getFlashMessages(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR)->toArray()
+            $messagesOk,
+            $messagesError,
         );
 
         return $this->render('Recipe/Home/index.html.twig', [
