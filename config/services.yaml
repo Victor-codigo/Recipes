@@ -11,7 +11,7 @@ parameters:
     app.config.pagination.page_max_items: 100
 
     # User
-    app.config.user.recipes_uploaded_path: "images/upload/recipe/"
+    app.config.user.recipes_uploaded_path: "public/images/upload/recipe"
 
 services:
     # default configuration for services in *this* file
