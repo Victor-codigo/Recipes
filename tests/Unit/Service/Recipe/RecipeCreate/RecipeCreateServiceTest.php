@@ -13,28 +13,37 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\Request;
+use VictorCodigo\SymfonyFormExtended\Form\FormExtendedInterface;
 
 class RecipeCreateServiceTest extends TestCase
 {
     use TestingRecipeTrait;
     use TestingUserTrait;
 
+    private const string RECIPE_UPLOAD_PATH = 'public/images/upload/recipe';
+
     private RecipeCreateService $object;
     private RecipeRepository&MockObject $recipeRepository;
     private Security&MockObject $security;
     private RecipeCreateFormDataMapper&MockObject $recipeCreateFormDataMapper;
+    private Request&MockObject $request;
+    private FormExtendedInterface&MockObject $form;
 
     protected function setUp(): void
     {
         parent::setUp();
 
+        $this->request = $this->createMock(Request::class);
+        $this->form = $this->createMock(FormExtendedInterface::class);
         $this->recipeRepository = $this->createMock(RecipeRepository::class);
         $this->recipeCreateFormDataMapper = $this->createMock(RecipeCreateFormDataMapper::class);
         $this->security = $this->createMock(Security::class);
         $this->object = new RecipeCreateService(
             $this->recipeRepository,
             $this->security,
-            $this->recipeCreateFormDataMapper
+            $this->recipeCreateFormDataMapper,
+            self::RECIPE_UPLOAD_PATH
         );
     }
 
@@ -46,6 +55,16 @@ class RecipeCreateServiceTest extends TestCase
         $recipeCreateFormDataValidation = $this->createRecipeFormDataValidation();
         $groupId = 'recipe group id';
         $recipeId = 'recipe id';
+
+        $this->form
+            ->expects($this->once())
+            ->method('getData')
+            ->willReturn($recipeCreateFormDataValidation);
+
+        $this->form
+            ->expects($this->once())
+            ->method('uploadFiles')
+            ->with($this->request, self::RECIPE_UPLOAD_PATH);
 
         $this->security
             ->expects($this->once())
@@ -68,7 +87,7 @@ class RecipeCreateServiceTest extends TestCase
             ->method('save')
             ->with($recipe);
 
-        $this->object->__invoke($recipeCreateFormDataValidation, $groupId);
+        $this->object->__invoke($this->request, $this->form, $groupId);
     }
 
     #[Test]
@@ -79,6 +98,16 @@ class RecipeCreateServiceTest extends TestCase
         $recipeCreateFormDataValidation = $this->createRecipeFormDataValidation();
         $groupId = 'recipe group id';
         $recipeId = 'recipe id';
+
+        $this->form
+            ->expects($this->once())
+            ->method('getData')
+            ->willReturn($recipeCreateFormDataValidation);
+
+        $this->form
+            ->expects($this->once())
+            ->method('uploadFiles')
+            ->with($this->request, self::RECIPE_UPLOAD_PATH);
 
         $this->security
             ->expects($this->once())
@@ -103,6 +132,6 @@ class RecipeCreateServiceTest extends TestCase
             ->willThrowException(new \Exception('Error saving recipe'));
 
         $this->expectException(\Exception::class);
-        $this->object->__invoke($recipeCreateFormDataValidation, $groupId);
+        $this->object->__invoke($this->request, $this->form, $groupId);
     }
 }
