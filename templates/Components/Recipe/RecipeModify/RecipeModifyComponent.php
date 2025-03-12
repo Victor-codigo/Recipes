@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Templates\Components\Recipe\RecipeModify;
 
-use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
+use App\Form\Recipe\RecipeModify\RECIPE_MODIFY_FORM_FIELDS;
 use App\Templates\Components\DropZone\DropZoneComponent;
 use App\Templates\Components\DropZone\DropZoneComponentDto;
 use App\Templates\Components\ImageAvatar\ImageAvatarComponentDto;
@@ -67,7 +67,7 @@ class RecipeModifyComponent extends TwigComponent
         return new DropZoneComponentDto(
             DropZoneComponent::getComponentName(),
             $this->translate('field.image.label'),
-            RECIPE_CREATE_FORM_FIELDS::getNameWithForm(RECIPE_CREATE_FORM_FIELDS::IMAGE),
+            RECIPE_MODIFY_FORM_FIELDS::getNameWithForm(RECIPE_MODIFY_FORM_FIELDS::IMAGE),
             $this->translate('field.image.placeholder')
         );
     }
@@ -82,7 +82,7 @@ class RecipeModifyComponent extends TwigComponent
             )
             ->items(
                 TYPE_INPUT::INPUT,
-                RECIPE_CREATE_FORM_FIELDS::getNameWithForm(RECIPE_CREATE_FORM_FIELDS::INGREDIENTS, true),
+                RECIPE_MODIFY_FORM_FIELDS::getNameWithForm(RECIPE_MODIFY_FORM_FIELDS::INGREDIENTS, true),
                 $this->translate('field.ingredients.item.label'),
                 $this->translate('field.ingredients.item.placeholder'),
                 $this->translate('field.ingredients.item.msg.error')
@@ -103,7 +103,7 @@ class RecipeModifyComponent extends TwigComponent
             )
             ->items(
                 TYPE_INPUT::TEXTAREA,
-                RECIPE_CREATE_FORM_FIELDS::getNameWithForm(RECIPE_CREATE_FORM_FIELDS::STEPS, true),
+                RECIPE_MODIFY_FORM_FIELDS::getNameWithForm(RECIPE_MODIFY_FORM_FIELDS::STEPS, true),
                 $this->translate('field.steps.item.label'),
                 $this->translate('field.steps.item.placeholder'),
                 $this->translate('field.steps.item.msg.error')

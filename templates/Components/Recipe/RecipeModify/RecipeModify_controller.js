@@ -123,7 +123,7 @@ export default class RecipeModifyController extends Controller {
     }
 
 
-    #setFormFieldValues(recipeData){
+    #setFormFieldValues(recipeData) {
         this.#id.value = recipeData.id;
         this.#nameTag.value = recipeData.name;
         this.#descriptionTag.value = recipeData.description;

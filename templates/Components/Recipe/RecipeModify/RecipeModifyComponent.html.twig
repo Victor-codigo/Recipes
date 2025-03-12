@@ -8,7 +8,9 @@
 	  data-action="ModalComponent:beforeShowed->RecipeModifyComponent#handleMessageBeforeShowed
 				   RecipeModifyComponent:clear->RecipeModifyComponent#handleMessageClear
 				   RecipeModifyComponent:avatarSetImage->ImageAvatarComponent#handleMessageSetImage
-				   RecipeListItemComponent:homeListItemModify@window->RecipeModifyComponent#handleMessageHomeListItemModify"
+				   RecipeListItemComponent:homeListItemModify@window->RecipeModifyComponent#handleMessageHomeListItemModify
+				   ImageAvatarComponent:imageRemoved->RecipeModifyComponent#setImageAvatarAsRemoved
+	  			   ImageAvatarComponent:imageRemovedUndo->RecipeModifyComponent#setImageAvatarAsRemoved"
 	  class="contaniner  p-3  p-sm-4  pt-0  d-flex flex-column"
 	  action="{{ data.recipeModifyFormActionUrl|escape('html_attr') }}"
 	  method="post"
