@@ -37,6 +37,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
     private const RECIPE_HOME_LIST_ITEM_COMPONENT_NAME = 'RecipeHomeListItemComponent';
 
     private readonly string $appConfigRecipeImageNotImagePublicPath;
+    private readonly string $appConfigRecipePublicUploadedPath;
 
     private readonly DtoBuilder $builder;
     private readonly HomeSectionComponentDto $homeSectionComponentDto;
@@ -45,7 +46,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
     private readonly Collection $recipes;
     private readonly Collection $recipesUsers;
 
-    public function __construct(string $appConfigRecipeImageNotImagePublicPath)
+    public function __construct(string $appConfigRecipeImageNotImagePublicPath, string $appConfigRecipePublicUploadedPath)
     {
         $this->builder = new DtoBuilder([
             'title',
@@ -61,6 +62,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
         ]);
 
         $this->appConfigRecipeImageNotImagePublicPath = $appConfigRecipeImageNotImagePublicPath;
+        $this->appConfigRecipePublicUploadedPath = $appConfigRecipePublicUploadedPath;
         $this->homeSectionComponentDto = new HomeSectionComponentDto();
     }
 
@@ -360,8 +362,9 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
     private function createRecipeListItemComponentDto(Collection $recipes, Collection $users): Collection
     {
         $appConfigRecipeImageNotImagePublicPath = $this->appConfigRecipeImageNotImagePublicPath;
+        $appConfigRecipePublicUploadedPath = $this->appConfigRecipePublicUploadedPath;
 
-        return $recipes->map(static function (Recipe $recipeEntity) use ($users, $appConfigRecipeImageNotImagePublicPath): RecipeListItemComponentDto {
+        return $recipes->map(static function (Recipe $recipeEntity) use ($users, $appConfigRecipeImageNotImagePublicPath, $appConfigRecipePublicUploadedPath): RecipeListItemComponentDto {
             /** @var User|null $recipeUser */
             $recipeUser = $users->findFirst(
                 fn (int $index, User $user): bool => $user->getId() === $recipeEntity->getUserId()
@@ -382,9 +385,8 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
                 $recipeEntity->getPublic(),
                 $recipeEntity->getIngredients(),
                 $recipeEntity->getSteps(),
-                $recipeEntity->getImage() ?? $appConfigRecipeImageNotImagePublicPath,
+                null === $recipeEntity->getImage() ? $appConfigRecipeImageNotImagePublicPath : "{$appConfigRecipePublicUploadedPath}/{$recipeEntity->getImage()}",
                 $recipeEntity->getRating(),
-                // $recipeEntity->toJson(),
                 self::RECIPE_MODIFY_MODAL_ID,
                 self::RECIPE_DELETE_MODAL_ID,
                 self::RECIPE_INFO_MODAL_ID,
