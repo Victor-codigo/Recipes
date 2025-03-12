@@ -1,5 +1,5 @@
 form:
-  title: Modify a recipe
+  title: Recipe modify
   validation:
     msg:
       ok: Recipe modified

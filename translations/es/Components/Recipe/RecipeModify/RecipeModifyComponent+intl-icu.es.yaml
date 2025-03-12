@@ -1,5 +1,5 @@
 form:
-  title: Modifica una receta
+  title: Modificar receta
   validation:
     msg:
       ok: Receta modificada
