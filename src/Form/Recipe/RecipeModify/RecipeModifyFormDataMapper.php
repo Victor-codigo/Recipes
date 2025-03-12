@@ -23,8 +23,13 @@ class RecipeModifyFormDataMapper
         $recipeToModify->setPreparationTime($recipeModifyFormConstraints->preparation_time);
         $recipeToModify->setIngredients($recipeModifyFormConstraints->ingredients);
         $recipeToModify->setSteps($recipeModifyFormConstraints->steps);
-        $recipeToModify->setImage($recipeModifyFormConstraints->image_remove ? null : $recipeModifyFormConstraints->image?->getFilename());
         $recipeToModify->setPublic($recipeModifyFormConstraints->public);
+
+        if ($recipeModifyFormConstraints->image_remove) {
+            $recipeToModify->setImage(null);
+        } elseif (null !== $recipeModifyFormConstraints->image) {
+            $recipeToModify->setImage($recipeModifyFormConstraints->image->getFilename());
+        }
     }
 
     public function toForm(Recipe $recipe): RecipeModifyFormDataValidation

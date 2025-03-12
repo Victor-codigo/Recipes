@@ -46,7 +46,7 @@ class RecipeModifyFormDataMapperTest extends TestCase
             '4. Add the potatoes to the cooked vegetables and cook for 30 minutes.',
         ];
         $recipeFormValidationData->image = null;
-        $recipeFormValidationData->image_remove = true;
+        $recipeFormValidationData->image_remove = false;
         $recipeFormValidationData->preparation_time = new \DateTimeImmutable('2025-02-01 12:00:00');
         $recipeFormValidationData->category = RECIPE_TYPE::BREAKFAST;
         $recipeFormValidationData->public = false;
@@ -56,6 +56,12 @@ class RecipeModifyFormDataMapperTest extends TestCase
 
     private function modifyRecipeFromFormData(Recipe $recipe, RecipeModifyFormDataValidation $formData): Recipe
     {
+        if (null !== $formData->image) {
+            $image = $formData->image_remove ? null : $formData->image->getFilename();
+        } else {
+            $image = $recipe->getImage();
+        }
+
         return new Recipe(
             $recipe->getId(),
             $recipe->getUser(),
@@ -66,7 +72,7 @@ class RecipeModifyFormDataMapperTest extends TestCase
             $formData->preparation_time,
             $formData->ingredients,
             $formData->steps,
-            $formData->image_remove ? null : $formData->image?->getFilename(),
+            $image,
             $recipe->getRating(),
             $formData->public
         );
@@ -106,6 +112,56 @@ class RecipeModifyFormDataMapperTest extends TestCase
     }
 
     #[Test]
+    public function itShouldMapFormInARecipeEntityFormDataImageUpload(): void
+    {
+        $formData = $this->createRecipeFormDataValidationWithId('Recipe id');
+        $formData->image = new File('image.png', false);
+        /** @var Recipe */
+        $recipe = $this
+            ->getRecipesFixtures()
+            ->first();
+        $recipeExpected = $this->modifyRecipeFromFormData($recipe, $formData);
+
+        $this->object->mergeToEntity($recipe, $formData);
+
+        $this->assertRecipesAreEqualCanonicalize(new ArrayCollection([$recipeExpected]), new ArrayCollection([$recipe]));
+    }
+
+    #[Test]
+    public function itShouldMapFormInARecipeEntityFormDataImageIsNull(): void
+    {
+        $formData = $this->createRecipeFormDataValidationWithId('Recipe id');
+        /** @var Recipe */
+        $recipe = $this
+            ->getRecipesFixtures()
+            ->first();
+        $recipe->setImage('image.png');
+        $recipeExpected = $this->modifyRecipeFromFormData($recipe, $formData);
+
+        $this->object->mergeToEntity($recipe, $formData);
+
+        $this->assertRecipesAreEqualCanonicalize(new ArrayCollection([$recipeExpected]), new ArrayCollection([$recipe]));
+    }
+
+    #[Test]
+    public function itShouldMapFormInARecipeEntityFormDataImageRemove(): void
+    {
+        $formData = $this->createRecipeFormDataValidationWithId('Recipe id');
+        $formData->image_remove = true;
+        $formData->image = new File('image.png', false);
+        /** @var Recipe */
+        $recipe = $this
+            ->getRecipesFixtures()
+            ->first();
+        $recipeExpected = $this->modifyRecipeFromFormData($recipe, $formData);
+        $recipeExpected->setImage(null);
+
+        $this->object->mergeToEntity($recipe, $formData);
+
+        $this->assertRecipesAreEqualCanonicalize(new ArrayCollection([$recipeExpected]), new ArrayCollection([$recipe]));
+    }
+
+    #[Test]
     public function itShouldMapEntityInAFormData(): void
     {
         /** @var Recipe */
@@ -120,7 +176,7 @@ class RecipeModifyFormDataMapperTest extends TestCase
     }
 
     #[Test]
-    public function itShouldMapEntityInAFormDataImageIsNotNul(): void
+    public function itShouldMapEntityInAFormDataRecipeImageIsNotNul(): void
     {
         /** @var Recipe */
         $recipe = $this
