@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - dev
-      - Recipes-home
+      - Recipe-modify
 
 jobs:
   execute-tests:
