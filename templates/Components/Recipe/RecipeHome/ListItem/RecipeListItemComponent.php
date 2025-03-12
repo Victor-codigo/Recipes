@@ -6,6 +6,7 @@ namespace App\Templates\Components\Recipe\RecipeHome\ListItem;
 
 use App\Templates\Components\HomeSection\HomeList\ListItem\HomeListItemComponent;
 use App\Templates\Components\HomeSection\HomeList\ListItem\HomeListItemComponentDto;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent(
@@ -15,6 +16,14 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class RecipeListItemComponent extends HomeListItemComponent
 {
     public readonly string $recipeDataJson;
+    private readonly string $appConfigRecipePublicUploadedPath;
+
+    public function __construct(TranslatorInterface $translator, string $appConfigRecipePublicUploadedPath)
+    {
+        parent::__construct($translator);
+
+        $this->appConfigRecipePublicUploadedPath = $appConfigRecipePublicUploadedPath;
+    }
 
     public static function getComponentName(): string
     {
