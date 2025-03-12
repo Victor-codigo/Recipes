@@ -152,6 +152,7 @@ export default class RecipeItemAdd extends Controller {
     }
 
     #clear() {
+        this.#items = [];
         this.#itemsContainer.innerHTML = '';
         this.setIsValidStyles(true);
     }
@@ -168,5 +169,9 @@ export default class RecipeItemAdd extends Controller {
      */
     handleMessageItemAdd({ detail: { content } }) {
         this.itemAdd(content.value);
+    }
+
+    handleButtonItemAdd(){
+        this.itemAdd(null);
     }
 }
