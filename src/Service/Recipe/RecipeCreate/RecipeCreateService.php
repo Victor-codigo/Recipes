@@ -19,7 +19,7 @@ class RecipeCreateService
         private RecipeRepository $recipeRepository,
         private Security $security,
         private RecipeCreateFormDataMapper $recipeCreateFormDataMapper,
-        private readonly string $appConfigUserRecipesUploadedPath,
+        private readonly string $appConfigRecipeUploadedPath,
     ) {
     }
 
@@ -36,7 +36,7 @@ class RecipeCreateService
             $userSession = $this->security->getUser();
 
             $recipeId = $this->recipeRepository->uuidCreate();
-            $form->uploadFiles($request, $this->appConfigUserRecipesUploadedPath);
+            $form->uploadFiles($request, $this->appConfigRecipeUploadedPath);
             $recipeEntity = $this->recipeCreateFormDataMapper->toEntity($formData, $userSession, $recipeId, $groupId);
             $this->recipeRepository->save($recipeEntity);
         } catch (\Throwable $th) {

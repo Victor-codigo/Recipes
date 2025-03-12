@@ -21,7 +21,7 @@ class RecipeModifyService
         private RecipeRepository $recipeRepository,
         private RecipeModifyFormDataMapper $recipeModifyFormDataMapper,
         private Filesystem $filesystem,
-        private string $appConfigUserRecipesUploadedPath,
+        private string $appConfigRecipeUploadedPath,
     ) {
     }
 
@@ -58,14 +58,14 @@ class RecipeModifyService
         $formData = $form->getData();
 
         if ($formData->{RECIPE_MODIFY_FORM_FIELDS::IMAGE_REMOVE->value} && null !== $recipeImageOldToRemove) {
-            $this->filesystem->remove("{$this->appConfigUserRecipesUploadedPath}/{$recipeImageOldToRemove}");
+            $this->filesystem->remove("{$this->appConfigRecipeUploadedPath}/{$recipeImageOldToRemove}");
 
             return;
         }
 
         $form->uploadFiles(
             $request,
-            $this->appConfigUserRecipesUploadedPath,
+            $this->appConfigRecipeUploadedPath,
             null === $recipeImageOldToRemove ? [] : [$recipeImageOldToRemove]
         );
     }

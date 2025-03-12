@@ -52,6 +52,7 @@ class RecipeHomeController extends AbstractController
         private FormFactoryExtended $formFactory,
         private readonly int $appConfigPaginationPageMaxItems,
         private readonly string $appConfigRecipeImageNotImagePublicPath,
+        private readonly string $appConfigRecipePublicUploadedPath,
     ) {
     }
 
@@ -134,7 +135,7 @@ class RecipeHomeController extends AbstractController
         $recipeModifyFormType = $recipeModifyForm->getConfig()->getType()->getInnerType();
         $validForm = !$messagesOk->isEmpty() || !$messagesError->isEmpty();
 
-        return new RecipeHomeComponentBuilder($this->appConfigRecipeImageNotImagePublicPath)
+        return new RecipeHomeComponentBuilder($this->appConfigRecipeImageNotImagePublicPath, $this->appConfigRecipePublicUploadedPath)
             ->title('Page title', 'title path')
             ->validation($validForm)
             ->errors($messagesOk->toArray(), $messagesError->toArray())
