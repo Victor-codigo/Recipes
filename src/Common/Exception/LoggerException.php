@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 
 abstract class LoggerException extends \Exception implements LoggerAwareInterface
 {
-    private LoggerInterface $logger;
+    private ?LoggerInterface $logger = null;
 
     /**
      * @param array<array-key, mixed> $context
@@ -28,6 +28,10 @@ abstract class LoggerException extends \Exception implements LoggerAwareInterfac
      */
     protected function createLog(string $loggerLevel, array $context = []): static
     {
+        if (null === $this->logger) {
+            return $this;
+        }
+
         match ($loggerLevel) {
             default => throw new \LogicException('Wrong error level'),
             LogLevel::ALERT => $this->logger->alert($this->getMessage(), $context),
