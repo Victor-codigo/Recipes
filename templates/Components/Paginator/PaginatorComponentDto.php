@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Templates\Components\Paginator;
+
+use App\Templates\Components\TwigComponentDtoInterface;
+
+class PaginatorComponentDto implements TwigComponentDtoInterface
+{
+    /**
+     * @param string $pageUrl url with a placeholder {pageNum} where the page number is set
+     */
+    public function __construct(
+        public readonly int $pageCurrent,
+        public readonly int $pagesTotal,
+        public readonly string $pageUrl,
+    ) {
+    }
+}

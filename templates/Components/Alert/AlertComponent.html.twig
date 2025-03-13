@@ -1,0 +1,54 @@
+<div class="alert  {{ cssType }} my-5 mx-auto  w-100  border-5  border-top-0  border-end-0  border-bottom-0  rounded-0"
+	 role="alert"
+	 {{
+	 data.visible
+	 ? ''
+	 : 'hidden'
+	 }}
+	 data-controller="AlertComponent"
+	 data-action="AlertComponent:setValidations->AlertComponent#handleMessageAddValidationErrors">
+
+	<section class="d-flex  flex-row  align-items-start">
+		<div class="d-flex  align-items-center justify-content-center  alert__icon  pt-2  ps-3">
+			{% if cssType == 'alert-danger' %}
+			{% include "common/error-icon.svg" %}
+			{% elseif cssType == 'alert-light' %}
+			{% include "common/info-icon.svg" %}
+			{% elseif cssType == 'alert-success' %}
+			{% include "common/ok-icon.svg" %}
+			{% endif %}
+		</div>
+
+		{% if data.messages is iterable %}
+
+		<ul class="list-group"
+			data-js-container>
+			{% for message in data.messages %}
+			<li class="list-group-item  border border-0  bg-transparent  d-flex  flex-row">
+				{% if data.escapeMessage %}
+				{{ message|nl2br }}
+				{% else %}
+				{{ message|raw|nl2br }}
+				{% endif %}
+			</li>
+			{% endfor %}
+		</ul>
+
+		{% else %}
+
+		{% if data.escapeMessage %}
+		{{ data.messages|nl2br }}
+		{% else %}
+		{{ data.messages|raw|nl2br }}
+		{% endif %}
+
+		{% endif %}
+	</section>
+
+	<template data-js-item-template>
+		<li class="list-group-item  border border-0  bg-transparent">
+			<p class="card-text"
+			   data-js-item-template-text></p>
+		</li>
+	</template>
+</div>

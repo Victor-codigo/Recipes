@@ -1,0 +1,9 @@
+title: List of recipes
+
+home_section_add:
+  label: Add recipe
+  title: Add a recipe to the list
+
+home_section_remove_multiple:
+  label: Delete selected recipes
+  title: Remove selected recipes from the list

@@ -1,0 +1,112 @@
+<section data-controller="SearchBarComponent"
+		 class="p-2"
+		 data-url-search-autocomplete="{{ data.searchAutoCompleteUrl|escape('html_attr') }}"
+		 data-group-id="{{ data.groupId }}">
+
+	<div class="d-inline-flex gap-1">
+		<button class="btn  btn-outline-seconary  border-1  border-secondary  border-0 border-bottom  border-start  rounded-0  pe-4"
+				type="button"
+				data-bs-toggle="collapse"
+				data-bs-target=".multi-collapse"
+				aria-expanded="false"
+				aria-controls="seach_menu">
+			<span class="text-secondary">
+				{{ lang.searchLabel }}
+			</span>
+			&nbsp;
+			<span>
+				{{ data.searchValue }}
+			</span>
+		</button>
+	</div>
+	<div class="collapse multi-collapse  search_menu"
+		 id="search_menu">
+		<div class="d-flex  flex-column  row-gap-3  border-start  border-secondary">
+			<form name="{{ formName }}"
+				  class="search-bar  contaniner  p-3  d-flex  flex-column  row-gap-3  card card-body"
+				  action="{{ data.searchFormActionUrl|escape('html_attr') }}"
+				  method="post"
+				  enctype="multipart/form-data"
+				  novalidate
+				  data-js-searchbar-form>
+
+				<input type="hidden"
+					   name="{{ searchTokenCsrfFieldName }}"
+					   value="{{ data.searchCsrfToken }}" />
+
+				<label {{this.sectionFilters|length==1?'hidden':''}}>
+
+					{{ lang.sectionFilterLabel }}
+
+					<select class="form-select"
+							name="{{ sectionFilterFieldName }}"
+							data-js-section-filter>
+
+						{% for sectionFilterName, sectionFilterValue in this.sectionFilters %}
+
+						{% if sectionFilterName==data.sectionFilterValue %}
+
+						<option value="{{ sectionFilterName }}"
+								selected>
+
+							{{ sectionFilterValue }}
+						</option>
+
+						{% else %}
+
+						<option value="{{ sectionFilterName }}">{{ sectionFilterValue }}</option>
+
+						{% endif %}
+						{% endfor %}
+					</select>
+				</label>
+
+				<label>
+
+					{{ lang.textFilterLabel }}
+
+					<select class="form-select"
+							name="{{ nameFilterFieldName }}"
+							data-js-name-filter>
+
+						{% for nameFilterName, valueFilterLang in lang.filters %}
+
+						{% if nameFilterName==data.nameFilterValue %}
+
+						<option value="{{ nameFilterName }}"
+								selected>{{ valueFilterLang }}</option>
+
+						{% else %}
+
+						<option value="{{ nameFilterName }}">{{ valueFilterLang }}</option>
+
+						{% endif %}
+
+						{% endfor %}
+					</select>
+				</label>
+
+				<label>
+
+					{{ lang.inputTextFilterLabel }}
+
+					<input type="text"
+						   class="form-control"
+						   name="{{ searchValueFieldName }}"
+						   placeholder="{{ lang.searchPlaceholder }}"
+						   value="{{ data.searchValue }}"
+						   list="search-data-list"
+						   data-js-value />
+				</label>
+
+				<button type="submit"
+						class="btn btn-primary  order-3  mt-4  mb-3"
+						name="{{ searchButtonFiledName }}"
+						alt="{{ lang.searchButton }}">
+					{% include "common/search-icon.svg" %}
+					{{ lang.searchButton }}
+				</button>
+			</form>
+		</div>
+	</div>
+</section>

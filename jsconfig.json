@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "module": "ES6",
+        "target": "ES2021",
+        "checkJs": true,
+        "baseUrl": "./",
+        "paths": {
+            "App/*": [
+                "assets/*"
+            ],
+            "@hotwired/stimulus": [
+                "node_modules/@hotwired/stimulus/dist/stimulus.js",
+            ],
+            "@symfony/stimulus-bridge": [
+                "node_modules/@symfony/stimulus-bridge/dist/index.js"
+            ],
+            "App/Templates/Components/*": [
+                "templates/Components/*"
+            ],
+            "App/Dependencies/*": [
+                "node_modules/*"
+            ]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "**/node_modules/*"
+    ]
+}

@@ -1,0 +1,17 @@
+shop_remove_button:
+  label: Eliminar
+  title: Elimina la receta
+  alt: Botón para eliminar la receta
+
+shop_modify_button:
+  label: Modificar
+  title: Modifica la receta
+  alt: Botón para modificar la receta
+
+shop_info_button:
+  title: Información de la receta
+  alt: Botón que abre la información de la receta
+
+shop_image:
+  title: Imagen de la receta
+  alt: Imagen de la receta

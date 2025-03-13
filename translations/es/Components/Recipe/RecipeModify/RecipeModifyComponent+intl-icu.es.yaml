@@ -1,0 +1,117 @@
+form:
+  title: Modificar receta
+  validation:
+    msg:
+      ok: Receta modificada
+
+field:
+  name:
+    label: Nombre
+    placeholder: Añade un Nombre para la receta
+    msg:
+      error:
+        charset: El nombre de la receta debe contener números, letras, "_" y espacios. Además debe contener entre 2 y 255 caracteres
+        not_blank: El nombre es obligatorio para la receta
+        min: El número mínimo de caracteres es { limit }. Actualmente { value }
+        max: El número máximo de caracteres es { limit }. Actualmente { value }
+
+  description:
+    label: Descripción
+    placeholder: Añade una descripción para la receta
+    msg:
+      error:
+        max: El número máximo de caracteres es { limit }
+
+  ingredients:
+    label: Ingredientes
+    item:
+      label: ingrediente
+      placeholder: Añade un ingrediente
+      msg:
+        error: El ingrediente no puede estar vacío
+    button:
+      add:
+        label: Añade un ingrediente
+      remove:
+        title: Elimina el ingrediente
+    msg:
+      error:
+        not_blank: La receta debe contener al menos un ingrediente
+        ingredientsMin: La receta debe contener al menos { limit } ingrediente
+        ingredientsMax: La receta puede contener como máximo { limit } ingredientes
+        max: El numero máximo de caracteres por ingrediente es de { limit }
+
+  steps:
+    label: Pasos
+    item:
+      label: Paso
+      placeholder: Añade un paso
+      msg:
+        error: El paso no puede estar vacío
+    button:
+      add:
+        label: Añade un paso
+      remove:
+        title: Elimina el paso
+    msg:
+      error:
+        not_blank: La receta debe contener al menos un paso
+        stepsMin: La receta debe contener al menos { limit } paso
+        stepsMax: La receta puede contener como máximo { limit } pasos
+        max: El número máximo de caracteres por paso es de { limit }
+
+  image:
+    label: Imagen
+    placeholder: Arrastra o añade una imagen para la receta
+    alt: Imagen de la receta
+    msg:
+      error:
+        maxSizeMessage: El tamaño máximo de la imagen es de { limit } MB
+        minWidthMessage: "El ancho de la imagen es muy pequeño: { width } pixels. El mínimo requerido es de { min_width } pixels"
+        maxWidthMessage: "El ancho de la imagen es demasiado grande: { width } pixels. El máximo requerido es de { max_width } pixels"
+        minHeightMessage: "La altura de la imagen es muy pequeña: { height } pixels. El mínimo requerido es de { min_height } pixels"
+        maxHeightMessage: "La altura de la image es demasiado grande { height } pixels. El máximo requerido es de { max_height } pixels"
+        mimeTypesMessage: "El tipo de archivo de imagen subido { type } no es válido. Los tipos válidos permitidos son: { types }"
+
+  preparation_time:
+    label: Tiempo de preparación
+    msg:
+      error:
+        greater_than: El tiempo de preparación, debe ser mayor a 00:00 horas
+        less_than: El tiempo de preparación debe ser menor de 24:00 horas
+
+  public:
+    label: Pública
+    description: Si la receta es pública, será visible para todos los usuarios
+
+  category:
+    label: Categoría
+    type:
+      no_category: Sin categoría
+      breakfast: Desayuno
+      brunch: Almuerzo
+      lunch: Comida
+      dinner: Cena
+      dessert: Postre
+      sandwich: Sandwich
+      appetiser: Aperitivo
+      soup: Sopa
+      salad: Ensalada
+      snack: Snack
+      burger: Hamburguesa
+      pizza: Pizza
+      cake: Tarta
+      seafood: Marisco
+      rice: Arroz
+      pasta: Pasta
+      ice_cream: Helado
+      meat: Carne
+    msg:
+      error:
+        wrong_category: "La categoría seleccionada: { value }. Es incorrecta"
+
+buttons:
+  close:
+    label: Cerrar
+  recipe_modify:
+    label: Crear

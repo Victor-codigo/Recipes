@@ -1,0 +1,109 @@
+{% trans_default_domain 'RecipeHomeListItemComponent' %}
+
+<li class="list-recipe-item  list-recipe-item-action  d-flex  flex-row  p-0  mt-1  mb-1  border  border-1  border-light-subtle  recipe-list-item"
+    data-controller="RecipeListItemComponent"
+    data-item-data="{{ recipeDataJson }}"
+    data-js-list-item>
+
+    <label class="d-flex  flex-row  flex-grow-1  align-items-center">
+
+        <input class="form-check-input m-2  align-self-center"
+               type="checkbox"
+               data-js-checkbox-list-item>
+
+        {% if data.image is null %}
+
+        <div class="flex-grow-0  flex-shrink-0  border-0  recipe-list-item__image  p-0"
+             title="{{ 'recipe_image.title'|trans }}"
+             data-js-item-image>
+
+            {% include "recipe/recipe-no-image.svg" %}
+        </div>
+
+        {% else %}
+
+        <img class="flex-grow-0  flex-shrink-0  flex-shrink-0  flex-shrink-1  border-0  recipe-list-item__image  p-0"
+             src="{{ data.image }}"
+             alt="{{ 'recipe_image.alt'|trans}}"
+             title="{{ 'recipe_image.title'|trans }}"
+             data-js-item-image>
+
+        {% endif %}
+        <p class="fs-5  my-2  mx-2  text-break"
+           data-js-item-name>
+            {{ data.name }}
+        </p>
+    </label>
+
+    <button type="button"
+            class="btn  px-3  py-2  rounded-0  border  border-0  border-start  border-end-0  border-light-subtle  btn-outline-primary  button-primary-color-dark  recipe-list-item__button"
+            value="{{ data.id }}"
+            alt="{{ 'recipe_info_button.alt'|trans }}"
+            title="{{ 'recipe_info_button.title'|trans }}"
+            data-bs-toggle="modal"
+            data-bs-target="#{{ data.infoFormModalIdAttribute }}"
+            data-action="RecipeListItemComponent#sendMessageHomeListItemInfoToParent">
+
+        {% include "common/info-icon.svg" %}
+    </button>
+
+    <div class="dropdown  dropstart">
+        <button type="button"
+                class="btn border-light-subtle  btn-outline-primary  button-primary-color-dark  rounded-0  h-100  button-open-menu"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+
+            {% include "common/dots-vertical-icon.svg" %}
+
+        </button>
+        <ul class="dropdown-menu">
+            <li>
+                <button type="button"
+                        class="d-flex  flex-row  btn  px-3  py-3  rounded-0  border  border-0  border-light-subtle  btn-outline-primary  recipe-list-item__button  recipe-list-item__button--menu"
+                        value="{{ data.id }}"
+                        alt="{{ 'recipe_modify_button.alt'|trans }}"
+                        title="{{ 'recipe_modify_button.title'|trans }}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#{{ data.modifyFormModalIdAttribute }}"
+                        data-action="RecipeListItemComponent#sendMessageHomeListItemModifyToParent">
+
+                    <div>
+
+                        {% include "common/modify-icon.svg" %}
+
+                    </div>
+                    <div class="ms-2">
+
+                        {{ 'recipe_modify_button.label'|trans }}
+
+                    </div>
+                </button>
+            </li>
+
+            <li>
+                <button type="button"
+                        data-js-remove-button
+                        class="d-flex  flex-row  btn  px-3  py-3  rounded-0  border  border-0  border-light-subtle  btn-outline-danger  recipe-list-item__button  recipe-list-item__button--menu"
+                        value="{{ data.id }}"
+                        alt="{{ 'recipe_remove_button.alt'|trans}}"
+                        title="{{ 'recipe_remove_button.title'|trans }}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#{{ data.deleteFormModalIdAttribute }}"
+                        data-action="RecipeListItemComponent#sendMessageHomeListItemRemoveEvent">
+
+                    <div>
+
+                        {% include "common/remove-icon.svg" %}
+
+                    </div>
+                    <div class="ms-2">
+
+                        {{ 'recipe_remove_button.label'|trans }}
+
+                    </div>
+                </button>
+            </li>
+
+        </ul>
+    </div>
+</li>

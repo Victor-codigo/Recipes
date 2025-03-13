@@ -29,6 +29,7 @@ final class Version20241230165103 extends AbstractMigration
                 steps JSON NOT NULL,
                 image VARCHAR(255) DEFAULT NULL,
                 rating INT DEFAULT NULL,
+                public TINYINT(1) DEFAULT 0 NOT NULL,
                 created_on DATETIME NOT NULL,
 
                 INDEX idx_id (id),

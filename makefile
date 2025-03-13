@@ -36,7 +36,7 @@ setup-dev: ## Sets the application up for development
 
 	@echo "$(TITLE)Application ready for development.$(END)"
 
-setup-test: ## Sets the application up for development
+setup-test: ## Sets the application up for testing
 	@echo "$(TITLE)Installing symfony dependencies$(END)"
 	@echo "$(SEPARATOR)------------------------------$(END)"
 	composer install
@@ -53,7 +53,6 @@ setup-test: ## Sets the application up for development
 	npm run dev
 
 	@echo "$(TITLE)Application ready for development.$(END)"
-
 
 # setup-deploy: ## Sets the application up for production deploy
 # 	@echo "$(TITLE)Installing symfony dependencies$(END)"

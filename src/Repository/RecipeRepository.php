@@ -3,40 +3,72 @@
 namespace App\Repository;
 
 use App\Entity\Recipe;
+use App\Repository\Exception\DBNotFoundException;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
+use VictorCodigo\DoctrinePaginatorAdapter\PaginatorInterface;
 
 /**
- * @extends RepositoryBase<Recipe>
+ * @template-extends RepositoryBase<Recipe>
  */
 class RecipeRepository extends RepositoryBase
 {
-    public function __construct(ManagerRegistry $registry)
+    /**
+     * @param PaginatorInterface<array-key, Recipe> $paginator
+     */
+    public function __construct(ManagerRegistry $managerRegistry, PaginatorInterface $paginator)
     {
-        parent::__construct($registry, Recipe::class);
+        parent::__construct($managerRegistry, $paginator, Recipe::class);
     }
 
-    //    /**
-    //     * @return Recipe[] Returns an array of Recipe objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('r.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @return PaginatorInterface<array-key, Recipe>
+     *
+     * @throws DBNotFoundException
+     */
+    public function findRecipesByUserIdOrFail(string $userId, ?string $groupId, int $page, int $pageItems): PaginatorInterface
+    {
+        $query = $this->entityManager->createQueryBuilder()
+            ->select('recipe')
+            ->from(Recipe::class, 'recipe')
+            ->where('recipe.userId = :userId')
+            ->setParameter('userId', $userId);
 
-    //    public function findOneBySomeField($value): ?Recipe
-    //    {
-    //        return $this->createQueryBuilder('r')
-    //            ->andWhere('r.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if (null !== $groupId) {
+            $query
+                ->andWhere('recipe.groupId = :groupId')
+                ->setParameter('groupId', $groupId);
+        }
+
+        /** @var PaginatorInterface<int, Recipe> */
+        $recipesPaginator = $this->createPaginator($query, $page, $pageItems);
+
+        return $recipesPaginator;
+    }
+
+    /**
+     * @throws DBNotFoundException
+     */
+    public function findRecipeByIdAndGroupIdOrFail(string $recipeId, ?string $groupId): Recipe
+    {
+        /** @var Recipe|null */
+        $result = $this->findOneBy([
+            'id' => $recipeId,
+            'groupId' => $groupId,
+        ]);
+
+        if (null === $result) {
+            throw DBNotFoundException::fromMessage('Recipe not found');
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param Collection<int, Recipe>|Recipe $recipes
+     */
+    public function save(Collection|Recipe $recipes): void
+    {
+        parent::saveEntities($recipes);
+    }
 }

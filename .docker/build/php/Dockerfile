@@ -63,9 +63,21 @@ RUN pecl install apcu \
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
+#Install GD library
+RUN apt-get update && apt-get install -y \
+        libfreetype6-dev \
+        libjpeg62-turbo-dev \
+        libpng-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd
+
 # Install nodejs
 RUN curl -sL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs
+
+# Chromium
+RUN apt-get install -y chromium
+ENV PANTHER_NO_SANDBOX 1
 
 # Install yarn
 RUN npm install -g yarn

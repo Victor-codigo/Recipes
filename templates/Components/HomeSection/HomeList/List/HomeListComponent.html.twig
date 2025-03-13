@@ -1,0 +1,21 @@
+<section data-controller="HomeListComponent">
+
+	{{ component('ListComponent', { data: homeListDto }) }}
+
+	<div class="mt-5">
+		{{ component('PaginatorComponent', { data: data.homeListPaginatorDto }) }}
+	</div>
+
+	{% if not data.homeListItemRemoveFormModalDto is null %}
+
+	{{ component('ModalComponent', { data: data.homeListItemRemoveFormModalDto }) }}
+
+	{% endif %}
+
+	{% if not data.homeListItemModifyFormModalDto is null %}
+
+	{{ component('ModalComponent', { data: data.homeListItemModifyFormModalDto }) }}
+
+	{% endif %}
+
+</section>
