@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service\Exception;
 
-class ServiceException extends \Exception
+use App\Common\Exception\LoggerException;
+
+abstract class ServiceException extends LoggerException
 {
     final public function __construct(string $message = '', int $code = 0, ?\Throwable $previous = null)
     {

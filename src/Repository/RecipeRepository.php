@@ -58,7 +58,7 @@ class RecipeRepository extends RepositoryBase
         ]);
 
         if (null === $result) {
-            throw DBNotFoundException::fromMessage('Recipe not found');
+            throw DBNotFoundException::fromMessage(sprintf('Recipe [%s], with group [%s] not found', $recipeId, $groupId))->log();
         }
 
         return $result;

@@ -40,7 +40,7 @@ class RecipeCreateService
             $recipeEntity = $this->recipeCreateFormDataMapper->toEntity($formData, $userSession, $recipeId, $groupId);
             $this->recipeRepository->save($recipeEntity);
         } catch (\Throwable $th) {
-            throw RecipeCreateException::fromMessage($th->getMessage());
+            throw RecipeCreateException::fromMessage($th->getMessage())->log();
         }
     }
 }

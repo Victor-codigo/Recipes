@@ -67,7 +67,7 @@ abstract class RepositoryBase extends ServiceEntityRepository
             ->setPagination($page, $pageItems);
 
         if (0 === $paginator->getItemsTotal()) {
-            throw DBNotFoundException::fromMessage('Entities not found');
+            throw DBNotFoundException::fromMessage(sprintf('Entities not found. DQL[%s]', $query->getDQL()))->log();
         }
 
         return $paginator;

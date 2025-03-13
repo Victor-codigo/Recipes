@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Repository\Exception;
 
-class RepositoryException extends \Exception
+use App\Common\Exception\LoggerException;
+
+abstract class RepositoryException extends LoggerException
 {
     final public function __construct(string $message, int $code, ?\Throwable $previous)
     {

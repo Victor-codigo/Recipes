@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Controller\Recipe\RecipeModify;
 
-use App\Controller\Exception\FormDataEmptyException;
 use App\Form\Recipe\RecipeModify\RECIPE_MODIFY_FORM_FIELDS;
 use App\Form\Recipe\RecipeModify\RecipeModifyFormType;
 use App\Service\Exception\RecipeModifyException;
@@ -38,9 +37,6 @@ class RecipeModifyController extends AbstractController
     ) {
     }
 
-    /**
-     * @throws FormDataEmptyException
-     */
     public function __invoke(Request $request): RedirectResponse
     {
         $form = $this->formFactoryExtended

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Exception;
 
-class ControllerException extends \Exception
+use App\Common\Exception\LoggerException;
+
+abstract class ControllerException extends LoggerException
 {
     final public function __construct(string $message, int $code, ?\Throwable $previous)
     {

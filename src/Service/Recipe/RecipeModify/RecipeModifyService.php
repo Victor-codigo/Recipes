@@ -40,7 +40,7 @@ class RecipeModifyService
             $this->recipeModifyFormDataMapper->mergeToEntity($recipe, $formData);
             $this->recipeRepository->save($recipe);
         } catch (\Throwable $e) {
-            throw new RecipeModifyException($e->getMessage(), $e->getCode(), $e->getPrevious());
+            throw RecipeModifyException::fromMessage($e->getMessage())->log();
         }
     }
 

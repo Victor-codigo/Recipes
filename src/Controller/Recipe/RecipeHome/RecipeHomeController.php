@@ -81,7 +81,7 @@ class RecipeHomeController extends AbstractController
         $user = $this->security->getUser();
 
         if (null === $user) {
-            throw UserSessionNotFoundException::fromMessage('User not logged in');
+            throw UserSessionNotFoundException::fromMessage('User not logged in')->log();
         }
 
         return $user;

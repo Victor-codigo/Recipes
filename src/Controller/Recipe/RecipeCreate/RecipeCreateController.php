@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Controller\Recipe\RecipeCreate;
 
-use App\Controller\Exception\FormDataEmptyException;
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormType;
+use App\Service\Exception\RecipeCreateException;
 use App\Service\Recipe\RecipeCreate\RecipeCreateService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -36,7 +36,7 @@ class RecipeCreateController extends AbstractController
     }
 
     /**
-     * @throws FormDataEmptyException
+     * @throws RecipeCreateException
      */
     public function __invoke(Request $request): RedirectResponse
     {
