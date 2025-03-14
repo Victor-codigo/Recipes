@@ -40,7 +40,7 @@ export default class extends Controller {
     }
 
     #itemsIdSelectedToggle(event) {
-        if (event.target.tagName !== 'input'
+        if (event.target.tagName.toLowerCase() !== 'input'
             || event.target.type !== 'checkbox'
             || !event.target.hasAttribute('data-js-checkbox-list-item')) {
             return;
