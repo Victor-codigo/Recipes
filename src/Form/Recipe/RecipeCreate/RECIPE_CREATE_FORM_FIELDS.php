@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Form\Recipe\RecipeCreate;
 
+use App\Form\Common\FormFieldsNamesUtilTrait;
+
 enum RECIPE_CREATE_FORM_FIELDS: string
 {
+    use FormFieldsNamesUtilTrait;
+
     case FORM_NAME = 'recipe_create_form';
     case CSRF_TOKEN = 'token';
     case NAME = 'name';
@@ -17,15 +21,4 @@ enum RECIPE_CREATE_FORM_FIELDS: string
     case CATEGORY = 'category';
     case PUBLIC = 'public';
     case SUBMIT = 'submit';
-
-    public static function getNameWithForm(RECIPE_CREATE_FORM_FIELDS $formField, bool $isArray = false): string
-    {
-        $fieldWithForm = self::FORM_NAME->value."[$formField->value]";
-
-        if ($isArray) {
-            $fieldWithForm .= '[]';
-        }
-
-        return $fieldWithForm;
-    }
 }
