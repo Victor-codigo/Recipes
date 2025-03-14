@@ -9,7 +9,7 @@ use App\Common\DtoBuilder\DtoBuilderInterface;
 use App\Common\RECIPE_TYPE;
 use App\Entity\Recipe;
 use App\Entity\User;
-use App\Form\RECIPE_REMOVE_MULTI_FORM_FIELDS;
+use App\Form\Recipe\RecipeRemoveMulti\RECIPE_REMOVE_MULTI_FORM_FIELDS;
 use App\Templates\Components\HomeSection\Home\HomeSectionComponentDto;
 use App\Templates\Components\HomeSection\Home\RemoveMultiFormDto;
 use App\Templates\Components\HomeSection\SearchBar\SECTION_FILTERS;
@@ -22,6 +22,8 @@ use App\Templates\Components\Recipe\RecipeHome\ListItem\RecipeListItemComponent;
 use App\Templates\Components\Recipe\RecipeHome\ListItem\RecipeListItemComponentDto;
 use App\Templates\Components\Recipe\RecipeModify\RecipeModifyComponent;
 use App\Templates\Components\Recipe\RecipeModify\RecipeModifyComponentDto;
+use App\Templates\Components\Recipe\RecipeRemove\RecipeRemoveComponent;
+use App\Templates\Components\Recipe\RecipeRemove\RecipeRemoveComponentDto;
 use Doctrine\Common\Collections\Collection;
 
 class RecipeHomeComponentBuilder implements DtoBuilderInterface
@@ -238,43 +240,44 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
 
     private function createRecipeRemoveMultiComponentDto(string $recipeRemoveMultiFormCsrfToken, string $recipeRemoveFormActionUrl): ModalComponentDto
     {
-        // $homeSectionRemoveMultiComponentDto = new RecipeRemoveComponentDto(
-        //     RecipeRemoveComponent::getComponentName(),
-        //     [],
-        //     $recipeRemoveMultiFormCsrfToken,
-        //     mb_strtolower($recipeRemoveFormActionUrl),
-        //     true,
-        // );
+        $homeSectionRemoveMultiComponentDto = new RecipeRemoveComponentDto(
+            RecipeRemoveComponent::getComponentName(),
+            [],
+            $recipeRemoveMultiFormCsrfToken,
+            mb_strtolower($recipeRemoveFormActionUrl),
+            true,
+        );
 
-        // return new ModalComponentDto(
-        //     self::RECIPE_REMOVE_MULTI_MODAL_ID,
-        //     '',
-        //     false,
-        //     RecipeRemoveComponent::getComponentName(),
-        //     $homeSectionRemoveMultiComponentDto,
-        //     []
-        // );
+        return new ModalComponentDto(
+            self::RECIPE_REMOVE_MULTI_MODAL_ID,
+            '',
+            false,
+            RecipeRemoveComponent::getComponentName(),
+            $homeSectionRemoveMultiComponentDto,
+            []
+        );
+
         return $this->createFakeModalComponentDto();
     }
 
     private function createRecipeRemoveModalDto(string $recipeRemoveFormCsrfToken, string $recipeRemoveFormActionUrl): ModalComponentDto
     {
-        // $homeModalDelete = new RecipeRemoveComponentDto(
-        //     RecipeRemoveComponent::getComponentName(),
-        //     [],
-        //     $recipeRemoveFormCsrfToken,
-        //     mb_strtolower($recipeRemoveFormActionUrl),
-        //     false
-        // );
+        $homeModalDelete = new RecipeRemoveComponentDto(
+            RecipeRemoveComponent::getComponentName(),
+            [],
+            $recipeRemoveFormCsrfToken,
+            mb_strtolower($recipeRemoveFormActionUrl),
+            false
+        );
 
-        // return new ModalComponentDto(
-        //     self::RECIPE_DELETE_MODAL_ID,
-        //     '',
-        //     false,
-        //     RecipeRemoveComponent::getComponentName(),
-        //     $homeModalDelete,
-        //     []
-        // );
+        return new ModalComponentDto(
+            self::RECIPE_DELETE_MODAL_ID,
+            '',
+            false,
+            RecipeRemoveComponent::getComponentName(),
+            $homeModalDelete,
+            []
+        );
 
         return $this->createFakeModalComponentDto();
     }
@@ -313,10 +316,10 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
     private function createRemoveMultiFormDto(): RemoveMultiFormDto
     {
         return new RemoveMultiFormDto(
-            RECIPE_REMOVE_MULTI_FORM_FIELDS::FORM,
-            sprintf('%s[%s]', RECIPE_REMOVE_MULTI_FORM_FIELDS::FORM, RECIPE_REMOVE_MULTI_FORM_FIELDS::TOKEN),
-            sprintf('%s[%s]', RECIPE_REMOVE_MULTI_FORM_FIELDS::FORM, RECIPE_REMOVE_MULTI_FORM_FIELDS::SUBMIT),
-            sprintf('%s[%s][]', RECIPE_REMOVE_MULTI_FORM_FIELDS::FORM, RECIPE_REMOVE_MULTI_FORM_FIELDS::RECIPES_ID),
+            RECIPE_REMOVE_MULTI_FORM_FIELDS::FORM_NAME->value,
+            RECIPE_REMOVE_MULTI_FORM_FIELDS::getNameWithForm(RECIPE_REMOVE_MULTI_FORM_FIELDS::CSRF_TOKEN),
+            RECIPE_REMOVE_MULTI_FORM_FIELDS::getNameWithForm(RECIPE_REMOVE_MULTI_FORM_FIELDS::SUBMIT),
+            RECIPE_REMOVE_MULTI_FORM_FIELDS::getNameWithForm(RECIPE_REMOVE_MULTI_FORM_FIELDS::RECIPES_ID, true),
             self::RECIPE_REMOVE_MULTI_MODAL_ID
         );
     }
