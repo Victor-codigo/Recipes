@@ -173,11 +173,11 @@ class Recipe
     }
 
     /**
-     * @param string[] $products
+     * @param string[] $ingredients
      */
-    public function setIngredients(array $products): static
+    public function setIngredients(array $ingredients): static
     {
-        $this->ingredients = $products;
+        $this->ingredients = $ingredients;
 
         return $this;
     }
