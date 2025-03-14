@@ -1,0 +1,29 @@
+form:
+  title: Eliminar receta
+
+  validation:
+    title: Errores
+    ok: Receta eliminada
+    error:
+      internal_server: Ocurrió un error, inténtalo más tarde
+
+  message_advice:
+    text: |
+      Te dispones a eliminar la receta:
+      {item_placeholder}
+
+      ¿Estás seguro?
+    text_multi: |
+      Te dispones a eliminar las recetas:
+      {item_placeholder}
+
+      ¿Estás seguro?
+
+  buttons:
+    remove:
+      label: Eliminar receta
+
+    close:
+      label: Cerrar
+
+

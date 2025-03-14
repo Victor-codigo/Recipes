@@ -1,0 +1,28 @@
+form:
+  title: Recipe remove
+  lbl: topota
+
+  validation:
+    title: Errors
+    ok: Recipe removed
+    error:
+      internal_server: An error has been occurred, try it later
+
+  message_advice:
+    text: |
+      You are going to remove recipe:
+      {item_placeholder}
+      Are You sure?
+    text_multi: |
+      You are going to remove recipes:
+      {item_placeholder}
+      Are You sure?
+
+  buttons:
+    remove:
+      label: Remove
+
+    close:
+      label: Close
+
+

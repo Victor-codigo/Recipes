@@ -34,6 +34,7 @@ import RecipeSectionComponent from 'App/Templates/Components/Recipe/RecipeHome/H
 import RecipeListItemComponent from 'App/Templates/Components/Recipe/RecipeHome/ListItem/RecipeListItem_controller.js';
 import RecipeCreateComponent from 'App/Templates/Components/Recipe/RecipeCreate/RecipeCreate_controller.js';
 import RecipeModifyComponent from 'App/Templates/Components/Recipe/RecipeModify/RecipeModify_controller.js';
+import RecipeRemoveComponent from 'App/Templates/Components/Recipe/RecipeRemove/RecipeRemoveComponent_controller.js';
 import RecipeItemAddComponent from 'App/Templates/Components/Recipe/RecipeItemAdd/RecipeItemAdd_controller.js';
 
 
@@ -65,4 +66,5 @@ app.register('RecipeSectionComponent', RecipeSectionComponent);
 app.register('RecipeListItemComponent', RecipeListItemComponent);
 app.register('RecipeCreateComponent', RecipeCreateComponent);
 app.register('RecipeModifyComponent', RecipeModifyComponent);
+app.register('RecipeRemoveComponent', RecipeRemoveComponent);
 app.register('RecipeItemAddComponent', RecipeItemAddComponent);
