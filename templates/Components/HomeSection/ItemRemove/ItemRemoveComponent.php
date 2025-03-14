@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Templates\Components\HomeSection\ItemRemove;
 
-use App\Templates\Components\AlertValidation\AlertValidationComponentDto;
 use App\Templates\Components\Title\TITLE_TYPE;
 use App\Templates\Components\Title\TitleComponentDto;
 use App\Templates\Components\TwigComponent;
@@ -17,45 +16,48 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 )]
 abstract class ItemRemoveComponent extends TwigComponent
 {
-    abstract protected function loadTranslation(): void;
-
-    abstract public function loadErrorsTranslation(array $errors): array;
-
-    abstract public function loadValidationOkTranslation(): string;
-
     abstract public function mount(ItemRemoveComponentDto $data): void;
 
     abstract public static function getComponentName(): string;
 
-    public ItemRemoveComponentLangDto $lang;
     public ItemRemoveComponentDto&TwigComponentDtoInterface $data;
     public TitleComponentDto $titleDto;
 
     public readonly string $componentName;
+    public readonly string $title;
     public readonly string $formName;
     public readonly string $submitFieldName;
     public readonly string $itemsIdFieldName;
     public readonly string $tokenCsrfFieldName;
 
-    protected function initialize(string $componentName, string $formName, string $submitFieldName, string $itemsIdFieldName, string $tokenCsrfFieldName): void
-    {
+    public readonly string $messageAdvice;
+    public readonly string $itemCloseButtonLabel;
+    public readonly string $itemRemoveButton;
+
+    protected function initialize(
+        string $componentName,
+        string $title,
+        string $formName,
+        string $submitFieldName,
+        string $itemsIdFieldName,
+        string $tokenCsrfFieldName,
+        string $messageAdvice,
+        string $itemCloseButtonLabel,
+        string $itemRemoveButton,
+    ): void {
         $this->componentName = $componentName;
+        $this->title = $title;
         $this->formName = $formName;
         $this->submitFieldName = $submitFieldName;
         $this->itemsIdFieldName = $itemsIdFieldName;
         $this->tokenCsrfFieldName = $tokenCsrfFieldName;
+        $this->messageAdvice = $messageAdvice;
+        $this->itemCloseButtonLabel = $itemCloseButtonLabel;
+        $this->itemRemoveButton = $itemRemoveButton;
     }
 
     protected function createTitleDto(): TitleComponentDto
     {
-        return new TitleComponentDto($this->lang->title, TITLE_TYPE::POP_UP, null);
-    }
-
-    protected function createAlertValidationComponentDto(): AlertValidationComponentDto
-    {
-        return new AlertValidationComponentDto(
-            [$this->loadValidationOkTranslation()],
-            $this->loadErrorsTranslation($this->data->errors)
-        );
+        return new TitleComponentDto($this->title, TITLE_TYPE::POP_UP, null);
     }
 }

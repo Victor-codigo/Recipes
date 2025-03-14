@@ -24,7 +24,7 @@
 	{{ component('TitleComponent', { data: titleDto } ) }}
 
 	<div class="mt-5  text-wrap  text-center"
-		 data-placeholder="{{ lang.messageAdvice|nl2br }}"
+		 data-placeholder="{{ messageAdvice|nl2br }}"
 		 data-js-message>
 	</div>
 
@@ -36,13 +36,13 @@
 			{% include "common/arrow-back-icon.svg" %}
 
 			<span class="align-text-top">
-				{{ lang.itemCloseButtonLabel }}
+				{{ itemCloseButtonLabel }}
 			</span>
 		</button>
 		<input type="submit"
 			   class="btn btn-danger  flex-grow-1"
 			   name="{{ submitFieldName }}"
-			   value="{{ lang.itemRemoveButton }}" />
+			   value="{{ itemRemoveButton }}" />
 
 	</div>
 </form>

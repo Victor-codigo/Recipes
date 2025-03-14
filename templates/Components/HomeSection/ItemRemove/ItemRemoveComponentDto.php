@@ -6,14 +6,14 @@ namespace App\Templates\Components\HomeSection\ItemRemove;
 
 use App\Templates\Components\TwigComponentDtoInterface;
 
-class ItemRemoveComponentDto implements TwigComponentDtoInterface
+readonly class ItemRemoveComponentDto implements TwigComponentDtoInterface
 {
     public function __construct(
-        public readonly string $componentName,
-        public readonly array $errors,
-        public readonly string $csrfToken,
-        public readonly string $formActionUrl,
-        public readonly bool $removeMulti,
+        public string $componentName,
+        public array $errors,
+        public string $csrfToken,
+        public string $formActionUrl,
+        public bool $removeMulti,
     ) {
     }
 }
