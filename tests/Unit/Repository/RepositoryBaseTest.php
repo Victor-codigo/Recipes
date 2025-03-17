@@ -47,7 +47,7 @@ class RepositoryBaseTest extends KernelTestCase
     }
 
     #[Test]
-    public function ItShouldCheckTheUuidAsValid(): void
+    public function itShouldCheckTheUuidAsValid(): void
     {
         $uuid = $this->object->uuidCreate();
 
@@ -57,7 +57,7 @@ class RepositoryBaseTest extends KernelTestCase
     }
 
     #[Test]
-    public function ItShouldCheckTheUuidAsWrong(): void
+    public function itShouldCheckTheUuidAsWrong(): void
     {
         $uuid = 'not valid uuid';
 
@@ -67,7 +67,7 @@ class RepositoryBaseTest extends KernelTestCase
     }
 
     #[Test]
-    public function ItShouldReturnAUuid(): void
+    public function itShouldReturnAUuid(): void
     {
         $return = $this->object->uuidCreate();
 
@@ -278,5 +278,109 @@ class RepositoryBaseTest extends KernelTestCase
 
         $this->expectException(\Exception::class);
         $this->object->saveEntitiesProxy($entities);
+    }
+
+    #[Test]
+    public function itShouldRemoveACollectionOfEntities(): void
+    {
+        $entities = new ArrayCollection([
+            new EntityClassForTesting(),
+            new EntityClassForTesting(),
+            new EntityClassForTesting(),
+        ]);
+
+        $invokerCounter = $this->exactly($entities->count());
+        $this->entityManager
+            ->expects($invokerCounter)
+            ->method('remove')
+            ->with($this->callback(function (EntityClassForTesting $entity) use ($invokerCounter, $entities): bool {
+                match ($invokerCounter->numberOfInvocations()) {
+                    1 => static::assertSame($entities->get(0), $entity),
+                    2 => static::assertSame($entities->get(1), $entity),
+                    3 => static::assertSame($entities->get(2), $entity),
+                    default => throw new \Exception('Method remove is called more times than expected'),
+                };
+
+                return true;
+            }));
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->object->removeEntitiesProxy($entities);
+    }
+
+    #[Test]
+    public function itShouldRemoveSomeEntities(): void
+    {
+        $entity = new EntityClassForTesting();
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('remove')
+            ->with($entity);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush');
+
+        $this->object->removeEntitiesProxy($entity);
+    }
+
+    #[Test]
+    public function itShouldFailRemovingACollectionOfEntitiesPersistError(): void
+    {
+        $entities = new ArrayCollection([
+            new EntityClassForTesting(),
+            new EntityClassForTesting(),
+            new EntityClassForTesting(),
+        ]);
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('remove')
+            ->with($entities->get(0))
+            ->willThrowException(new \Exception());
+
+        $this->entityManager
+            ->expects($this->never())
+            ->method('flush');
+
+        $this->expectException(\Exception::class);
+        $this->object->removeEntitiesProxy($entities);
+    }
+
+    #[Test]
+    public function itShouldFailRemovingACollectionOfEntitiesFlushingError(): void
+    {
+        $entities = new ArrayCollection([
+            new EntityClassForTesting(),
+            new EntityClassForTesting(),
+            new EntityClassForTesting(),
+        ]);
+
+        $invokerCounter = $this->exactly($entities->count());
+        $this->entityManager
+            ->expects($invokerCounter)
+            ->method('remove')
+            ->with($this->callback(function (EntityClassForTesting $entity) use ($invokerCounter, $entities): bool {
+                match ($invokerCounter->numberOfInvocations()) {
+                    1 => static::assertSame($entities->get(0), $entity),
+                    2 => static::assertSame($entities->get(1), $entity),
+                    3 => static::assertSame($entities->get(2), $entity),
+                    default => throw new \Exception('Method persist is called more times than expected'),
+                };
+
+                return true;
+            }));
+
+        $this->entityManager
+            ->expects($this->once())
+            ->method('flush')
+            ->willThrowException(new \Exception());
+
+        $this->expectException(\Exception::class);
+        $this->object->removeEntitiesProxy($entities);
     }
 }

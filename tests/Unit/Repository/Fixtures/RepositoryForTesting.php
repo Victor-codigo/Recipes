@@ -19,4 +19,12 @@ class RepositoryForTesting extends RepositoryBase
     {
         parent::saveEntities($entities);
     }
+
+    /**
+     * @param Collection<array-key, EntityClassForTesting>|EntityClassForTesting $entities
+     */
+    public function removeEntitiesProxy(object $entities): void
+    {
+        parent::removeEntities($entities);
+    }
 }

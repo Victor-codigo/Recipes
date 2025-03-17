@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Recipe;
 use App\Repository\Exception\DBNotFoundException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 use VictorCodigo\DoctrinePaginatorAdapter\PaginatorInterface;
@@ -47,21 +48,29 @@ class RecipeRepository extends RepositoryBase
     }
 
     /**
+     * @param Collection<int, string> $recipesId
+     *
+     * @return Collection<int, Recipe>
+     *
      * @throws DBNotFoundException
      */
-    public function findRecipeByIdAndGroupIdOrFail(string $recipeId, ?string $groupId): Recipe
+    public function findRecipesByIdAndGroupIdOrFail(Collection $recipesId, ?string $groupId): Collection
     {
-        /** @var Recipe|null */
-        $result = $this->findOneBy([
-            'id' => $recipeId,
+        /** @var array<int, Recipe> */
+        $recipes = $this->findBy([
+            'id' => $recipesId->toArray(),
             'groupId' => $groupId,
         ]);
 
-        if (null === $result) {
-            throw DBNotFoundException::fromMessage(sprintf('Recipe [%s], with group [%s] not found', $recipeId, $groupId))->log();
+        if (empty($recipes)) {
+            $recipesIdToString = ltrim(
+                $recipesId->reduce(fn (?string $accumulator, string $recipeId): string => "{$accumulator}, {$recipeId}") ?? '',
+                ','
+            );
+            throw DBNotFoundException::fromMessage(sprintf('Recipe [%s], with group [%s] not found', $recipesIdToString, $groupId))->log();
         }
 
-        return $result;
+        return new ArrayCollection($recipes);
     }
 
     /**
@@ -70,5 +79,13 @@ class RecipeRepository extends RepositoryBase
     public function save(Collection|Recipe $recipes): void
     {
         parent::saveEntities($recipes);
+    }
+
+    /**
+     * @param Collection<int, Recipe>|Recipe $recipes
+     */
+    public function remove(Collection|Recipe $recipes): void
+    {
+        parent::removeEntities($recipes);
     }
 }

@@ -86,4 +86,18 @@ abstract class RepositoryBase extends ServiceEntityRepository
 
         $this->entityManager->flush();
     }
+
+    /**
+     * @param Collection<array-key, TEntityClass>|TEntityClass $entities
+     */
+    protected function removeEntities(object $entities): void
+    {
+        if ($entities instanceof Collection) {
+            $entities->map(fn (mixed $entity) => $this->entityManager->remove($entity));
+        } else {
+            $this->entityManager->remove($entities);
+        }
+
+        $this->entityManager->flush();
+    }
 }
