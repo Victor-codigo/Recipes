@@ -16,11 +16,11 @@ use VictorCodigo\SymfonyFormExtended\Type\FormTypeBase;
 use VictorCodigo\SymfonyFormExtended\Type\FormTypeExtendedInterface;
 
 /**
- * @extends FormTypeBase<RecipeRemoveForm>
+ * @extends FormTypeBase<RecipeRemoveFormType>
  *
- * @implements FormTypeExtendedInterface<RecipeRemoveForm>
+ * @implements FormTypeExtendedInterface<RecipeRemoveFormType>
  */
-class RecipeRemoveForm extends FormTypeBase implements FormTypeExtendedInterface
+class RecipeRemoveFormType extends FormTypeBase implements FormTypeExtendedInterface
 {
     public const string TRANSLATION_DOMAIN = 'RecipeRemoveComponent';
     public const string CSRF_TOKEN_ID = 'RecipeRemoveForm';
@@ -37,7 +37,7 @@ class RecipeRemoveForm extends FormTypeBase implements FormTypeExtendedInterface
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add(RECIPE_REMOVE_FORM_FIELDS::CSRF_TOKEN->value, HiddenType::class)
+            // ->add(RECIPE_REMOVE_FORM_FIELDS::CSRF_TOKEN->value, HiddenType::class)
             ->add(RECIPE_REMOVE_FORM_FIELDS::RECIPES_ID->value, CollectionType::class, [
                 'allow_add' => true,
                 'trim' => true,

@@ -15,8 +15,13 @@ class RecipeRemoveFormDataValidation
     /**
      * @var array<int, string>
      */
+    #[Assert\NotBlank(message: 'form.validation.msg.error')]
+    #[Assert\NotNull(message: 'form.validation.msg.error')]
     #[Assert\All(
-        new Assert\Uuid(versions: Assert\Uuid::V4_RANDOM)
+        new Assert\Uuid(
+            versions: Assert\Uuid::V4_RANDOM,
+            message: 'form.validation.msg.error'
+        )
     )]
     public array $recipes_id;
 }
