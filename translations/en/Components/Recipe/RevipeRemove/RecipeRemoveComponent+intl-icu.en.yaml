@@ -1,12 +1,9 @@
 form:
   title: Recipe remove
-  lbl: topota
-
   validation:
-    title: Errors
-    ok: Recipe removed
-    error:
-      internal_server: An error has been occurred, try it later
+    msg:
+      ok: Recipe Removed
+      error: An error has been occurred, try it later
 
   message_advice:
     text: |

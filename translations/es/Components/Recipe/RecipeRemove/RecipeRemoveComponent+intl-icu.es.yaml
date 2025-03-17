@@ -1,11 +1,9 @@
 form:
   title: Eliminar receta
-
   validation:
-    title: Errores
-    ok: Receta eliminada
-    error:
-      internal_server: Ocurrió un error, inténtalo más tarde
+    msg:
+      ok: Receta eliminada
+      error: Ocurrió un error, inténtalo más tarde
 
   message_advice:
     text: |
