@@ -9,7 +9,7 @@ use App\Common\DtoBuilder\DtoBuilderInterface;
 use App\Common\RECIPE_TYPE;
 use App\Entity\Recipe;
 use App\Entity\User;
-use App\Form\Recipe\RecipeRemoveMulti\RECIPE_REMOVE_MULTI_FORM_FIELDS;
+use App\Form\Recipe\RecipeRemove\RECIPE_REMOVE_FORM_FIELDS;
 use App\Templates\Components\HomeSection\Home\HomeSectionComponentDto;
 use App\Templates\Components\HomeSection\Home\RemoveMultiFormDto;
 use App\Templates\Components\HomeSection\SearchBar\SECTION_FILTERS;
@@ -30,7 +30,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
 {
     private const RECIPE_CREATE_MODAL_ID = 'recipe_create_modal';
     private const RECIPE_REMOVE_MULTI_MODAL_ID = 'recipe_remove_multi_modal';
-    public const RECIPE_DELETE_MODAL_ID = 'recipe_delete_modal';
+    public const RECIPE_REMOVE_MODAL_ID = 'recipe_delete_modal';
     public const RECIPE_MODIFY_MODAL_ID = 'recipe_modify_modal';
     public const RECIPE_INFO_MODAL_ID = 'recipe_info_modal';
 
@@ -271,7 +271,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
         );
 
         return new ModalComponentDto(
-            self::RECIPE_DELETE_MODAL_ID,
+            self::RECIPE_REMOVE_MODAL_ID,
             '',
             false,
             RecipeRemoveComponent::getComponentName(),
@@ -316,10 +316,10 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
     private function createRemoveMultiFormDto(): RemoveMultiFormDto
     {
         return new RemoveMultiFormDto(
-            RECIPE_REMOVE_MULTI_FORM_FIELDS::FORM_NAME->value,
-            RECIPE_REMOVE_MULTI_FORM_FIELDS::getNameWithForm(RECIPE_REMOVE_MULTI_FORM_FIELDS::CSRF_TOKEN),
-            RECIPE_REMOVE_MULTI_FORM_FIELDS::getNameWithForm(RECIPE_REMOVE_MULTI_FORM_FIELDS::SUBMIT),
-            RECIPE_REMOVE_MULTI_FORM_FIELDS::getNameWithForm(RECIPE_REMOVE_MULTI_FORM_FIELDS::RECIPES_ID, true),
+            RECIPE_REMOVE_FORM_FIELDS::FORM_NAME->value,
+            RECIPE_REMOVE_FORM_FIELDS::getNameWithForm(RECIPE_REMOVE_FORM_FIELDS::CSRF_TOKEN),
+            RECIPE_REMOVE_FORM_FIELDS::getNameWithForm(RECIPE_REMOVE_FORM_FIELDS::SUBMIT),
+            RECIPE_REMOVE_FORM_FIELDS::getNameWithForm(RECIPE_REMOVE_FORM_FIELDS::RECIPES_ID, true),
             self::RECIPE_REMOVE_MULTI_MODAL_ID
         );
     }
@@ -391,7 +391,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
                 null === $recipeEntity->getImage() ? $appConfigRecipeImageNotImagePublicPath : "{$appConfigRecipePublicUploadedPath}/{$recipeEntity->getImage()}",
                 $recipeEntity->getRating(),
                 self::RECIPE_MODIFY_MODAL_ID,
-                self::RECIPE_DELETE_MODAL_ID,
+                self::RECIPE_REMOVE_MODAL_ID,
                 self::RECIPE_INFO_MODAL_ID,
                 RecipeListItemComponent::getComponentName()
             );
