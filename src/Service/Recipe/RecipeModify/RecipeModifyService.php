@@ -10,6 +10,7 @@ use App\Form\Recipe\RecipeModify\RecipeModifyFormDataMapper;
 use App\Form\Recipe\RecipeModify\RecipeModifyFormDataValidation;
 use App\Repository\RecipeRepository;
 use App\Service\Exception\RecipeModifyException;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,7 +35,10 @@ class RecipeModifyService
         $formData = $form->getData();
 
         try {
-            $recipe = $this->recipeRepository->findRecipeByIdAndGroupIdOrFail($formData->id, $groupId);
+            /** @var Recipe */
+            $recipe = $this->recipeRepository
+                ->findRecipesByIdAndGroupIdOrFail(new ArrayCollection([$formData->id]), $groupId)
+                ->first();
 
             $this->uploadRecipeImage($request, $form, $recipe);
             $this->recipeModifyFormDataMapper->mergeToEntity($recipe, $formData);

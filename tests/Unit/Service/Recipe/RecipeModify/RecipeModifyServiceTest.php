@@ -17,6 +17,7 @@ use App\Tests\Traits\TestingAliceBundleTrait;
 use App\Tests\Traits\TestingFixturesTrait;
 use App\Tests\Traits\TestingImageTrait;
 use App\Tests\Traits\TestingRecipeTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Filesystem\Filesystem;
@@ -118,9 +119,9 @@ class RecipeModifyServiceTest extends TypeTestCase
 
         $this->recipeRepository
             ->expects($this->once())
-            ->method('findRecipeByIdAndGroupIdOrFail')
-            ->with($formData->id, null)
-            ->willReturn($recipe);
+            ->method('findRecipesByIdAndGroupIdOrFail')
+            ->with(new ArrayCollection([$formData->id]), null)
+            ->willReturn(new ArrayCollection([$recipe]));
 
         $this->recipeRepository
             ->expects($this->once())
@@ -151,9 +152,9 @@ class RecipeModifyServiceTest extends TypeTestCase
 
         $this->recipeRepository
             ->expects($this->once())
-            ->method('findRecipeByIdAndGroupIdOrFail')
-            ->with($formData->id, null)
-            ->willReturn($recipe);
+            ->method('findRecipesByIdAndGroupIdOrFail')
+            ->with(new ArrayCollection([$formData->id]), null)
+            ->willReturn(new ArrayCollection([$recipe]));
 
         $this->recipeRepository
             ->expects($this->once())
@@ -187,9 +188,9 @@ class RecipeModifyServiceTest extends TypeTestCase
 
         $this->recipeRepository
             ->expects($this->once())
-            ->method('findRecipeByIdAndGroupIdOrFail')
-            ->with($formData->id, null)
-            ->willReturn($recipe);
+            ->method('findRecipesByIdAndGroupIdOrFail')
+            ->with(new ArrayCollection([$formData->id]), null)
+            ->willReturn(new ArrayCollection([$recipe]));
 
         $this->recipeRepository
             ->expects($this->once())
@@ -228,9 +229,9 @@ class RecipeModifyServiceTest extends TypeTestCase
 
         $this->recipeRepository
             ->expects($this->once())
-            ->method('findRecipeByIdAndGroupIdOrFail')
-            ->with($formData->id, null)
-            ->willReturn($recipe);
+            ->method('findRecipesByIdAndGroupIdOrFail')
+            ->with(new ArrayCollection([$formData->id]), null)
+            ->willReturn(new ArrayCollection([$recipe]));
 
         $this->recipeRepository
             ->expects($this->once())
@@ -254,8 +255,8 @@ class RecipeModifyServiceTest extends TypeTestCase
 
         $this->recipeRepository
             ->expects($this->once())
-            ->method('findRecipeByIdAndGroupIdOrFail')
-            ->with($formData->id, null)
+            ->method('findRecipesByIdAndGroupIdOrFail')
+            ->with(new ArrayCollection([$formData->id]), null)
             ->willThrowException(DBNotFoundException::fromMessage('recipe not found'));
 
         $this->recipeRepository
@@ -284,9 +285,9 @@ class RecipeModifyServiceTest extends TypeTestCase
 
         $this->recipeRepository
             ->expects($this->once())
-            ->method('findRecipeByIdAndGroupIdOrFail')
-            ->with($formData->id, null)
-            ->willReturn($recipe);
+            ->method('findRecipesByIdAndGroupIdOrFail')
+            ->with(new ArrayCollection([$formData->id]), null)
+            ->willReturn(new ArrayCollection([$recipe]));
 
         $this->recipeRepository
             ->expects($this->once())
