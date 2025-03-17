@@ -7,12 +7,15 @@ namespace App\Controller\Recipe\RecipeHome;
 use App\Controller\Exception\UserSessionNotFoundException;
 use App\Controller\Recipe\RecipeCreate\RecipeCreateController;
 use App\Controller\Recipe\RecipeModify\RecipeModifyController;
+use App\Controller\Recipe\RecipeRemove\RecipeRemoveController;
 use App\Entity\Recipe;
 use App\Entity\User;
 use App\Form\Recipe\RecipeCreate\RECIPE_CREATE_FORM_FIELDS;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormType;
 use App\Form\Recipe\RecipeModify\RECIPE_MODIFY_FORM_FIELDS;
 use App\Form\Recipe\RecipeModify\RecipeModifyFormType;
+use App\Form\Recipe\RecipeRemove\RECIPE_REMOVE_FORM_FIELDS;
+use App\Form\Recipe\RecipeRemove\RecipeRemoveFormType;
 use App\Repository\Exception\DBNotFoundException;
 use App\Repository\RecipeRepository;
 use App\Repository\UserRepository;
@@ -65,11 +68,11 @@ class RecipeHomeController extends AbstractController
         $userSession = $this->getUserSession();
         $recipes = $this->getRecipesFromDb($userSession->getId(), $page, $pageItems);
         $recipesUsers = $this->getRecipesUsersFromDb($recipes);
-        /** @var FormExtendedInterface<RecipeCreateFormType> */
         $recipesCreateForm = $this->formFactory->createNamedExtended(RECIPE_CREATE_FORM_FIELDS::FORM_NAME->value, RecipeCreateFormType::class);
         $recipesModifyForm = $this->formFactory->createNamedExtended(RECIPE_MODIFY_FORM_FIELDS::FORM_NAME->value, RecipeModifyFormType::class);
+        $recipesRemoveForm = $this->formFactory->createNamedExtended(RECIPE_REMOVE_FORM_FIELDS::FORM_NAME->value, RecipeRemoveFormType::class);
 
-        return $this->createView($recipesCreateForm, $recipesModifyForm, $recipes, $recipesUsers);
+        return $this->createView($recipesCreateForm, $recipesModifyForm, $recipesRemoveForm, $recipes, $recipesUsers);
     }
 
     /**
@@ -127,12 +130,14 @@ class RecipeHomeController extends AbstractController
      * @param Collection<int, string>                     $messagesOk
      * @param Collection<int, string>                     $messagesError
      */
-    private function createRecipeHomeSectionComponentDto(FormExtendedInterface $recipeCreateForm, FormExtendedInterface $recipeModifyForm, Collection $recipes, Collection $recipesUsers, Collection $messagesOk, Collection $messagesError): RecipeHomeSectionComponentDto
+    private function createRecipeHomeSectionComponentDto(FormExtendedInterface $recipeCreateForm, FormExtendedInterface $recipeModifyForm, FormExtendedInterface $recipeRemoveForm, Collection $recipes, Collection $recipesUsers, Collection $messagesOk, Collection $messagesError): RecipeHomeSectionComponentDto
     {
         /** @var RecipeCreateFormType */
         $recipeCreateFormType = $recipeCreateForm->getConfig()->getType()->getInnerType();
         /** @var RecipeModifyFormType */
         $recipeModifyFormType = $recipeModifyForm->getConfig()->getType()->getInnerType();
+        /** @var RecipeRemoveFormType */
+        $recipeRemoveFormType = $recipeRemoveForm->getConfig()->getType()->getInnerType();
         $validForm = !$messagesOk->isEmpty() || !$messagesError->isEmpty();
 
         return new RecipeHomeComponentBuilder($this->appConfigRecipeImageNotImagePublicPath, $this->appConfigRecipePublicUploadedPath)
@@ -151,8 +156,8 @@ class RecipeHomeController extends AbstractController
             )
             ->recipeCreateFormModal($recipeCreateFormType->getCsrfToken(), $this->router->generate('recipe_create'))
             ->recipeModifyFormModal($recipeModifyFormType->getCsrfToken(), $this->router->generate('recipe_modify'))
-            ->recipeRemoveFormModal('', '')
-            ->recipeRemoveMultiFormModal('', '')
+            ->recipeRemoveFormModal($recipeRemoveFormType->getCsrfToken(), $this->router->generate('recipe_remove'))
+            ->recipeRemoveMultiFormModal($recipeRemoveFormType->getCsrfToken(), $this->router->generate('recipe_remove'))
             ->build();
     }
 
@@ -161,21 +166,24 @@ class RecipeHomeController extends AbstractController
      * @param Collection<int, Recipe>                     $recipes
      * @param Collection<int, User>                       $recipesUsers
      */
-    private function createView(FormExtendedInterface $recipesCreateForm, FormExtendedInterface $recipeModifyForm, Collection $recipes, Collection $recipesUsers): Response
+    private function createView(FormExtendedInterface $recipesCreateForm, FormExtendedInterface $recipeModifyForm, FormExtendedInterface $recipesRemoveForm, Collection $recipes, Collection $recipesUsers): Response
     {
         $messagesOk = new ArrayCollection([
             ...$recipesCreateForm->getFlashMessages(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_SUCCESS),
             ...$recipesCreateForm->getFlashMessages(RecipeModifyController::FORM_FLASH_BAG_MESSAGES_SUCCESS),
+            ...$recipesRemoveForm->getFlashMessages(RecipeRemoveController::FORM_FLASH_BAG_MESSAGES_SUCCESS),
         ]);
 
         $messagesError = new ArrayCollection([
             ...$recipesCreateForm->getFlashMessages(RecipeCreateController::FORM_FLASH_BAG_MESSAGES_ERROR),
             ...$recipesCreateForm->getFlashMessages(RecipeModifyController::FORM_FLASH_BAG_MESSAGES_ERROR),
+            ...$recipesRemoveForm->getFlashMessages(RecipeRemoveController::FORM_FLASH_BAG_MESSAGES_ERROR),
         ]);
 
         $recipeHomeSectionComponentDto = $this->createRecipeHomeSectionComponentDto(
             $recipesCreateForm,
             $recipeModifyForm,
+            $recipesRemoveForm,
             $recipes,
             $recipesUsers,
             $messagesOk,
