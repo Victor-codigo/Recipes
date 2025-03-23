@@ -9,10 +9,10 @@ use App\Common\DtoBuilder\DtoBuilderInterface;
 use App\Common\RECIPE_TYPE;
 use App\Entity\Recipe;
 use App\Entity\User;
+use App\Form\HomeSection\SearchBar\FIELD_FILTERS;
 use App\Form\Recipe\RecipeRemove\RECIPE_REMOVE_FORM_FIELDS;
 use App\Templates\Components\HomeSection\Home\HomeSectionComponentDto;
 use App\Templates\Components\HomeSection\Home\RemoveMultiFormDto;
-use App\Templates\Components\HomeSection\SearchBar\SECTION_FILTERS;
 use App\Templates\Components\HomeSection\SearchBar\SearchBarComponentDto;
 use App\Templates\Components\Modal\ModalComponentDto;
 use App\Templates\Components\Recipe\RecipeCreate\RecipeCreateComponent;
@@ -164,6 +164,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
         string $groupId,
         ?string $searchValue,
         ?string $nameFilterValue,
+        ?string $fieldFilterValue,
         string $searchBarCsrfToken,
         string $searchAutoCompleteUrl,
         string $searchBarFormActionUrl,
@@ -173,8 +174,8 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
         $this->homeSectionComponentDto->searchBar(new SearchBarComponentDto(
             $groupId,
             $searchValue,
-            [SECTION_FILTERS::RECIPE],
-            null,
+            FIELD_FILTERS::cases(),
+            $fieldFilterValue,
             $nameFilterValue,
             $searchBarCsrfToken,
             $searchBarFormActionUrl,
