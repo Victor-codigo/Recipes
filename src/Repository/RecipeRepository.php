@@ -3,9 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Recipe;
+use App\Entity\User;
 use App\Repository\Exception\DBNotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\Persistence\ManagerRegistry;
 use VictorCodigo\DoctrinePaginatorAdapter\PaginatorInterface;
 
@@ -69,6 +72,27 @@ class RecipeRepository extends RepositoryBase
             );
             throw DBNotFoundException::fromMessage(sprintf('Recipe [%s], with group [%s] not found', $recipesIdToString, $groupId))->log();
         }
+
+        return new ArrayCollection($recipes);
+    }
+
+    /**
+     * @return Collection<int, Recipe>
+     *
+     * @throws DBNotFoundException
+     */
+    public function findCriteria(Criteria $criteria): Collection
+    {
+        $query = $this->entityManager
+           ->createQueryBuilder()
+           ->select('recipe')
+           ->from(Recipe::class, 'recipe')
+           ->leftJoin(User::class, 'user', Join::WITH, 'recipe.userId = user.id')
+           ->addCriteria($criteria)
+           ->getQuery();
+
+        /** @var array<int, Recipe> */
+        $recipes = $query->getResult();
 
         return new ArrayCollection($recipes);
     }
