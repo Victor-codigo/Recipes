@@ -28,6 +28,7 @@ import ListComponent from 'App/Templates/Components/List/List_controller.js';
 import HomeSectionComponent from 'App/Templates/Components/HomeSection/Home/HomeSection_controller';
 import HomeListComponent from 'App/Templates/Components/HomeSection/HomeList/List/HomeList_controller';
 import HomeListItemComponent from 'App/Templates/Components/HomeSection/HomeList/ListItem/HomeListItem_controller';
+import SearchBarComponent from 'App/Templates/Components/HomeSection/SearchBar/SearchBar_controller';
 
 // RECIPE HOME COMPONENT
 import RecipeSectionComponent from 'App/Templates/Components/Recipe/RecipeHome/Home/RecipeHomeSection_controller.js';
@@ -60,6 +61,7 @@ app.register('ListComponent', ListComponent);
 app.register('HomeSectionComponent', HomeSectionComponent);
 app.register('HomeListComponent', HomeListComponent);
 app.register('HomeListItemComponent', HomeListItemComponent);
+app.register('SearchBarComponent', SearchBarComponent);
 
 // RECIPE HOME COMPONENT
 app.register('RecipeSectionComponent', RecipeSectionComponent);

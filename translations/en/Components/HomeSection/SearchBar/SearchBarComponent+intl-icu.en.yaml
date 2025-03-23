@@ -1,0 +1,52 @@
+toggle_button:
+  label: "Filter by:"
+
+inputSectionFilter:
+  label: Type
+
+inputTextFilter:
+  label: Text
+
+inputCategoryFilter:
+  label: Category
+
+inputTextBoxFilter:
+  label: Keyword
+
+inputSearch:
+  placeholder: Enter a word to search for
+
+button:
+  label: Search
+
+field_filters:
+  name: Name
+  category: Category
+  user_name: User name
+
+name_filters:
+  startsWith: Starts with
+  endsWith: Ends with
+  contains: Contains
+  equals: Equals
+
+category_filters:
+  no_category: No category
+  breakfast: Breakfast
+  brunch: Brunch
+  lunch: Lunch
+  dinner: Dinner
+  dessert: Dessert
+  sandwich: Sandwich
+  appetiser: Appetiser
+  soup: Soup
+  salad: Salad
+  snack: Snack
+  burger: Burger
+  pizza: Pizza
+  cake: Cake
+  seafood: Seafood
+  rice: Rice
+  pasta: Pasta
+  ice_cream: Ice_cream
+  meat: Meat

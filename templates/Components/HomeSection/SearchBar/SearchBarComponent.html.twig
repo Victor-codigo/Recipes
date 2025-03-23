@@ -1,3 +1,5 @@
+{% trans_default_domain 'SearchBarComponent' %}
+
 <section data-controller="SearchBarComponent"
 		 class="p-2"
 		 data-url-search-autocomplete="{{ data.searchAutoCompleteUrl|escape('html_attr') }}"
@@ -11,18 +13,19 @@
 				aria-expanded="false"
 				aria-controls="seach_menu">
 			<span class="text-secondary">
-				{{ lang.searchLabel }}
+				{{ 'toggle_button.label'|trans }}
 			</span>
 			&nbsp;
 			<span>
-				{{ data.searchValue }}
+				{{ data.searchValue|lower }}
 			</span>
 		</button>
 	</div>
 	<div class="collapse multi-collapse  search_menu"
 		 id="search_menu">
 		<div class="d-flex  flex-column  row-gap-3  border-start  border-secondary">
-			<form name="{{ formName }}"
+			<form id="{{ formName }}"
+				  name="{{ formName }}"
 				  class="search-bar  contaniner  p-3  d-flex  flex-column  row-gap-3  card card-body"
 				  action="{{ data.searchFormActionUrl|escape('html_attr') }}"
 				  method="post"
@@ -36,25 +39,25 @@
 
 				<label {{this.sectionFilters|length==1?'hidden':''}}>
 
-					{{ lang.sectionFilterLabel }}
+					{{ 'inputSectionFilter.label'|trans }}
 
 					<select class="form-select"
-							name="{{ sectionFilterFieldName }}"
+							name="{{ fieldFilterFieldName }}"
 							data-js-section-filter>
 
-						{% for sectionFilterName, sectionFilterValue in this.sectionFilters %}
+						{% for fieldFilterName, fieldFilterValue in this.sectionFilters %}
 
-						{% if sectionFilterName==data.sectionFilterValue %}
+						{% if fieldFilterName==data.fieldFilterValue %}
 
-						<option value="{{ sectionFilterName }}"
+						<option value="{{ fieldFilterName }}"
 								selected>
 
-							{{ sectionFilterValue }}
+							{{ fieldFilterValue }}
 						</option>
 
 						{% else %}
 
-						<option value="{{ sectionFilterName }}">{{ sectionFilterValue }}</option>
+						<option value="{{ fieldFilterName }}">{{ fieldFilterValue }}</option>
 
 						{% endif %}
 						{% endfor %}
@@ -63,13 +66,13 @@
 
 				<label>
 
-					{{ lang.textFilterLabel }}
+					{{ 'inputTextFilter.label'|trans }}
 
 					<select class="form-select"
 							name="{{ nameFilterFieldName }}"
 							data-js-name-filter>
 
-						{% for nameFilterName, valueFilterLang in lang.filters %}
+						{% for nameFilterName, valueFilterLang in nameFilters %}
 
 						{% if nameFilterName==data.nameFilterValue %}
 
@@ -88,25 +91,50 @@
 
 				<label>
 
-					{{ lang.inputTextFilterLabel }}
+					{{ 'inputTextBoxFilter.label'|trans }}
 
 					<input type="text"
 						   class="form-control"
 						   name="{{ searchValueFieldName }}"
-						   placeholder="{{ lang.searchPlaceholder }}"
+						   placeholder="{{ 'inputSearch.placeholder'|trans }}"
 						   value="{{ data.searchValue }}"
 						   list="search-data-list"
 						   data-js-value />
 				</label>
 
+				<label hidden>
+
+					{{ 'inputCategoryFilter.label'|trans }}
+
+					<select class="form-select"
+							name="{{ searchValueFieldName }}"
+							data-js-category-filter>
+
+						{% for categoryFilterName, valueFilterLang in categoryFilters %}
+
+							{% if categoryFilterName==data.searchValue %}
+
+								<option value="{{ categoryFilterName }}"
+										selected>{{ valueFilterLang }}</option>
+
+							{% else %}
+
+								<option value="{{ categoryFilterName }}">{{ valueFilterLang }}</option>
+
+							{% endif %}
+
+						{% endfor %}
+					</select>
+				</label>
+
 				<button type="submit"
 						class="btn btn-primary  order-3  mt-4  mb-3"
 						name="{{ searchButtonFiledName }}"
-						alt="{{ lang.searchButton }}">
+						alt="{{ 'button.label'|trans }}">
 					{% include "common/search-icon.svg" %}
-					{{ lang.searchButton }}
+					{{ 'button.label'|trans }}
 				</button>
-			</form>
+			</name=>
 		</div>
 	</div>
 </section>
