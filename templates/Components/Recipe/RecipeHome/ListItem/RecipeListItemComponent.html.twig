@@ -29,10 +29,21 @@
              data-js-item-image>
 
         {% endif %}
-        <p class="fs-5  my-2  mx-2  text-break"
-           data-js-item-name>
-            {{ data.name }}
-        </p>
+
+        <article class="d-flex  flex-column">
+            <p class="fs-5  mt-2  mb-0   mx-2  text-break"
+               data-js-item-name>
+                {{ data.name }}
+            </p>
+            <div class="d-flex  flex-row">
+                <span class="ms-2  fs-6  text-break  text-secondary">
+                    {{ 'recipe_item.author'|trans }}:
+                </span>
+                <address class="ms-1 fs-6  text-break  text-secondary">
+                    {{ data.userOwnerName }}
+                </address>
+            </div>
+        </article>
     </label>
 
     <button type="button"

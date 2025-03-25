@@ -15,3 +15,6 @@ recipe_info_button:
 recipe_image:
   title: Recipe image
   alt: Recipe image
+
+recipe_item:
+  author: Author

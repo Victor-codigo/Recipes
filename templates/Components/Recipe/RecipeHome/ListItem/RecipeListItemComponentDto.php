@@ -26,7 +26,6 @@ readonly class RecipeListItemComponentDto extends HomeListItemComponentDto
         public array $steps,
         public ?string $image,
         public ?int $rating,
-        // public string $recipeData,
         public string $modifyFormModalIdAttribute,
         public string $deleteFormModalIdAttribute,
         public string $infoFormModalIdAttribute,
