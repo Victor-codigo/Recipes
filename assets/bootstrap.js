@@ -37,6 +37,9 @@ import RecipeCreateComponent from 'App/Templates/Components/Recipe/RecipeCreate/
 import RecipeModifyComponent from 'App/Templates/Components/Recipe/RecipeModify/RecipeModify_controller.js';
 import RecipeRemoveComponent from 'App/Templates/Components/Recipe/RecipeRemove/RecipeRemoveComponent_controller.js';
 import RecipeItemAddComponent from 'App/Templates/Components/Recipe/RecipeItemAdd/RecipeItemAdd_controller.js';
+import RecipeInfoComponent from 'App/Templates/Components/Recipe/RecipeInfo/RecipeInfo_controller.js';
+import RatingComponent from 'App/Templates/Components/Rating/Rating_controller.js';
+
 
 
 // ALERT COMPONENT
@@ -70,3 +73,5 @@ app.register('RecipeCreateComponent', RecipeCreateComponent);
 app.register('RecipeModifyComponent', RecipeModifyComponent);
 app.register('RecipeRemoveComponent', RecipeRemoveComponent);
 app.register('RecipeItemAddComponent', RecipeItemAddComponent);
+app.register('RecipeInfoComponent', RecipeInfoComponent);
+app.register('RatingComponent', RatingComponent);

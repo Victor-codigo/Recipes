@@ -1,0 +1,18 @@
+{% trans_default_domain 'RatingComponent' %}
+
+<div data-controller="RatingComponent"
+     data-action="RatingComponent:setRating->RatingComponent#handleSetRatingEvent"
+     data-rating="{{ rating }}"
+     class="rating">
+
+    <div class="d-flex  flex-row"
+         data-no-rating="{{ 'rating.no_rating'|trans }}"
+         data-js-rating-stars-container>
+    </div>
+
+    <template data-js-rating-template>
+        <div class="star">
+            {% include 'common/star-icon.svg' %}
+        </div>
+    </template>
+</div>

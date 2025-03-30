@@ -29,14 +29,10 @@
 // Avatar
 @import '/templates/Components/ImageAvatar/ImageAvatarComponent';
 
-// Notification
-// @import '/src/Twig/Components/Notification/NotificationHome/ListItem/NotificationListItemComponent';
 
 // Profile
 // @import '/src/Twig/Components/User/Profile/ProfileComponent';
 
-// ShopAddComponent
-// @import '/src/Twig/Components/Controls/ItemPriceAdd/ItemPriceAddComponent';
 
 
 // List
@@ -51,6 +47,8 @@
 // Recipe modify
 @import '/templates/Components/Recipe/RecipeModify/RecipeModifyComponent';
 
+@import '/templates/Components/HomeSection/ItemInfo/ItemInfoComponent';
+
 
 // SearchBar Component
 @import '/templates/Components/HomeSection/SearchBar/SearchBarComponent';
@@ -60,6 +58,12 @@
 
 // RecipeCreateComponent
 @import '/templates/Components/Recipe/RecipeCreate/RecipeCreateComponent';
+
+// RecipeInfoComponent
+@import '/templates/Components/Recipe/RecipeInfo/RecipeInfoComponent';
+
+// RatingComponent
+@import '/templates/Components/Rating/RatingComponent';
 
 
 // Error page
