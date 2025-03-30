@@ -101,7 +101,6 @@ export default class extends Controller {
      * @param {string|null} preparationTime
      */
     setPreparationTime(preparationTime) {
-        console.log(this.#preparationTimeTag);
         this.#preparationTimeTag.textContent = preparationTime === null
             ? this.#preparationTimeTag.dataset.notSpecified
             : preparationTime;
