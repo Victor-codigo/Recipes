@@ -20,6 +20,8 @@ use App\Templates\Components\Recipe\RecipeCreate\RecipeCreateComponentDto;
 use App\Templates\Components\Recipe\RecipeHome\Home\RecipeHomeSectionComponentDto;
 use App\Templates\Components\Recipe\RecipeHome\ListItem\RecipeListItemComponent;
 use App\Templates\Components\Recipe\RecipeHome\ListItem\RecipeListItemComponentDto;
+use App\Templates\Components\Recipe\RecipeInfo\RecipeInfoComponent;
+use App\Templates\Components\Recipe\RecipeInfo\RecipeInfoComponentDto;
 use App\Templates\Components\Recipe\RecipeModify\RecipeModifyComponent;
 use App\Templates\Components\Recipe\RecipeModify\RecipeModifyComponentDto;
 use App\Templates\Components\Recipe\RecipeRemove\RecipeRemoveComponent;
@@ -327,18 +329,18 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
 
     private function createRecipeInfoModalDto(): ModalComponentDto
     {
-        // $recipeInfoComponentDto = new RecipeInfoComponentDto(
-        //     RecipeInfoComponent::getComponentName()
-        // );
+        $recipeInfoComponentDto = new RecipeInfoComponentDto(
+            RecipeInfoComponent::getComponentName()
+        );
 
-        // return new ModalComponentDto(
-        //     self::RECIPE_INFO_MODAL_ID,
-        //     '',
-        //     false,
-        //     RecipeInfoComponent::getComponentName(),
-        //     $recipeInfoComponentDto,
-        //     []
-        // );
+        return new ModalComponentDto(
+            self::RECIPE_INFO_MODAL_ID,
+            '',
+            false,
+            RecipeInfoComponent::getComponentName(),
+            $recipeInfoComponentDto,
+            []
+        );
 
         return $this->createFakeModalComponentDto();
     }
@@ -391,6 +393,7 @@ class RecipeHomeComponentBuilder implements DtoBuilderInterface
                 $recipeEntity->getSteps(),
                 null === $recipeEntity->getImage() ? $appConfigRecipeImageNotImagePublicPath : "{$appConfigRecipePublicUploadedPath}/{$recipeEntity->getImage()}",
                 $recipeEntity->getRating(),
+                $recipeEntity->getCreatedOn(),
                 self::RECIPE_MODIFY_MODAL_ID,
                 self::RECIPE_REMOVE_MODAL_ID,
                 self::RECIPE_INFO_MODAL_ID,

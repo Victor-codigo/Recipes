@@ -53,6 +53,7 @@ final class RecipeListItemComponent extends HomeListItemComponent
             'steps' => $recipeData->steps,
             'image' => $recipeData->image,
             'rating' => $recipeData->rating,
+            'createdOn' => $recipeData->createdOn->format('Y-m-d H:i:s'),
         ];
 
         return json_encode($recipeDataToParse, JSON_THROW_ON_ERROR);

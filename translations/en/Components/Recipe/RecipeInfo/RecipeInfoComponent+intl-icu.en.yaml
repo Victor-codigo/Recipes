@@ -1,0 +1,53 @@
+author: "Author: "
+created_on: "Created on: "
+
+image:
+  title: Recipe image
+  alt: Recipe image
+
+category:
+  label: "Category:"
+  type:
+      no_category: No category
+      breakfast: Breakfast
+      brunch: Brunch
+      lunch: Lunch
+      dinner: Dinner
+      dessert: Dessert
+      sandwich: Sandwich
+      appetiser: Appetiser
+      soup: Soup
+      salad: Salad
+      snack: Snack
+      burger: Burger
+      pizza: Pizza
+      cake: Cake
+      seafood: Seafood
+      rice: Rice
+      pasta: Pasta
+      ice_cream: Ice_cream
+      meat: Meat
+
+preparation_time:
+  label: "Preparation time: "
+  not_specified: Not specified
+
+rating:
+  label: "Rating: "
+
+public:
+  label: "This recipe is: "
+  public: "Public"
+  private: "Private"
+
+description:
+  label: Description
+
+ingredients:
+  label: Ingredients
+
+steps:
+  label: Steps
+
+close_button:
+  label: Close

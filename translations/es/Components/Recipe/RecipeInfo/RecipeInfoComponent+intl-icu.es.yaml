@@ -1,0 +1,54 @@
+author: "Autor: "
+created_on: "Creado: "
+
+image:
+  title: Imagen de la receta
+  alt: Imagen de la receta
+
+category:
+  label: "Categoría: "
+  type:
+      no_category: Sin categoría
+      breakfast: Desayuno
+      brunch: Almuerzo
+      lunch: Comida
+      dinner: Cena
+      dessert: Postre
+      sandwich: Sandwich
+      appetiser: Aperitivo
+      soup: Sopa
+      salad: Ensalada
+      snack: Snack
+      burger: Hamburguesa
+      pizza: Pizza
+      cake: Tarta
+      seafood: Marisco
+      rice: Arroz
+      pasta: Pasta
+      ice_cream: Helado
+      meat: Carne
+
+preparation_time:
+  label: "Tiempo de preparación: "
+  not_specified: No especificado
+
+
+rating:
+  label: "Valoración: "
+
+public:
+  label: "Esta receta es: "
+  public: "Pública"
+  private: "Privada"
+
+description:
+  label: Descripción
+
+ingredients:
+  label: Ingredientes
+
+steps:
+  label: Pasos
+
+close_button:
+  label: Cerrar

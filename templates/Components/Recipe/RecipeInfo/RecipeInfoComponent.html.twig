@@ -1,0 +1,118 @@
+{% trans_default_domain 'RecipeInfoComponent' %}
+
+<div data-controller="RecipeInfoComponent"
+     data-action="HomeListItemComponent:homeListItemInfo@window->RecipeInfoComponent#handleMessageHomeListRecipeInfo"
+     data-modal-component-content
+     class="recipe-info-component">
+
+    <section class="d-flex  flex-column  p-3  p-sm-4">
+        <div class="flex-shrink-0  d-flex  flex-row  justify-content-start">
+
+            <img class="img-thumbnail  mb-1  recipe-info__image"
+                 src=""
+                 title="{{ 'image.title'|trans }}"
+                 alt="{{ 'image.title'|trans }}"
+                 data-js-recipe-image>
+
+            <div class="d-flex  flex-column  w-100">
+                <h2 class="display-6  ms-2  text-break"
+                    data-js-recipe-title>
+                    { recipe title }
+                </h2>
+                <hr class="solid  m-2">
+
+                <small class="fs-6  text-secondary  ms-2">
+                    {{ 'author'|trans }} <small data-js-recipe-author>{ recipe author }</small>
+                </small>
+                <small class="fs-6  text-secondary  ms-2">
+                    {{ 'created_on'|trans }} <small data-js-recipe-date>{ recipe date }</small>
+                </small>
+            </div>
+
+        </div>
+
+        <div class="d-flex  justify-content-between  mt-4">
+            <h3 class="lead">{{ 'rating.label'|trans }}</h3>
+            <twig:RatingComponent/>
+        </div>
+
+        <div>
+            <div class="d-flex  justify-content-between">
+                <h3 class="lead">{{ 'category.label'|trans }}</h3>
+                <span class="text-break"
+                    data-no-category="{{ 'category.type.no_category'|trans }}"
+                    data-breakfast="{{ 'category.type.breakfast'|trans }}"
+                    data-brunch="{{ 'category.type.brunch'|trans }}"
+                    data-lunch="{{ 'category.type.lunch'|trans }}"
+                    data-dinner="{{ 'category.type.dinner'|trans }}"
+                    data-dessert="{{ 'category.type.dessert'|trans }}"
+                    data-sandwich="{{ 'category.type.sandwich'|trans }}"
+                    data-appetiser="{{ 'category.type.appetiser'|trans }}"
+                    data-soup="{{ 'category.type.soup'|trans }}"
+                    data-salad="{{ 'category.type.salad'|trans }}"
+                    data-snack="{{ 'category.type.snack'|trans }}"
+                    data-burger="{{ 'category.type.burger'|trans }}"
+                    data-pizza="{{ 'category.type.pizza'|trans }}"
+                    data-cake="{{ 'category.type.cake'|trans }}"
+                    data-seafood="{{ 'category.type.seafood'|trans }}"
+                    data-rice="{{ 'category.type.rice'|trans }}"
+                    data-pasta="{{ 'category.type.pasta'|trans }}"
+                    data-ice-cream="{{ 'category.type.ice_cream'|trans }}"
+                    data-meat="{{ 'category.type.meat'|trans }}"
+                    data-js-recipe-category>
+                    { recipe category }
+                </span>
+            </div>
+
+            <div class="d-flex  justify-content-between">
+                <h3 class="lead">{{ 'preparation_time.label'|trans }}</h3>
+                <span class="text-break"
+                      data-not-specified="{{ 'preparation_time.not_specified'|trans }}"
+                      data-js-recipe-preparation-time>
+                    { recipe preparation time }
+                </span>
+            </div>
+
+            <div class="d-flex  justify-content-between">
+                <h3 class="lead">{{ 'public.label'|trans }}</h3>
+                <span class="text-break"
+                      data-public="{{ 'public.public'|trans }}"
+                      data-private="{{ 'public.private'|trans }}"
+                      data-js-recipe-public>
+                </span>
+            </div>
+
+            <h3 class="lead  mt-4">{{ 'description.label'|trans }}</h3>
+            <p class="mt-3  text-break"
+               data-js-recipe-description>
+                { recipe description }
+            </p>
+
+            <hr class="mt-4  mb-4">
+
+            <div>
+                <h3 class="lead">{{ 'ingredients.label'|trans }}</h3>
+                <ul class="recipe-info-component__ingredients"
+                    data-js-recipe-ingredients>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="lead">{{ 'steps.label'|trans }}</h3>
+                <ul class="recipe-info-component__steps"
+                    data-js-recipe-steps>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="d-flex  justify-content-end  mt-5">
+        <button type="button"
+                class="btn btn-primary  flex-grow-1"
+                data-bs-dismiss="modal">
+            {{ 'close_button.label'|trans }}
+        </button>
+    </div>
+</div>
+

@@ -1,0 +1,43 @@
+.recipe-info-component{
+    .recipe-info-component__ingredients {
+        .ingredients__ingredient{
+            list-style-type: decimal;
+        }
+    }
+
+    .recipe-info-component__steps {
+        .steps__step{
+            list-style-type: decimal;
+        }
+    }
+}
+
+.recipe-info {
+    &__image {
+        max-width: 120px;
+        max-height: 120px;
+    }
+}
+
+[data-bs-theme="dark"] {
+
+    .recipe-info__image {
+        max-width: 120px;
+        height: 120px;
+
+        &--svg {
+            background-color: #fff0;
+            filter: invert(100);
+            border: 1px solid $gray-100;
+        }
+    }
+}
+
+@include media-breakpoint-down(sm) {
+    .recipe-info {
+        &__image {
+            max-width: 75px;
+            max-height: 75px;
+        }
+    }
+}
