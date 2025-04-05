@@ -68,9 +68,9 @@ class RecipeCreateFormDataValidation
     #[Assert\Image(
         maxSize: '2M',
         minWidth: 200,
-        maxWidth: 400,
+        maxWidth: 800,
         minHeight: 200,
-        maxHeight: 400,
+        maxHeight: 800,
         allowLandscape: true,
         allowPortrait: true,
         mimeTypes: [
