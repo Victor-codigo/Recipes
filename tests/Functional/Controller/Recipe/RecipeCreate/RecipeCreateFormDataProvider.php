@@ -1040,7 +1040,7 @@ class RecipeCreateFormDataProvider
                 ],
             ],
             'files' => [
-                'image' => self::createImagePng(401, 200),
+                'image' => self::createImagePng(801, 200),
             ],
             'validationOk' => false,
             'messagesOk' => [],
@@ -1118,7 +1118,7 @@ class RecipeCreateFormDataProvider
                 ],
             ],
             'files' => [
-                'image' => self::createImagePng(200, 401),
+                'image' => self::createImagePng(200, 801),
             ],
             'validationOk' => false,
             'messagesOk' => [],
