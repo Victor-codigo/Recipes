@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Service\Recipe\RecipeModify;
 
+use App\Common\Image\ImageInterface;
 use App\Common\RECIPE_TYPE;
 use App\Entity\Recipe;
 use App\Entity\User;
@@ -33,12 +34,15 @@ class RecipeModifyServiceTest extends TypeTestCase
     use TestingImageTrait;
 
     private const string UPLOAD_RECIPES_PATH = 'public/images/upload/recipe';
+    private const int RECIPE_IMAGE_SAVE_WIDTH = 300;
+    private const int RECIPE_IMAGE_SAVE_HEIGHT = 300;
 
     private RecipeModifyService $object;
     private RecipeRepository&MockObject $recipeRepository;
     private Filesystem&MockObject $filesystem;
     private Request&MockObject $request;
     private FormExtendedInterface&MockObject $formExtended;
+    private ImageInterface&MockObject $image;
 
     protected function setUp(): void
     {
@@ -48,11 +52,15 @@ class RecipeModifyServiceTest extends TypeTestCase
         $this->formExtended = $this->createMock(FormExtendedInterface::class);
         $this->recipeRepository = $this->createMock(RecipeRepository::class);
         $this->filesystem = $this->createMock(Filesystem::class);
+        $this->image = $this->createMock(ImageInterface::class);
         $this->object = new RecipeModifyService(
             $this->recipeRepository,
             new RecipeModifyFormDataMapper(),
             $this->filesystem,
-            self::UPLOAD_RECIPES_PATH
+            $this->image,
+            self::UPLOAD_RECIPES_PATH,
+            self::RECIPE_IMAGE_SAVE_WIDTH,
+            self::RECIPE_IMAGE_SAVE_HEIGHT
         );
     }
 
@@ -105,6 +113,7 @@ class RecipeModifyServiceTest extends TypeTestCase
     public function itShouldModifyASavedRecipeAndSaveIt(): void
     {
         $formData = $this->createRecipeFormDataValidationWithId('recipe id');
+        /** @var Recipe */
         $recipe = $this->getRecipesFixtures()->first();
 
         $this->formExtended
@@ -116,6 +125,10 @@ class RecipeModifyServiceTest extends TypeTestCase
             ->expects($this->once())
             ->method('uploadFiles')
             ->with($this->request, self::UPLOAD_RECIPES_PATH, []);
+
+        $this->image
+            ->expects($this->never())
+            ->method('resizeToAFrame');
 
         $this->recipeRepository
             ->expects($this->once())
@@ -132,10 +145,10 @@ class RecipeModifyServiceTest extends TypeTestCase
     }
 
     #[Test]
-    public function itShouldModifyASavedRecipeWithUploadImage2(): void
+    public function itShouldModifyASavedRecipeWithUploadImage(): void
     {
         $formData = $this->createRecipeFormDataValidationWithId('recipe id');
-        $formData->image = $this->createImagePng(200, 200);
+        $formData->image = null;
         $formData->image_remove = false;
         /** @var Recipe */
         $recipe = $this->getRecipesFixtures()->first();
@@ -149,6 +162,10 @@ class RecipeModifyServiceTest extends TypeTestCase
             ->expects($this->once())
             ->method('uploadFiles')
             ->with($this->request, self::UPLOAD_RECIPES_PATH, []);
+
+        $this->image
+            ->expects($this->never())
+            ->method('resizeToAFrame');
 
         $this->recipeRepository
             ->expects($this->once())
@@ -185,6 +202,15 @@ class RecipeModifyServiceTest extends TypeTestCase
             ->expects($this->once())
             ->method('uploadFiles')
             ->with($this->request, self::UPLOAD_RECIPES_PATH, [$recipeImage->getFilename()]);
+
+        $this->image
+            ->expects($this->once())
+            ->method('resizeToAFrame')
+            ->with(
+                self::UPLOAD_RECIPES_PATH.'/'.$formData->image->getFilename(),
+                self::RECIPE_IMAGE_SAVE_WIDTH,
+                self::RECIPE_IMAGE_SAVE_HEIGHT
+            );
 
         $this->recipeRepository
             ->expects($this->once())
@@ -227,6 +253,10 @@ class RecipeModifyServiceTest extends TypeTestCase
             ->method('remove')
             ->with(self::UPLOAD_RECIPES_PATH."/{$recipe->getImage()}");
 
+        $this->image
+            ->expects($this->never())
+            ->method('resizeToAFrame');
+
         $this->recipeRepository
             ->expects($this->once())
             ->method('findRecipesByIdAndGroupIdOrFail')
@@ -259,6 +289,10 @@ class RecipeModifyServiceTest extends TypeTestCase
             ->with(new ArrayCollection([$formData->id]), null)
             ->willThrowException(DBNotFoundException::fromMessage('recipe not found'));
 
+        $this->image
+            ->expects($this->never())
+            ->method('resizeToAFrame');
+
         $this->recipeRepository
             ->expects($this->never())
             ->method('save');
@@ -282,6 +316,10 @@ class RecipeModifyServiceTest extends TypeTestCase
             ->expects($this->once())
             ->method('uploadFiles')
             ->with($this->request, self::UPLOAD_RECIPES_PATH, []);
+
+        $this->image
+            ->expects($this->never())
+            ->method('resizeToAFrame');
 
         $this->recipeRepository
             ->expects($this->once())

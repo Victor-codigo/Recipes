@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Recipe\RecipeModify;
 
+use App\Common\Image\ImageInterface;
 use App\Entity\Recipe;
 use App\Form\Recipe\RecipeModify\RECIPE_MODIFY_FORM_FIELDS;
 use App\Form\Recipe\RecipeModify\RecipeModifyFormDataMapper;
@@ -22,7 +23,10 @@ class RecipeModifyService
         private RecipeRepository $recipeRepository,
         private RecipeModifyFormDataMapper $recipeModifyFormDataMapper,
         private Filesystem $filesystem,
+        private ImageInterface $image,
         private string $appConfigRecipeUploadedPath,
+        private readonly int $appConfigImageSaveSizeWidth,
+        private readonly int $appConfigImageSaveSizeHeight,
     ) {
     }
 
@@ -42,6 +46,15 @@ class RecipeModifyService
 
             $this->uploadRecipeImage($request, $form, $recipe);
             $this->recipeModifyFormDataMapper->mergeToEntity($recipe, $formData);
+
+            if (null !== $formData->image) {
+                $this->image->resizeToAFrame(
+                    $this->appConfigRecipeUploadedPath.'/'.$recipe->getImage(),
+                    $this->appConfigImageSaveSizeWidth,
+                    $this->appConfigImageSaveSizeHeight
+                );
+            }
+
             $this->recipeRepository->save($recipe);
         } catch (\Throwable $e) {
             throw RecipeModifyException::fromMessage($e->getMessage())->log();
