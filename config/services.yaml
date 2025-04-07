@@ -15,6 +15,10 @@ parameters:
     # User
     app.config.user.uploaded_path: "images/upload/user"
 
+    # Image
+    app.config.image.save.size.width: 300
+    app.config.image.save.size.height: 300
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -31,6 +35,10 @@ services:
 
             # User
             # $appConfigUserUploadedPath: "%app.config.user.uploaded_path%"
+
+            #Image
+            $appConfigImageSaveSizeWidth: "%app.config.image.save.size.width%"
+            $appConfigImageSaveSizeHeight: "%app.config.image.save.size.height%"
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -52,6 +60,9 @@ services:
 
     VictorCodigo\UploadFile\:
         resource: "../vendor/victor-codigo/upload-file/src/"
+
+    Imagine\:
+        resource: "../vendor/imagine/imagine/src/"
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

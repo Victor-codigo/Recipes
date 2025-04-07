@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Recipe\RecipeCreate;
 
+use App\Common\Image\ImageInterface;
 use App\Entity\User;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormDataMapper;
 use App\Form\Recipe\RecipeCreate\RecipeCreateFormDataValidation;
@@ -19,7 +20,10 @@ class RecipeCreateService
         private RecipeRepository $recipeRepository,
         private Security $security,
         private RecipeCreateFormDataMapper $recipeCreateFormDataMapper,
+        private ImageInterface $image,
         private readonly string $appConfigRecipeUploadedPath,
+        private readonly int $appConfigImageSaveSizeWidth,
+        private readonly int $appConfigImageSaveSizeHeight,
     ) {
     }
 
@@ -38,6 +42,15 @@ class RecipeCreateService
             $recipeId = $this->recipeRepository->uuidCreate();
             $form->uploadFiles($request, $this->appConfigRecipeUploadedPath);
             $recipeEntity = $this->recipeCreateFormDataMapper->toEntity($formData, $userSession, $recipeId, $groupId);
+
+            if (null !== $recipeEntity->getImage()) {
+                $this->image->resizeToAFrame(
+                    $this->appConfigRecipeUploadedPath.'/'.$recipeEntity->getImage(),
+                    $this->appConfigImageSaveSizeWidth,
+                    $this->appConfigImageSaveSizeHeight
+                );
+            }
+
             $this->recipeRepository->save($recipeEntity);
         } catch (\Throwable $th) {
             throw RecipeCreateException::fromMessage($th->getMessage())->log();
