@@ -102,4 +102,13 @@ class SearchBarComponent extends TwigComponent
 
         return array_filter($sectionFilters);
     }
+
+    public function getSearchValue(): string
+    {
+        if ($this->data->fieldFilterValue === FIELD_FILTERS::NAME->value || $this->data->fieldFilterValue === FIELD_FILTERS::USER_NAME->value) {
+            return $this->data->searchValue;
+        }
+
+        return $this->categoryFilters[$this->data->searchValue] ?? '';
+    }
 }

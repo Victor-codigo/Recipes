@@ -17,7 +17,7 @@
 			</span>
 			&nbsp;
 			<span>
-				{{ data.searchValue|lower }}
+				{{ this.getSearchValue() }}
 			</span>
 		</button>
 	</div>
@@ -97,7 +97,7 @@
 						   class="form-control"
 						   name="{{ searchValueFieldName }}"
 						   placeholder="{{ 'inputSearch.placeholder'|trans }}"
-						   value="{{ data.searchValue }}"
+						   value="{{ this.getSearchValue() }}"
 						   list="search-data-list"
 						   data-js-value />
 				</label>
