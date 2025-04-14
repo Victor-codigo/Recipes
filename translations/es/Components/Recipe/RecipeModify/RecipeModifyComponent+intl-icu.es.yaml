@@ -114,4 +114,4 @@ buttons:
   close:
     label: Cerrar
   recipe_modify:
-    label: Crear
+    label: Modificar
