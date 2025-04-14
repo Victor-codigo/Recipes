@@ -176,7 +176,7 @@ class RecipeHomeController extends AbstractController
             $recipeSearchFormDataReturn = [
                 SEARCHBAR_FORM_FIELDS::FIELD_FILTER->value => $recipeSearchFormData->field_filter->value,
                 SEARCHBAR_FORM_FIELDS::NAME_FILTER->value => isset($recipeSearchFormData->name_filter) ? $recipeSearchFormData->name_filter->value : SEARCH_TEXT_FILTER::EQUALS->value,
-                SEARCHBAR_FORM_FIELDS::SEARCH_VALUE->value => $recipeSearchFormData->search_value,
+                SEARCHBAR_FORM_FIELDS::SEARCH_VALUE->value => $recipeSearchFormData->search_value ?? '',
             ];
         }
 

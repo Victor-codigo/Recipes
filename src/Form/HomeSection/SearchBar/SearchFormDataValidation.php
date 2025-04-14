@@ -20,5 +20,5 @@ class SearchFormDataValidation
     )]
     public SEARCH_TEXT_FILTER $name_filter;
 
-    public string $search_value;
+    public ?string $search_value = '';
 }
