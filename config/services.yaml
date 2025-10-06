@@ -4,6 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    # App
+    app.config.url.domain.name: "domain.com"
+
     # Recipe
     app.config.recipe.image_no_image_public_path: "/build/images/recipe/recipe-no-image.svg"
     app.config.recipe.uploaded_path: "images/upload/recipe"
@@ -25,6 +28,9 @@ services:
         autowire: true # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
+            # App
+            $appConfigUrlDomainName: "%app.config.url.domain.name%"
+
             # Pagination
             $appConfigPaginationPageMaxItems: "%app.config.pagination.page_max_items%"
 
