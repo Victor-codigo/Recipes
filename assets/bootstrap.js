@@ -41,6 +41,9 @@ import RecipeInfoComponent from 'App/Templates/Components/Recipe/RecipeInfo/Reci
 import RatingComponent from 'App/Templates/Components/Rating/Rating_controller.js';
 
 
+// NAVIGATION BAR
+import NavigationBarComponent from 'App/Templates/Components/NavigationBar/NavigationBar_controller';
+
 
 // ALERT COMPONENT
 app.register('AlertValidationComponent', AlertValidationComponent);
@@ -75,3 +78,6 @@ app.register('RecipeRemoveComponent', RecipeRemoveComponent);
 app.register('RecipeItemAddComponent', RecipeItemAddComponent);
 app.register('RecipeInfoComponent', RecipeInfoComponent);
 app.register('RatingComponent', RatingComponent);
+
+// NAVIGATION BAR
+app.register('NavigationBarComponent', NavigationBarComponent);
