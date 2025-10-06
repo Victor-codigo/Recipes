@@ -1,0 +1,181 @@
+<nav class="navbar  navbar-dark  bg-dark  navbar-expand-lg  fixed-top  p-0"
+	 data-controller="NavigationBarComponent"
+	 data-bs-theme="dark"
+	 data-js-navigation-bar>
+	<div class="container-xxl  align-items-stretch  ps-0  pe-0  flex-fill">
+
+		<a class="navbar-brand  mx-auto  my-1  ms-lg-4"
+		   href="{{ path('home') }}">
+			<img class="navbar__logo  ms-2"
+				 src="{{ asset('build/images/common/logo-white.png') }}"
+				 title="{{ data.domain }}"
+				 alt="{{ logoTitleAttribute }}">
+		</a>
+
+		<div class="collapse navbar-collapse  align-items-end  justify-content-center  flex-shrink-1">
+			<ul class="navbar-nav  pe-3  d-flex  flex-row  justify-content-center  align-items-end">
+
+			</ul>
+		</div>
+
+		<div class="d-flex">
+
+			{% if data.locale=='es' %}
+
+			<a class="navbar__language-switch  px-3  d-flex  flex-column  justify-content-center"
+			   href="{{ languageToggleUrl }}"
+			   role="button"
+			   title="{{ languageToggleTitle }}"
+			   type="button">
+
+				{% include "common/flag/english-flag.svg" %}
+			</a>
+
+			{% else %}
+
+			<a class="navbar__language-switch  px-3  d-flex  flex-column  justify-content-center"
+			   href="{{ languageToggleUrl }}"
+			   title="{{ languageToggleTitle }}"
+			   role="button">
+
+				{% include "common/flag/spanish-flag.svg" %}
+			</a>
+
+			{% endif %}
+
+			<button class="btn  btn-dark  navbar__theme-switch  rounded-0  p-3"
+					type="button"
+					title="{{ themeButtonTitle }}"
+					data-js-theme-button>
+				<div hidden
+					 data-js-theme-dark>
+					{% include "common/theme-dark-mode-icon.svg" %}
+				</div>
+				<div hidden
+					 data-js-theme-light>
+					{% include "common/theme-light-mode-icon.svg" %}
+				</div>
+				<div hidden
+					 data-js-theme-auto>
+					{% include "common/theme-auto-mode-icon.svg" %}
+				</div>
+			</button>
+
+			{% if not userButton is null %}
+
+			<a href="{{ notificationUrl }}"
+			   class="position-relative  navbar__notifications  p-3  d-flex  flex-column  justify-content-center"
+			   title="{{ notificationTitle }}"
+			   role="button">
+
+				{% if notificationsNewNumber > 0 %}
+
+				<span
+					  class="position-absolute  top-50  start-50  translate-middle-y  badge  rounded-pill  text-bg-danger  p-0  ps-1  pe-1">
+					{{ notificationsNewNumber }}
+				</span>
+
+				{% endif %}
+
+				{% include "common/bell-icon.svg" %}
+			</a>
+
+			<div class="dropdown  d-flex"
+				 title="{{ userButtonTitle }}">
+				<button class="btn  btn-dark  navbar__user-menu  rounded-0  p-3  pt-1  pb-0"
+						type="button"
+						data-bs-toggle="dropdown"
+						aria-expanded="false">
+
+					{% if userButton.image is null %}
+
+					<div data-js-user-avatar-image>
+						{% include "common/user/user-avatar-no-image.svg" %}
+					</div>
+
+					{% else %}
+
+					<div data-js-user-avatar-image>
+						<img src="{{ userButton.image|escape('html_attr') }}"
+							 title="{{ userButton.title }}"
+							 alt="{{ userButton.alt }}">
+					</div>
+
+					{% endif %}
+
+					<span class="user-profile__name  text-truncate">
+						{{ userButton.name }}
+					</span>
+
+				</button>
+				<ul class="dropdown-menu  dropdown-menu-end  user-menu">
+					<li>
+						<a class="dropdown-item  menu-item__link  d-flex  justify-content-start  align-content-center  p-3"
+						   href="{{ profileButton.url|escape('html_attr') }}"
+						   role="button"
+						   title="{{ profileButton.title }}"
+						   data-js-user-avatar>
+
+							{% if profileButton.image is null %}
+
+							<div data-js-user-avatar-image>
+								{% include "common/user/user-avatar-no-image.svg" %}
+							</div>
+
+							{% else %}
+
+							<img src="{{ profileButton.image|escape('html_attr') }}"
+								 title="{{ profileButton.title }}">
+
+							{% endif %}
+
+							<span class="align-self-center  menu-item__name">
+								{{ profileButton.label }}
+							</span>
+
+						</a>
+					</li>
+
+					<li>
+						<a class="dropdown-item menu-item__link  d-flex  justify-content-start  align-content-center  p-3"
+						   href="{{ groupButton.url|escape('html_attr') }}"
+						   role="button"
+						   title="{{ groupButton.title }}"
+						   data-js-user-avatar>
+
+							<div data-js-user-avatar-image>
+								{% include "common/group/group-no-image.svg" %}
+							</div>
+
+							<span class="align-self-center  menu-item__name">
+								{{ groupButton.label }}
+							</span>
+
+						</a>
+					</li>
+
+					<li>
+						<a class="dropdown-item menu-item__link  d-flex  justify-content-start  align-content-center  p-3"
+						   href="{{ logoutButton.url|escape('html_attr') }}"
+						   role="button"
+						   title="{{ logoutButton.title }}"
+						   data-js-user-avatar>
+
+							<div class="menu-item__logout">
+								{% include "common/power-icon.svg" %}
+							</div>
+
+							<span class="align-self-center  menu-item__name">
+								{{ logoutButton.label }}
+							</span>
+
+						</a>
+					</li>
+
+				</ul>
+			</div>
+
+			{% endif %}
+		</div>
+	</div>
+</nav>
